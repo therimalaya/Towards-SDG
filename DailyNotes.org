@@ -1,0 +1,23 @@
+#+TITLE: Daily Notes:: NMBU towards Sustainable Development Goals
+#+AUTHOR: Raju Rimal
+
+* Towards SDG Form Preparation
+** DONE Information Collection
+CLOSED: [2019-11-14 to. 22:54] SCHEDULED: <2019-11-14 to.>
+:LOGBOOK:
+CLOCK: [2019-11-14 to. 08:46]--[2019-11-14 to. 16:55] =>  8:09
+:END:
+- Collecting information about SDG, Goals and Targets
+- High quality Images, Icons and other related materials
+** TODO Scaffold Basic prototype
+SCHEDULED: <2019-11-15 fr.>
+- Basic Scaffolding with pure HTML, CSS and JavaScript
+- Use Firebase as back-end and make a small prototype ready
+:Resources:
+- [[https:https://www.w3schools.com/howto/howto_js_form_steps.asp][W3School Multi Stage Form]]
+- [[https:https://dev.to/desoga/connect-registration-form-to-firebase-part-2-53cb][Firebase Database update from HTML form]]
+
+:END:
+ 
+
+
