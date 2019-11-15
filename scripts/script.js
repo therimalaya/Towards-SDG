@@ -19,9 +19,14 @@ var get_img_option = (goal) => {
 var icon_grid = (goals) => Object.values(goals).map(get_img_option).join("")
 
 document.getElementById("icon-grid").innerHTML = `
-  <select class="image-picker show-html" data-limit="2" multiple="multiple">
-    ${icon_grid(goals)}
-  </select>
+  <form id="responseForm">
+    <div class="tab">
+      <select class="image-picker show-html" data-limit="2" multiple="multiple">
+        ${icon_grid(goals)}
+      </select>
+      <button>Next</button>
+    </div>
+  </form>
 `
 
 $('select').imagepicker({

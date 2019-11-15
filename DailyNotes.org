@@ -11,6 +11,9 @@ CLOCK: [2019-11-14 to. 08:46]--[2019-11-14 to. 16:55] =>  8:09
 - High quality Images, Icons and other related materials
 ** TODO Scaffold Basic prototype
 SCHEDULED: <2019-11-15 fr.>
+:LOGBOOK:
+CLOCK: [2019-11-15 Fri 09:10]
+:END:
 - Basic Scaffolding with pure HTML, CSS and JavaScript
 - Use Firebase as back-end and make a small prototype ready
 :Resources:
