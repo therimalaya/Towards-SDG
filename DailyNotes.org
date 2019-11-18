@@ -25,14 +25,25 @@ CLOSED: [2019-11-15 sø. 16:05]
 - [[https:https://www.youtube.com/watch?v=PP4Tr0l08NE][Submit form to Firebase only using javascript from TraversyMedia]]
 :END:
 ** TODO Prepare the whole site in ReactJS
-*** IN_PROGRESS Start with dummy multi-stage form using some tutorial
-*** TODO Use Material-UI Design for the interface
+*** DONE Start with dummy multi-stage form using some tutorial
+CLOSED: [2019-11-18 Mon 16:32]
+- State "DONE"       from "IN_PROGRESS" [2019-11-18 Mon 16:32]
+*** DONE Use Material-UI Design for the interface
+CLOSED: [2019-11-18 Mon 16:32]
+- State "DONE"       from "IN_PROGRESS" [2019-11-18 Mon 16:32]
 *** TODO Link the form to Firebase database
 *** TODO Use Firebase to populate the SDG goals and targets
+*** DONE Add Progress Panel to show the stage of form
+CLOSED: [2019-11-18 Mon 16:34]
+- State "DONE"       from "IN_PROGRESS" [2019-11-18 Mon 16:34]
+*** DONE Image Grid for SDG logo with logic of selecting at most 2 images
+CLOSED: [2019-11-18 Mon 16:33]
+- State "DONE"       from "IN_PROGRESS" [2019-11-18 Mon 16:33]
 :Resources:
 - [[https:https://www.youtube.com/watch?v=zT62eVxShsY][Youtube Tutorial for multi-step form with React]]
 - [[https:https://www.npmjs.com/package/react-image-picker][Use React-Image-Picker to populate the logo using the following json data]]
 - [[https:https://github.com/datapopalliance/SDGs/tree/master/json%2520versions][JSON data for SDG goals, targets and indicators]]
 :END:
-
-
+** DONE Dockerize Application
+CLOSED: [2019-11-18 Mon 16:35]
+- State "DONE"       from "IN_PROGRESS" [2019-11-18 Mon 16:35]
