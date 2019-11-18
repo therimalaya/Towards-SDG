@@ -1,39 +1,19 @@
 import React, { Component } from 'react'
 import Gallery from 'react-grid-gallery'
-import UnSortedGoals from '../Data/SDG-Goals.json'
-
-const numericSort = (a, b) => a - b
-const numnum = (num) => num <= 9 ? "0"+num : num
-const GoalNumber = Object.values(UnSortedGoals).map((x) => x.number).sort(numericSort)
-const Goals = {}
-GoalNumber.forEach((key) => {
-    Goals["goal_"+key] = UnSortedGoals["goal_"+key]
-})
-
-const Images = []
-Object.values(Goals).forEach((goal) => {
-    Images.push({
-        src: "images/Goal-"+numnum(goal.number)+".png",
-        thumbnail: "images/Goal-"+numnum(goal.number)+".png",
-        thumbnailWidth: 150,
-        thumbnailHeight: 150,
-        index: goal.number-1,
-        caption: goal.description,
-        isSelected: false
-    })
-})
 
 export default class SDGImageGrid extends Component {
     constructor(props) {
         super(props);
+        
         this.state = {
-            images: Images,
+            images: this.props.Images,
             selectionEnable: true
          }
          this.onSelectImage = this.onSelectImage.bind(this);
          this.getSelectedGoals = this.getSelectedGoals.bind(this);
     }
     onSelectImage = (index) => {
+        const {updateGoals} = this.props
         const images = this.state.images
         const current_selection = images.filter(x=>x.isSelected)
         const select_new = current_selection.length < 2
@@ -48,9 +28,11 @@ export default class SDGImageGrid extends Component {
         this.setState({
             images: images
         })
+        updateGoals(this.state.images)
     }
     getSelectedGoals = () => Object.values(this.state.images).filter((x) => x.isSelected).map((x) => x.index+1)
     selectedGoals = () => {
+        const { Goals } = this.props
         return(
             <React.Fragment>
             <h3>{this.getSelectedGoals().length > 0 ? "Selected Goals" : ""}</h3>
@@ -59,8 +41,8 @@ export default class SDGImageGrid extends Component {
                 {this.getSelectedGoals().map((goal_id) => {
                     var selected_goal = Goals["goal_"+goal_id]
                     return(
-                        <tr>
-                            <th key={goal_id}><strong>Goal: {goal_id}</strong></th><td><em>{selected_goal.description}</em></td>
+                        <tr key={goal_id}>
+                            <th><strong>Goal: {goal_id}</strong></th><td><em>{selected_goal.description}</em></td>
                         </tr>
                     )
                 })}

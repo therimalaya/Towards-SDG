@@ -4,6 +4,29 @@ import SDGGoalsSelect from '../Components/SDGGoalsSelect'
 import SDGTargets from '../Components/SDGTargets'
 import Summary from '../Components/Summary'
 import Confirmation from '../Components/Confirmation'
+import UnSortedGoals from '../Data/SDG-Goals.json'
+
+const numericSort = (a, b) => a - b
+const numnum = (num) => num <= 9 ? "0"+num : num
+
+const GoalNumber = Object.values(UnSortedGoals).map((x) => x.number).sort(numericSort)
+const Goals = {}
+GoalNumber.forEach((key) => {
+    Goals["goal_"+key] = UnSortedGoals["goal_"+key]
+})
+
+const Images = []
+Object.values(Goals).forEach((goal) => {
+    Images.push({
+        src: "images/Goal-"+numnum(goal.number)+".png",
+        thumbnail: "images/Goal-"+numnum(goal.number)+".png",
+        thumbnailWidth: 150,
+        thumbnailHeight: 150,
+        index: goal.number-1,
+        caption: goal.description,
+        isSelected: false
+    })
+})
 
 export default class FormWrapper extends Component {
     constructor(props) {
@@ -28,6 +51,16 @@ export default class FormWrapper extends Component {
         })
     }
 
+    // Update Goals -------------
+    updateGoals = images => {
+        const image_idx = images
+            .filter(x=>x.isSelected)
+            .map(x=>x.index+1)
+        this.setState({
+            sdgGoals: image_idx
+        })
+    }
+
     render() {
         const { step } = this.props;
         const { firstName, lastName, faculty, researchLink, sdgGoals } = this.state;
@@ -46,7 +79,9 @@ export default class FormWrapper extends Component {
                     <div>
                         <SDGGoalsSelect 
                         values={values}
-                        handleChange={this.handleChange}/>
+                        Goals = {Goals}
+                        Images = {Images}
+                        updateGoals={this.updateGoals}/>
                     </div>
                 )
             case 3:
@@ -54,7 +89,8 @@ export default class FormWrapper extends Component {
                     <div>
                         <SDGTargets 
                         values={values}
-                        handleChange={this.handleChange}/>
+                        Goals={Goals}
+                        Images={Images}/>
                     </div>
                 )
             case 4:
