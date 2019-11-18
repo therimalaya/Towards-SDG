@@ -3,14 +3,14 @@
 #+TODO: TODO(t) IN_PROGRESS | DONE(d!) CANCELED(c@)
 
 * Towards SDG Form Preparation
-** DONE Information Collection
+** DONE Information Collection [0/0]
 CLOSED: [2019-11-14 to. 22:54] SCHEDULED: <2019-11-14 to.>
 :LOGBOOK:
 CLOCK: [2019-11-14 to. 08:46]--[2019-11-14 to. 16:55] =>  8:09
 :END:
 - Collecting information about SDG, Goals and Targets
 - High quality Images, Icons and other related materials
-** IN_PROGRESS Scaffold Basic prototype
+** IN_PROGRESS Scaffold Basic prototype [1/2]
 SCHEDULED: <2019-11-15 fr.>
 :LOGBOOK:
 CLOCK: [2019-11-15 fr. 09:10]--[2019-11-15 fr. 15:30] =>  6:20
@@ -24,26 +24,33 @@ CLOSED: [2019-11-15 sø. 16:05]
 - [[https:https://dev.to/desoga/connect-registration-form-to-firebase-part-2-53cb][Firebase Database update from HTML form]]
 - [[https:https://www.youtube.com/watch?v=PP4Tr0l08NE][Submit form to Firebase only using javascript from TraversyMedia]]
 :END:
-** TODO Prepare the whole site in ReactJS
+** TODO Prepare the whole site in ReactJS [4/6]
 *** DONE Start with dummy multi-stage form using some tutorial
 CLOSED: [2019-11-18 Mon 16:32]
-- State "DONE"       from "IN_PROGRESS" [2019-11-18 Mon 16:32]
 *** DONE Use Material-UI Design for the interface
 CLOSED: [2019-11-18 Mon 16:32]
-- State "DONE"       from "IN_PROGRESS" [2019-11-18 Mon 16:32]
 *** TODO Link the form to Firebase database
 *** TODO Use Firebase to populate the SDG goals and targets
 *** DONE Add Progress Panel to show the stage of form
 CLOSED: [2019-11-18 Mon 16:34]
-- State "DONE"       from "IN_PROGRESS" [2019-11-18 Mon 16:34]
 *** DONE Image Grid for SDG logo with logic of selecting at most 2 images
 CLOSED: [2019-11-18 Mon 16:33]
-- State "DONE"       from "IN_PROGRESS" [2019-11-18 Mon 16:33]
 :Resources:
 - [[https:https://www.youtube.com/watch?v=zT62eVxShsY][Youtube Tutorial for multi-step form with React]]
 - [[https:https://www.npmjs.com/package/react-image-picker][Use React-Image-Picker to populate the logo using the following json data]]
 - [[https:https://github.com/datapopalliance/SDGs/tree/master/json%2520versions][JSON data for SDG goals, targets and indicators]]
+- [[https:https://upmostly.com/tutorials/react-onclick-event-handling-with-examples][Nice tutorial on the differences between class and functional components in React]]
+- [[https:https://reactjs.org/docs/hooks-state.html][Another tutorial on the different Hooks (state and props) in React]]
 :END:
-** DONE Dockerize Application
+** DONE Dockerize Application [0/0]
 CLOSED: [2019-11-18 Mon 16:35]
-- State "DONE"       from "IN_PROGRESS" [2019-11-18 Mon 16:35]
+** IN_PROGRESS Stages of Development [2/7]
+*** DONE Personal Details
+CLOSED: [2019-11-18 Mon 16:32]
+*** DONE SDG Goals Selection
+CLOSED: [2019-11-18 Mon 16:33]
+*** IN_PROGRESS SDG Targets Selection
+*** TODO Specify Cause, Effect and Interaction of the selected Targets
+*** TODO Display Summary
+*** TODO Submit to Firebase
+*** TODO Comfirmation Page (Back to Home)
