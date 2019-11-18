@@ -30,8 +30,8 @@ export default class FormWrapper extends Component {
 
     render() {
         const { step } = this.props;
-        const { firstName, lastName, faculty, sdgGoals } = this.state;
-        const values = { firstName, lastName, faculty, sdgGoals }
+        const { firstName, lastName, faculty, researchLink, sdgGoals } = this.state;
+        const values = { firstName, lastName, faculty, researchLink, sdgGoals }
         switch (step) {
             case 1:
                 return(

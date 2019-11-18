@@ -14,9 +14,8 @@ export default class SDGGoalsSelect extends Component {
     render() {
         return (
             <div>
-                <h2>Hi!, I am Goals Select</h2>
-                <p>I have a child too.</p>
-                <SDGImageGrid />
+                {/* <h2>Select SDG Goals (At most 2)</h2> */}
+                <div style={{width: '100%'}}><SDGImageGrid /></div>
             </div>
         )
     }
