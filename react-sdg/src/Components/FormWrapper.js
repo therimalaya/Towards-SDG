@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import PersonalDetails from '../Components/PersonalDetails'
-import SDGGoalsSelect from '../Components/SDGGoalsSelect'
-import SDGTargets from '../Components/SDGTargets'
-import Summary from '../Components/Summary'
-import Confirmation from '../Components/Confirmation'
+import PersonalDetails from './PersonalDetails'
+import SDGGoalsSelect from './SDGGoalsSelect'
+import SDGTargets from './SDGTargets'
+import Summary from './Summary'
+import Confirmation from './Confirmation'
 import UnSortedGoals from '../Data/SDG-Goals.json'
 
 const numericSort = (a, b) => a - b

@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 
-export default class Confirmation extends Component {
+export default class Interaction extends Component {
     render() {
         return (
             <div>
-                <h1>Finally, Confirmation.</h1>
+                <h1>I am Interaction</h1>
             </div>
         )
     }
