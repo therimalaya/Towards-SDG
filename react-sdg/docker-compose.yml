@@ -2,14 +2,13 @@ version: '3.7'
 
 services:
 
-  sample:
+  research:
     container_name: sdg-goals
     build:
       context: .
       dockerfile: Dockerfile
     volumes:
       - '.:/app'
-      - '/app/node_modules'
     ports:
       - '3001:3000'
     environment:

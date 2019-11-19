@@ -3,9 +3,11 @@ import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Link from "@material-ui/core/Link";
-import { AppBar, Toolbar, Button, Paper, ButtonGroup } from "@material-ui/core";
+import { AppBar, Toolbar, Button, Paper, ButtonGroup, Hidden } from "@material-ui/core";
+import { makeStyles } from '@material-ui/core/styles'
 import FormWrapper from "./Components/FormWrapper";
 import MyStepper from "./Components/Stepper";
+
 
 function Copyright() {
   return (
@@ -23,7 +25,7 @@ function Copyright() {
 function MyAppBar() {
   return (
     <AppBar position="static">
-      <Toolbar variant="dense">
+      <Toolbar variant="regular">
         <Typography variant="h6" color="inherit">
           NMBU towards Sustainable Development Goal
         </Typography>
@@ -65,7 +67,7 @@ export class NavButton extends Component {
   }
 }
 
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -89,25 +91,28 @@ export default class App extends Component {
     });
   };
 
+
   render() {
-    const minHeight = "350px";
+    const minHeight = "80vh";
     return (
       <React.Fragment>
         <MyAppBar />
-        <Container maxWidth="md" fixed={true}>
-          <Paper style={{ margin: 16, padding: 16 }}>
-            <Box my={4} minHeight={minHeight}>
-              <Typography variant="h4" component="h1" gutterBottom>
+        <Container xs={12} sm={6} fixed={true}>
+          <Paper>
+            <Box my={6} p={2} minHeight={minHeight} className="main-container">
+              {/* <Typography variant="h4" component="h1" gutterBottom>
                 NMBU towards SDG
-              </Typography>
+              </Typography> */}
               <FormWrapper step={this.state.step}/>
-            </Box>
-            <MyStepper Step={this.state.step} />
+            <Hidden smDown>
+              <MyStepper Step={this.state.step} />
+            </Hidden>
             <NavButton
               next={this.nextStep}
               prev={this.prevStep}
               step={this.state.step}
             />
+            </Box>
           </Paper>
           <Copyright />
         </Container>
@@ -115,3 +120,5 @@ export default class App extends Component {
     );
   }
 }
+
+export default App

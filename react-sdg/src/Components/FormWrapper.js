@@ -20,8 +20,8 @@ Object.values(Goals).forEach((goal) => {
     Images.push({
         src: "images/Goal-"+numnum(goal.number)+".png",
         thumbnail: "images/Goal-"+numnum(goal.number)+".png",
-        thumbnailWidth: 150,
-        thumbnailHeight: 150,
+        thumbnailWidth: 200,
+        thumbnailHeight: 200,
         index: goal.number-1,
         caption: goal.description,
         isSelected: false
@@ -38,7 +38,7 @@ export default class FormWrapper extends Component {
             researchLink: '',
             coauthorFaculties: [],
             sdgGoals: [],
-            sdgSubGoals: [],
+            sdgTargets: [],
             sdgInteraction: ''
         }
     }
@@ -63,7 +63,7 @@ export default class FormWrapper extends Component {
 
     render() {
         const { step } = this.props;
-        const { firstName, lastName, faculty, researchLink, sdgGoals } = this.state;
+        const { firstName, lastName, faculty, researchLink, sdgGoals, sdgTargets } = this.state;
         const values = { firstName, lastName, faculty, researchLink, sdgGoals }
         switch (step) {
             case 1:
@@ -88,9 +88,10 @@ export default class FormWrapper extends Component {
                 return(
                     <div>
                         <SDGTargets 
-                        values={values}
                         Goals={Goals}
-                        Images={Images}/>
+                        Images={Images}
+                        SelectedGoals={values.sdgGoals}
+                        handleChange={this.handleChange}/>
                     </div>
                 )
             case 4:

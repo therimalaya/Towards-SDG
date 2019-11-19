@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { TextField, InputLabel, Select, MenuItem, FormControl } from '@material-ui/core'
+import { TextField, InputLabel, Select, MenuItem, FormControl, Grid } from '@material-ui/core'
 
 export class Faculty extends Component {
     render() {
@@ -17,7 +17,7 @@ export class Faculty extends Component {
         <FormControl variant="outlined" fullWidth>
             <InputLabel htmlFor="faculty">Faculty</InputLabel>
             <Select
-                style={{margin: 8, width: "98%" }}
+                style={{marginLeft: 8, width: "100%"}}
                 placeholder="Faculty"
                 value={faculty}
                 onChange={handleChange}
@@ -47,27 +47,36 @@ export default class PersonalDetails extends Component {
         const { values, handleChange } = this.props
         return (
             <div>
-                <h2>Personal Details</h2>
+                {/* <h2>Personal Details</h2> */}
+                <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            fullWidth={true}
+                            style={{ margin: 8}}
+                            placeholder="First Name"
+                            variant="outlined"
+                            id="firstName"
+                            label="First Name"
+                            value={values.firstName}
+                            onChange={handleChange('firstName')}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            fullWidth={true}
+                            style={{ margin: 8}}
+                            placeholder="Last Name"
+                            variant="outlined"
+                            id="lastName"
+                            label="Last Name"
+                            value={values.lastName}
+                            onChange={handleChange('lastName')}
+                        />
+                    </Grid>
+                </Grid>
                 <TextField
-                    style={{ margin: 8, width: '48%'}}
-                    placeholder="First Name"
-                    variant="outlined"
-                    id="firstName"
-                    label="First Name"
-                    value={values.firstName}
-                    onChange={handleChange('firstName')}
-                />
-                <TextField
-                    style={{ margin: 8, width: '48%'}}
-                    placeholder="Last Name"
-                    variant="outlined"
-                    id="lastName"
-                    label="Last Name"
-                    value={values.lastName}
-                    onChange={handleChange('lastName')}
-                />
-                <TextField
-                    style={{ margin: 8, width: "98%" }}
+                    fullWidth={true}
+                    style={{ margin: 8}}
                     placeholder="Research link (e.g. DOI/ Brage url/ Christin url etc."
                     variant="outlined"
                     id="research-link"

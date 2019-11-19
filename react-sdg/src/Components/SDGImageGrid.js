@@ -35,7 +35,7 @@ export default class SDGImageGrid extends Component {
         const { Goals } = this.props
         return(
             <React.Fragment>
-            <h3>{this.getSelectedGoals().length > 0 ? "Selected Goals" : ""}</h3>
+            {/* <h3>{this.getSelectedGoals().length > 0 ? "Selected Goals" : ""}</h3> */}
             <table width="100%">
                 <tbody>
                 {this.getSelectedGoals().map((goal_id) => {
@@ -66,7 +66,7 @@ export default class SDGImageGrid extends Component {
                 onSelectImage={this.onSelectImage}
                 onClickThumbnail={this.onSelectImage}
                 enableLightbox={false}
-                rowHeight={96}/>
+                rowHeight={120}/>
             {this.selectedGoals()}
             </div>
         )
