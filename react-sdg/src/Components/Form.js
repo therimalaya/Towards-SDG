@@ -11,9 +11,9 @@ export default class Form extends Component {
         super(props)
         this.state = {
             Name: 'Raju',
-            Faculty: '',
-            Research: {id: '', title: '', url: ''},
-            Coauthors: {Faculty: []}
+            Faculty: 'kbm',
+            Research: {title: 'Simrel', url: 'http://simulatr.github.io'},
+            Coauthors: {Faculty: ['kbm', 'mina']}
         }
     }
 
@@ -35,18 +35,16 @@ export default class Form extends Component {
 
     /// HAVING PROBLEM ____ FIX THIS TONIGHT -----
     updateResearch = input => e => {
-        this.setState((prevState, e)  => ({
-            Research: {
-                ...prevState.Research,
-                [input]: "Something"
-            }
-        }))
+      this.setState({ Research: { ...this.state.Research, [input]: e.target.value} });
     }
 
     render() {
         const {step} = this.props
         const { Name, Faculty, Research, Coauthors } = this.state
         const values = { Name, Faculty, Research, Coauthors }
+        const { goals, targets } = this.props
+        const { updateGoals, updateTargets } = this.props
+        const selectedGoals = goals.filter(goal => goal.isSelected)
 
         switch (step) {
             case 1:
@@ -62,13 +60,18 @@ export default class Form extends Component {
             case 2:
                 return(
                     <div>
-                        <Goals />
+                        <Goals 
+                            goals={goals}
+                            updateGoals={updateGoals}/>
                     </div>
                 )
             case 3:
                 return(
                     <div>
-                        <Targets />
+                        <Targets 
+                            selectedGoals={selectedGoals}
+                            targets={targets}
+                            updateTargets={updateTargets}/>
                     </div>
                 )
             case 4:

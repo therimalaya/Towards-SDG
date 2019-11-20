@@ -9,8 +9,12 @@ export default class Personal extends Component {
         return (
             <div>
                 <h1>I am Personal {values.Name}</h1>
-                <Name updateInput={updateInput('Name')} />
-                <Research updateResearch={updateResearch}/>
+                <Name
+                  updateInput={updateInput('Name')}
+                  values={values}/>
+                <Research
+                  updateResearch={updateResearch}
+                  values={values}/>
                 <Faculty
                     multiple={false}
                     selectedFaculty={values.Faculty}

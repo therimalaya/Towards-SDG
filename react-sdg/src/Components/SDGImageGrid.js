@@ -4,7 +4,7 @@ import Gallery from 'react-grid-gallery'
 export default class SDGImageGrid extends Component {
     constructor(props) {
         super(props);
-        
+
         this.state = {
             images: this.props.Images,
             selectionEnable: true
@@ -28,9 +28,9 @@ export default class SDGImageGrid extends Component {
         this.setState({
             images: images
         })
-        updateGoals(this.state.images)
+        updateGoals(this.getSelectedGoals())
     }
-    getSelectedGoals = () => Object.values(this.state.images).filter((x) => x.isSelected).map((x) => x.index+1)
+    getSelectedGoals = () => this.state.images.filter(x => x.isSelected).map(x => x.index+1)
     selectedGoals = () => {
         const { Goals } = this.props
         return(
@@ -39,10 +39,11 @@ export default class SDGImageGrid extends Component {
             <table width="100%">
                 <tbody>
                 {this.getSelectedGoals().map((goal_id) => {
-                    var selected_goal = Goals["goal_"+goal_id]
+                    var selected_goal = Goals.filter(x=>x.goal===goal_id)
+                    /* Goals.filter(x=>x.goal===goal_id).map(x=>x.title) */
                     return(
                         <tr key={goal_id}>
-                            <th><strong>Goal: {goal_id}</strong></th><td><em>{selected_goal.description}</em></td>
+                            <th><strong>Goal: {goal_id}</strong></th><td><em>{selected_goal.map(x=>x.title).toString()}</em></td>
                         </tr>
                     )
                 })}
@@ -60,7 +61,7 @@ export default class SDGImageGrid extends Component {
                 width: "100%",
                 border: "1px solid #ddd",
                 overflow: "auto"}}>
-            <Gallery 
+            <Gallery
                 enableImageSelection={this.state.selectionEnable}
                 images={this.state.images}
                 onSelectImage={this.onSelectImage}

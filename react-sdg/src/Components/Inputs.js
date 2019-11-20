@@ -27,10 +27,11 @@ const useStyles = makeStyles(theme => ({
 
 export function Name(props) {
   const classes = useStyles();
-  const { updateInput } = props
+  const { updateInput, values } = props
   return (
     <FormControl variant="outlined" className={classes.formControl} fullWidth >
       <TextField
+        value={values.Name}
         id="name"
         placeholder="First and Last Name"
         className={classes.textField}
@@ -44,12 +45,13 @@ export function Name(props) {
 
 export function Research(props) {
   const classes = useStyles()
-  const { updateResearch } = props
+  const { updateResearch, values } = props
 
   return (
     <React.Fragment>
       <FormControl variant="outlined" className={classes.formControl} fullWidth >
       <TextField
+        value={values.Research.title}
         id="research-title"
         placeholder="Research Title"
         className={classes.textField}
@@ -60,6 +62,7 @@ export function Research(props) {
     </FormControl>
     <FormControl variant="outlined" className={classes.formControl} fullWidth >
       <TextField
+        value={values.Research.url}
         id="research-url"
         placeholder="Research URL/ Doi/ Links"
         className={classes.textField}
@@ -100,7 +103,7 @@ export function Faculty(props) {
           labelWidth={labelWidth}
           id="faculty-checkbox"
           multiple={multiple}
-          value={Faculty}
+          value={selectedFaculty}
           onChange={handleChange}
           renderValue={selected => (
             <div className={classes.chips}>
@@ -128,60 +131,3 @@ export function Faculty(props) {
 }
 
 
-// export default class Faculty extends Component {
-//     render() {
-//         const { multiple, faculty, updateInput, inputID } = this.props
-
-//         return (
-//             <FormControl variant="outlined" fullWidth>
-//                 <InputLabel htmlFor="faculty">Faculty</InputLabel>
-//                 <Select
-//                     multiple={multiple ? true : false}
-//                     style={{marginLeft: 8, width: "100%"}}
-//                     placeholder="Faculty"
-//                     value={faculty}
-//                     onChange={updateInput(inputID)}
-//                     inputProps={{
-//                         name: 'faculty',
-//                         id: 'faculty',
-//                     }}>
-//                     <MenuItem value=""><em>None</em></MenuItem>
-//                     {FacultyConfig.map((option) => {
-//                         return(
-//                             <MenuItem value={option.value} key={option.value}>{option.label}</MenuItem>
-//                         )
-//                     })}
-//                 </Select>
-//             </FormControl>
-//         )
-//     }
-// }
-
-/* export default class Faculty extends Component {
-    render() {
-        const { multiple, faculty, updateInput, config, inputID } = this.props
-
-        return (
-        <FormControl variant="outlined" fullWidth>
-            <InputLabel htmlFor="faculty">Faculty</InputLabel>
-            <Select
-                multiple={multiple}
-                style={{marginLeft: 8, width: "100%"}}
-                placeholder="Faculty"
-                value={faculty}
-                onChange={updateInput(inputID)}
-                inputProps={{
-                    name: 'faculty',
-                    id: 'faculty',
-                  }}>
-                <MenuItem value=""><em>None</em></MenuItem>
-                {config.map((option) => {
-                    return(
-                        <MenuItem value={option.value} key={option.value}>{option.label}</MenuItem>
-                    )
-                })}
-            </Select>
-        </FormControl>
-        )
-    }
-} */

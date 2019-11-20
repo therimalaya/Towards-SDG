@@ -12,22 +12,24 @@ const numnum = (num) => num <= 9 ? "0"+num : num
 Goals.forEach(Goal=>{
   Goal['isCause'] =  false
   Goal['isEffect'] =  false
+  Goal['isSelected'] =  false
   Goal['image_src'] = `images/Goal-${numnum(Goal.goal)}.png`
 })
 Targets.forEach(Target=>{
   Target['isCause'] =  false
   Target['isEffect'] =  false
+  Target['isSelected'] =  false
 })
 
 // Configuration of Different Steps for MySteppter
 const stepConfig = [
-    {'label': 'Personal Details', 'key': 1}, 
-    {'label': 'Goals', 'key': 2}, 
-    {'label': 'Targets', 'key': 3}, 
-    {'label': 'Interaction', 'key': 4}, 
-    {'label': 'Summary', 'key': 5}, 
-    {'label': 'Confirmation', 'key': 6}, 
-  ]
+  {'label': 'Personal Details', 'key': 1}, 
+  {'label': 'Goals', 'key': 2}, 
+  {'label': 'Targets', 'key': 3}, 
+  {'label': 'Interaction', 'key': 4}, 
+  {'label': 'Summary', 'key': 5}, 
+  {'label': 'Confirmation', 'key': 6}, 
+]
 
 export default class App extends Component {
   constructor(props) {
@@ -57,14 +59,32 @@ export default class App extends Component {
     });
   };
 
-  
+  // Update Goals --------
+  updateGoals = (selected_goals) => {
+    this.setState({
+      Goals: Goals
+        .forEach(goal=>selected_goals
+          .indexOf(goal.goal)>-1 ? 
+            goal.isSelected = true : 
+            goal.isSelected=false)
+    })
+  }
+
+  // Update Goals --------
+  updateTargets = () => {
+    // Write Something
+  }
+
   render() {
     return (
       <div>
         <Form
           step={this.state.step}
-          Goals={Goals}
-          Targets={Targets}/>
+          goals={Goals}
+          targets={Targets}
+          updateGoals={this.updateGoals}
+          updateTargets={this.updateTargets}
+        />
         <MyStepper
           step={this.state.step}
           stepConfig={stepConfig}/>
