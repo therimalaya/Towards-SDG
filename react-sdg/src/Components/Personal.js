@@ -1,17 +1,6 @@
 import React, { Component } from 'react'
 import Faculty from './Faculty'
 
-const FacultyConfig = [
-    { value: "biosciences", label: "Biosciences" },
-    { value: "kbm", label: "Chemistry, Biotechnology and Food Science" },
-    { value: "mina", label:
-     "Environmental Sciences and Natural Resource Management" },
-    { value: "landsam", label: "Landscape and Society" },
-    { value: "economics", label: "School of Economics and Business" },
-    { value: "realtek", label: "Science and Technology" },
-    { value: "vet", label: "Veterinary Medicine" }
-]
-
 export default class Personal extends Component {
     
     render() {
@@ -22,16 +11,14 @@ export default class Personal extends Component {
                 <h1>I am Personal {values.Name}</h1>
                 <Faculty
                     multiple={false}
-                    faculty={values.faculty}
-                    config={FacultyConfig}
-                    updateInput={updateInput}
-                    inputID={'Faculty'}/>
-{/*                 <Faculty
+                    selectedFaculty={values.Faculty}
+                    updateInput={updateInput('Faculty')}
+                    FacultyTitle="Faculty"/>
+                <Faculty
                     multiple={true}
-                    faculty={values.Coauthors.Faculty}
-                    config={FacultyConfig}
+                    selectedFaculty={values.Coauthors.Faculty}
                     updateInput={updateCoauthor}
-                    inputID={'Faculty'}/> */}
+                    FacultyTitle="Coauthor's Faculty"/>
             </div>
         )
     }
