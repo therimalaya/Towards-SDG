@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Faculty from './Faculty'
+import {Faculty, Name, Research} from './Inputs'
 
 export default class Personal extends Component {
     
@@ -9,6 +9,8 @@ export default class Personal extends Component {
         return (
             <div>
                 <h1>I am Personal {values.Name}</h1>
+                <Name updateInput={updateInput('Name')} />
+                <Research updateResearch={updateResearch}/>
                 <Faculty
                     multiple={false}
                     selectedFaculty={values.Faculty}

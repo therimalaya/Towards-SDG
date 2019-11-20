@@ -1,5 +1,5 @@
 import React from 'react'
-import { InputLabel, Select, MenuItem, FormControl, Checkbox, Chip } from '@material-ui/core'
+import { InputLabel, Select, MenuItem, FormControl, Checkbox, Chip, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 const FacultyConfig = {
@@ -13,20 +13,68 @@ const FacultyConfig = {
 }
 
 const useStyles = makeStyles(theme => ({
-    formControl: {
-      margin: theme.spacing(1),
-    },
-    chips: {
-      display: 'flex',
-      flexWrap: 'wrap',
-    },
-    chip: {
-      margin: 2,
-    },
-  }));
+  formControl: {
+    margin: theme.spacing(1),
+  },
+  chips: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  chip: {
+    margin: 2,
+  },
+}));
+
+export function Name(props) {
+  const classes = useStyles();
+  const { updateInput } = props
+  return (
+    <FormControl variant="outlined" className={classes.formControl} fullWidth >
+      <TextField
+        id="name"
+        placeholder="First and Last Name"
+        className={classes.textField}
+        label="First and Last Name"
+        variant="outlined"
+        onChange={updateInput}
+      />
+    </FormControl>
+  )
+}
+
+export function Research(props) {
+  const classes = useStyles()
+  const { updateResearch } = props
+
+  return (
+    <React.Fragment>
+      <FormControl variant="outlined" className={classes.formControl} fullWidth >
+      <TextField
+        id="research-title"
+        placeholder="Research Title"
+        className={classes.textField}
+        label="Research Title"
+        variant="outlined"
+        onChange={updateResearch('title')}
+      />
+    </FormControl>
+    <FormControl variant="outlined" className={classes.formControl} fullWidth >
+      <TextField
+        id="research-url"
+        placeholder="Research URL/ Doi/ Links"
+        className={classes.textField}
+        label="Research URL"
+        variant="outlined"
+        onChange={updateResearch('url')}
+      />
+    </FormControl>
+    </React.Fragment>
+  )
+}
 
 
-export default function Faculty(props) {
+
+export function Faculty(props) {
   const classes = useStyles();
   const { multiple, updateInput, FacultyTitle } = props
   const { selectedFaculty } = props
@@ -54,19 +102,19 @@ export default function Faculty(props) {
           multiple={multiple}
           value={Faculty}
           onChange={handleChange}
-          renderValue={selected=>(
+          renderValue={selected => (
             <div className={classes.chips}>
-              {multiple ? 
-                selected.map(value => <Chip key={value} 
-                  label={FacultyConfig[value]} 
-                  className={classes.chip} />) : 
-                <Chip key={selected} 
-                  label={FacultyConfig[selected]} 
+              {multiple ?
+                selected.map(value => <Chip key={value}
+                  label={FacultyConfig[value]}
+                  className={classes.chip} />) :
+                <Chip key={selected}
+                  label={FacultyConfig[selected]}
                   className={classes.chip} />}
             </div>
           )}>
           {Object.keys(FacultyConfig).map(faculty => {
-            return(
+            return (
               <MenuItem key={faculty} value={faculty}>
                 {multiple ? <Checkbox checked={selectedFaculty.indexOf(faculty) > -1} /> : null}
                 {FacultyConfig[faculty]}
@@ -75,7 +123,7 @@ export default function Faculty(props) {
           })}
         </Select>
       </FormControl>
-      </div>
+    </div>
   );
 }
 
@@ -112,7 +160,7 @@ export default function Faculty(props) {
 /* export default class Faculty extends Component {
     render() {
         const { multiple, faculty, updateInput, config, inputID } = this.props
-        
+
         return (
         <FormControl variant="outlined" fullWidth>
             <InputLabel htmlFor="faculty">Faculty</InputLabel>

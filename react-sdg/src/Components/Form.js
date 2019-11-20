@@ -13,7 +13,7 @@ export default class Form extends Component {
             Name: 'Raju',
             Faculty: '',
             Research: {id: '', title: '', url: ''},
-            Coauthors: {id: [], Faculty: []}
+            Coauthors: {Faculty: []}
         }
     }
 
@@ -31,22 +31,16 @@ export default class Form extends Component {
                 Faculty: e.target.value
             }
         })
-        // var selected_options = e.target.options.filter(x=>x.selected)
-        // this.setState({
-        //       Coauthors: {
-        //         //   id: selected_options.map(x=>x.id),
-        //           Faculty: selected_options.map(x=>x.value)
-        //       }
-        // })
     }
-    // Change Handling -------
+
+    /// HAVING PROBLEM ____ FIX THIS TONIGHT -----
     updateResearch = input => e => {
-        // Track the form data here
-        this.setState({
+        this.setState((prevState, e)  => ({
             Research: {
-                [input]: e.target.value
+                ...prevState.Research,
+                [input]: "Something"
             }
-        })
+        }))
     }
 
     render() {
