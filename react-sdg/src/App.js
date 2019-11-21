@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import Form from "./Components/Form"
 import Goals from './Data/goals.json'
-import AllTargets from './Data/targets.json'
+import Targets from './Data/targets.json'
 import MyStepper from "./Components/Stepper";
 import NavButton from './Components/NavButton'
 
-// Filter all Targets ending with alphabetic character
-const Targets = AllTargets.filter(Target => Target.id.match("\\d$"))
 const numnum = (num) => num <= 9 ? "0"+num : num
 
 Goals.forEach(Goal=>{
@@ -15,6 +13,7 @@ Goals.forEach(Goal=>{
   Goal['isSelected'] =  false
   Goal['image_src'] = `images/Goal-${numnum(Goal.goal)}.png`
 })
+
 Targets.forEach(Target=>{
   Target['isCause'] =  false
   Target['isEffect'] =  false
@@ -31,13 +30,14 @@ const stepConfig = [
   {'label': 'Confirmation', 'key': 6}, 
 ]
 
+
 export default class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
       step: 1,
       Goals: Goals,
-      Targets: Targets
+      Targets: Targets.filter(Target => Target.id.match("\\d$"))
     }
   }
 
@@ -61,27 +61,40 @@ export default class App extends Component {
 
   // Update Goals --------
   updateGoals = (selected_goals) => {
-    this.setState({
-      Goals: Goals
-        .forEach(goal=>selected_goals
-          .indexOf(goal.goal)>-1 ? 
-            goal.isSelected = true : 
-            goal.isSelected=false)
-    })
+    var newGoal = this.state.Goals
+        .map(goal=>{
+          if (selected_goals.indexOf(goal.goal) > -1) {
+            goal.isSelected = true 
+          } else {
+            goal.isSelected = false
+          }
+          return goal;
+        })
+    this.setState({Goals: newGoal})
   }
 
   // Update Goals --------
-  updateTargets = () => {
-    // Write Something
-  }
+  updateTargets = (selected_targets) => {
+    var selected_target_idx = selected_targets.currentTarget.value
+    var newTarget = this.state.Targets
+      .map(target => {
+        if (selected_target_idx.indexOf(target.id)>-1) {
+          target.isSelected = true
+        } else {
+          target.isSelected = false
+        }
+        return target
+      })
+    this.setState({Targets: newTarget})
+}
 
   render() {
     return (
       <div>
         <Form
           step={this.state.step}
-          goals={Goals}
-          targets={Targets}
+          goals={this.state.Goals}
+          targets={this.state.Targets}
           updateGoals={this.updateGoals}
           updateTargets={this.updateTargets}
         />

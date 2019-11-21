@@ -59,11 +59,10 @@ TabPanel.propTypes = {
 
 const TargetTab = (props) => {
     const classes = useStyles();
-    const { CurrentGoals, value, handleChange, Images } = props
-    const getImgSrc = (Goal) => {
-        const src = Images.filter(x=>x.index===Goal.number-1).map(x=>x.src).toString()
+    const { goalImages, value, handleChange } = props
+    const getImgSrc = (goalImage) => {
         return(
-            <img src={src} alt="" width="100px" height="100px"/>
+            <img src={goalImage} alt="" width="100px" height="100px"/>
         )
     }
     return(
@@ -75,11 +74,11 @@ const TargetTab = (props) => {
             orientation="vertical"
             className={classes.tabs}>
                 {
-                    CurrentGoals.map((Goal, idx)=>{
+                    goalImages.map((goalImage, idx)=>{
                         return(
                             <Tab 
                                 key={idx}
-                                icon={getImgSrc(Goal)} 
+                                icon={getImgSrc(goalImage)} 
                                 id={"full-width-tab-"+idx} 
                                 area-controls={"full-width-tabpanel-"+idx} />
                         )
@@ -92,27 +91,27 @@ const TargetTab = (props) => {
 
 const SelectTarget = (props) => {
     const classes = useStyles()
-    const { Goal } = props
-    const targets = Object.values(Goal.targets).filter(x=>x.slug.match("\\d$"))
+    const { Goal, updateTargets } = props
+    // const targets = Object.values(Goal.targets).filter(x=>x.slug.match("\\d$"))
 
     return (
         <div style={{minHeight: "max-content"}}>
         {
-            targets.map((target, idx)=>{
+            Goal.targets.map((target, idx)=>{
                 return(
                     <React.Fragment key={idx}>
                         <Typography className={classes.targetDescription}>
-                        <Button 
-                            value={target.number}
+                        <Button
+                            value={target.id}
                             key={idx}
                             variant="contained" 
                             color="primary"
-                            onClick={props.handleChange('sdgTargets')}
+                            onClick={updateTargets}
                             className={classes.button}>
                             
-                            {target.number}
+                            {target.id}
                         </Button>
-                        <span>{target.description}</span>
+                        <span>{target.title}</span>
                         </Typography>
                     </React.Fragment>
                 )
@@ -123,10 +122,10 @@ const SelectTarget = (props) => {
 }
 
 
-export default function TargetTabPanel() {
+export default function TargetTabPanel(props) {
     const classes = useStyles();
-    const { Goals, SelectedGoals, Images } = props
-    const CurrentGoals = Object.values(Goals).filter(x=>SelectedGoals.includes(Number(x.number)))
+    const { updateTargets, targets, goals } = props
+    goals.forEach(goal=>goal['targets']=targets.filter(x=>x.goal===goal.goal))
     const [value, setValue] = useState(0);
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -134,17 +133,17 @@ export default function TargetTabPanel() {
     return (
         <div className={classes.root}>
         <TargetTab
-            Images={Images}
-            CurrentGoals={CurrentGoals} 
             value={value}
+            goalImages={goals.map(x=>x["image_src"])}
             handleChange={handleChange}/>
         {
-            CurrentGoals.map((Goal, idx)=>{
+            goals.map((goal, idx)=>{
                 return(
                     <TabPanel value={value} index={idx} key={idx}>
                         <SelectTarget 
-                        Goal={Goal}
-                        handleChange={props.handleChange} />
+                        Goal={goal}
+                        updateTargets={updateTargets} 
+                        />
                     </TabPanel>
                 )
             })

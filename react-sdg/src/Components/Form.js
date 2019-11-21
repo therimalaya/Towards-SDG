@@ -42,8 +42,8 @@ export default class Form extends Component {
         const {step} = this.props
         const { Name, Faculty, Research, Coauthors } = this.state
         const values = { Name, Faculty, Research, Coauthors }
-        const { goals, targets } = this.props
-        const { updateGoals, updateTargets } = this.props
+
+        const { goals, targets, updateGoals, updateTargets } = this.props
         const selectedGoals = goals.filter(goal => goal.isSelected)
 
         switch (step) {

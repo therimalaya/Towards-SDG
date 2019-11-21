@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './TargetTabPanel'
+import TargetTabPanel from './TargetTabPanel'
 
 export default class Targets extends Component {
 
@@ -10,7 +10,7 @@ export default class Targets extends Component {
             <div>
                 <h2>This is SDG Targes.</h2>
                 <TargetTabPanel
-                handleChange={updateTargets}
+                updateTargets={updateTargets}
                 targets={selectedTargets}
                 goals={selectedGoals}/>
             </div>
