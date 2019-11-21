@@ -1,9 +1,7 @@
-import React, { Component, useState } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types';
-import { FormControl, Tabs, Tab, Typography, Box, Button, Hidden } from '@material-ui/core'
+import { Tabs, Tab, Typography, Box, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import theme from '../theme'
-import { borderBottom } from '@material-ui/system';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -92,7 +90,6 @@ const TargetTab = (props) => {
 const SelectTarget = (props) => {
     const classes = useStyles()
     const { Goal, updateTargets } = props
-    // const targets = Object.values(Goal.targets).filter(x=>x.slug.match("\\d$"))
 
     return (
         <div style={{minHeight: "max-content"}}>
@@ -105,7 +102,7 @@ const SelectTarget = (props) => {
                             value={target.id}
                             key={idx}
                             variant="contained" 
-                            color="primary"
+                            color={target.color}
                             onClick={updateTargets}
                             className={classes.button}>
                             

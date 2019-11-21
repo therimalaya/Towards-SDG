@@ -18,6 +18,7 @@ Targets.forEach(Target=>{
   Target['isCause'] =  false
   Target['isEffect'] =  false
   Target['isSelected'] =  false
+  Target['color'] = "primary"
 })
 
 // Configuration of Different Steps for MySteppter
@@ -80,8 +81,10 @@ export default class App extends Component {
       .map(target => {
         if (selected_target_idx.indexOf(target.id)>-1) {
           target.isSelected = true
+          target.color = "secondary"
         } else {
           target.isSelected = false
+          target.color = "primary"
         }
         return target
       })
