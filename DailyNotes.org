@@ -47,9 +47,17 @@ CLOSED: [2019-11-18 Mon 16:35]
 ** IN_PROGRESS Stages of Development [2/7]
 *** DONE Personal Details
 CLOSED: [2019-11-18 Mon 16:32]
+:LOGBOOK:
+CLOCK: [2019-11-19 Thu 08:45]--[2019-11-19 Thu 15:36] =>  6:51
+:END:
 *** DONE SDG Goals Selection
 CLOSED: [2019-11-18 Mon 16:33]
+:LOGBOOK:
+CLOCK: [2019-11-20 Thu 09:05]--[2019-11-20 Thu 15:46] =>  6:41
+:END:
 *** IN_PROGRESS SDG Targets Selection
+- Style of the button mapped with state but selecting one target disables target from another goals
+- Targets needs to be selected per goal
 *** TODO Specify Cause, Effect and Interaction of the selected Targets
 *** TODO Display Summary
 *** TODO Submit to Firebase
