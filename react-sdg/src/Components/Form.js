@@ -77,7 +77,7 @@ export default class Form extends Component {
             case 4:
                 return(
                     <div>
-                        <Interaction />
+                        <Interaction selectedGoals={selectedGoals} />
                     </div>
                 )
             case 5:

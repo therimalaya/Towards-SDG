@@ -4,6 +4,7 @@ import Goals from './Data/goals.json'
 import Targets from './Data/targets.json'
 import MyStepper from "./Components/Stepper";
 import NavButton from './Components/NavButton'
+import { Paper, Container, AppBar, Typography, Toolbar, Box } from '@material-ui/core'
 
 const numnum = (num) => num <= 9 ? "0"+num : num
 
@@ -30,6 +31,25 @@ const stepConfig = [
   {'label': 'Summary', 'key': 5}, 
   {'label': 'Confirmation', 'key': 6}, 
 ]
+
+function MyAppBar(props) {
+  return (
+    <AppBar position="static">
+      <Toolbar variant="regular">
+      <Box textAlign="left" width={1}>
+        <Typography variant="h6" color="inherit">
+          NMBU towards Sustainable Development Goal
+        </Typography>
+        </Box>
+        <Box textAlign="right" width={1}>
+        <Typography variant="h6" color="inherit">
+          {props.title}
+        </Typography>
+        </Box>
+      </Toolbar>
+    </AppBar>
+  );
+}
 
 
 export default class App extends Component {
@@ -76,15 +96,17 @@ export default class App extends Component {
 
   // Update Goals --------
   updateTargets = (selected_targets) => {
-    var selected_target_idx = selected_targets.currentTarget.value
+    var gota = selected_targets.target.textContent.split(".")
     var newTarget = this.state.Targets
       .map(target => {
-        if (selected_target_idx.indexOf(target.id)>-1) {
-          target.isSelected = true
-          target.color = "secondary"
-        } else {
-          target.isSelected = false
-          target.color = "primary"
+        if (target.goal==gota[0]) {
+          if (gota.join(".").indexOf(target.id)>-1) {
+            target.isSelected = true
+            target.color = "secondary"
+          } else {
+            target.isSelected = false
+            target.color = "primary"
+          }
         }
         return target
       })
@@ -92,8 +114,13 @@ export default class App extends Component {
 }
 
   render() {
+    const minHeight = "80vh";
     return (
       <div>
+        <MyAppBar title={stepConfig.filter(x=>x.key==this.state.step).flatMap(x=>x.label)}/>
+        <Container xs={12} sm={6} fixed={true}>
+          <Paper>
+            <Box my={6} p={2} minHeight={minHeight} className="main-container">
         <Form
           step={this.state.step}
           goals={this.state.Goals}
@@ -109,6 +136,9 @@ export default class App extends Component {
           next={this.nextStep}
           prev={this.prevStep}
           maxStep={stepConfig.length}/>
+          </Box>
+          </Paper>
+          </Container>
       </div>
     )
   }
