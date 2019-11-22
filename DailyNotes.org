@@ -42,15 +42,41 @@ CLOSED: [2019-11-18 Mon 16:33]
 - [[https:https://upmostly.com/tutorials/react-onclick-event-handling-with-examples][Nice tutorial on the differences between class and functional components in React]]
 - [[https:https://reactjs.org/docs/hooks-state.html][Another tutorial on the different Hooks (state and props) in React]]
 :END:
+*** IN_PROGRESS Stages of Development [2/7]
+**** DONE Personal Details
+CLOSED: [2019-11-18 Mon 16:32]
+**** DONE SDG Goals Selection
+CLOSED: [2019-11-18 Mon 16:33]
+**** IN_PROGRESS SDG Targets Selection
+**** TODO Specify Cause, Effect and Interaction of the selected Targets
+**** TODO Display Summary
+**** TODO Submit to Firebase
+**** TODO Comfirmation Page (Back to Home)
 ** DONE Dockerize Application [0/0]
 CLOSED: [2019-11-18 Mon 16:35]
-** IN_PROGRESS Stages of Development [2/7]
+** IN_PROGRESS Current state is very confusing and difficult to handle. Restructure the states. [2/6]
+- Try to use already created components
+- Make the flow of data and information as little as possible
+- Overall style can be managed later so focus more on to the functionality
 *** DONE Personal Details
-CLOSED: [2019-11-18 Mon 16:32]
-*** DONE SDG Goals Selection
-CLOSED: [2019-11-18 Mon 16:33]
-*** IN_PROGRESS SDG Targets Selection
-*** TODO Specify Cause, Effect and Interaction of the selected Targets
-*** TODO Display Summary
-*** TODO Submit to Firebase
-*** TODO Comfirmation Page (Back to Home)
+CLOSED: [2019-11-21 to. 01:00]
+- State "DONE"       from "IN_PROGRESS" [2019-11-21 to. 01:00]
+- Make same faculty drop-down for both places
+- Name instead of First and Last Name, Research Title and URL, Coauthor Faculties
+*** DONE Goal Image Grid
+CLOSED: [2019-11-21 to. 00:59]
+- State "DONE"       from "IN_PROGRESS" [2019-11-21 to. 00:59]
+- Use previously created components just use the new states
+*** IN_PROGRESS Targets
+- Use previously created components with new states
+*** TODO Interaction
+- This section deals with selecting cause and effect with interaction
+- Add a button to switch cause and effect
+- Add a button to select interaction (+/-)
+*** TODO Summary
+- Summary of the details that is needed to post to data set
+- Add submit button
+*** TODO Confirmation
+- Show the confirmation page
+- Add button to go back and add more records
+
