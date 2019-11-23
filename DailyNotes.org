@@ -54,7 +54,7 @@ CLOSED: [2019-11-18 Mon 16:33]
 **** TODO Comfirmation Page (Back to Home)
 ** DONE Dockerize Application [0/0]
 CLOSED: [2019-11-18 Mon 16:35]
-** IN_PROGRESS Current state is very confusing and difficult to handle. Restructure the states. [2/6]
+** IN_PROGRESS Current state is very confusing and difficult to handle. Restructure the states. [4/12]
 - Try to use already created components
 - Make the flow of data and information as little as possible
 - Overall style can be managed later so focus more on to the functionality
@@ -69,9 +69,14 @@ CLOSED: [2019-11-21 to. 00:59]
 - Use previously created components just use the new states
 *** IN_PROGRESS Targets
 - Use previously created components with new states
-*** TODO Interaction
+- It is now complete and it is possible to selection target per group
+- Can not be toggled. This needs to be fixed.
+*** DONE Interaction
+CLOSED: [2019-11-23 lø. 01:28]
+- State "DONE"       from "IN_PROGRESS" [2019-11-23 lø. 01:28]
 - This section deals with selecting cause and effect with interaction
-- Add a button to switch cause and effect
+- Add a button to switch cause and effect (NOT SEPARATED AS CAUSE & EFFECT AT THIS MOMENT)
+  - Need some discussions with Solve.
 - Add a button to select interaction (+/-)
 *** TODO Summary
 - Summary of the details that is needed to post to data set
@@ -79,4 +84,19 @@ CLOSED: [2019-11-21 to. 00:59]
 *** TODO Confirmation
 - Show the confirmation page
 - Add button to go back and add more records
-
+CLOSED: [2019-11-18 Mon 16:32]
+:LOGBOOK:
+CLOCK: [2019-11-19 Thu 08:45]--[2019-11-19 Thu 15:36] =>  6:51
+:END:
+*** DONE SDG Goals Selection
+CLOSED: [2019-11-18 Mon 16:33]
+:LOGBOOK:
+CLOCK: [2019-11-20 Thu 09:05]--[2019-11-20 Thu 15:46] =>  6:41
+:END:
+*** IN_PROGRESS SDG Targets Selection
+- Style of the button mapped with state but selecting one target disables target from another goals
+- Targets needs to be selected per goal
+*** TODO Specify Cause, Effect and Interaction of the selected Targets
+*** TODO Display Summary
+*** TODO Submit to Firebase
+*** TODO Comfirmation Page (Back to Home)

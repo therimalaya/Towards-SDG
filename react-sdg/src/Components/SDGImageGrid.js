@@ -6,7 +6,7 @@ export default class SDGImageGrid extends Component {
         super(props);
 
         this.state = {
-            images: this.props.Images,
+            images: this.props.images,
             selectionEnable: true
          }
          this.onSelectImage = this.onSelectImage.bind(this);
@@ -32,14 +32,14 @@ export default class SDGImageGrid extends Component {
     }
     getSelectedGoals = () => this.state.images.filter(x => x.isSelected).map(x => x.index+1)
     selectedGoals = () => {
-        const { Goals } = this.props
+        const { goals } = this.props
         return(
             <React.Fragment>
             {/* <h3>{this.getSelectedGoals().length > 0 ? "Selected Goals" : ""}</h3> */}
             <table width="100%">
                 <tbody>
                 {this.getSelectedGoals().map((goal_id) => {
-                    var selected_goal = Goals.filter(x=>x.goal===goal_id)
+                    var selected_goal = goals.filter(x=>x.goal===goal_id)
                     /* Goals.filter(x=>x.goal===goal_id).map(x=>x.title) */
                     return(
                         <tr key={goal_id}>

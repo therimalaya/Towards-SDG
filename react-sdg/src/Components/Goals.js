@@ -14,7 +14,7 @@ export default class Goals extends Component {
                 index: goal.goal-1,
                 caption: goal.title,
                 alt: goal.short,
-                isSelected: false
+                isSelected: goal.isSelected
             })
         })
         return (
@@ -22,8 +22,8 @@ export default class Goals extends Component {
                 <h2>Select SDG Goals (At most 2)</h2>
                 <div style={{width: '100%'}}>
                     <SDGImageGrid 
-                    Goals={goals}
-                    Images={images}
+                    goals={goals}
+                    images={images}
                     updateGoals={updateGoals} />
                 </div>
             </div>

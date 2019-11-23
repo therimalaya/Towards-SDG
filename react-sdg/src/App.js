@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import Form from "./Components/Form"
 import Goals from './Data/goals.json'
-import AllTargets from './Data/targets.json'
+import Targets from './Data/targets.json'
 import MyStepper from "./Components/Stepper";
 import NavButton from './Components/NavButton'
+import { Paper, Container, AppBar, Typography, Toolbar, Box } from '@material-ui/core'
 
-// Filter all Targets ending with alphabetic character
-const Targets = AllTargets.filter(Target => Target.id.match("\\d$"))
 const numnum = (num) => num <= 9 ? "0"+num : num
 
 Goals.forEach(Goal=>{
@@ -15,10 +14,12 @@ Goals.forEach(Goal=>{
   Goal['isSelected'] =  false
   Goal['image_src'] = `images/Goal-${numnum(Goal.goal)}.png`
 })
+
 Targets.forEach(Target=>{
   Target['isCause'] =  false
   Target['isEffect'] =  false
   Target['isSelected'] =  false
+  Target['color'] = "primary"
 })
 
 // Configuration of Different Steps for MySteppter
@@ -31,13 +32,33 @@ const stepConfig = [
   {'label': 'Confirmation', 'key': 6}, 
 ]
 
+function MyAppBar(props) {
+  return (
+    <AppBar position="static">
+      <Toolbar variant="regular">
+      <Box textAlign="left" width={1}>
+        <Typography variant="h6" color="inherit">
+          NMBU towards Sustainable Development Goal
+        </Typography>
+        </Box>
+        <Box textAlign="right" width={1}>
+        <Typography variant="h6" color="inherit">
+          {props.title}
+        </Typography>
+        </Box>
+      </Toolbar>
+    </AppBar>
+  );
+}
+
+
 export default class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
       step: 1,
       Goals: Goals,
-      Targets: Targets
+      Targets: Targets.filter(Target => Target.id.match("\\d$"))
     }
   }
 
@@ -61,27 +82,49 @@ export default class App extends Component {
 
   // Update Goals --------
   updateGoals = (selected_goals) => {
-    this.setState({
-      Goals: Goals
-        .forEach(goal=>selected_goals
-          .indexOf(goal.goal)>-1 ? 
-            goal.isSelected = true : 
-            goal.isSelected=false)
-    })
+    var newGoal = this.state.Goals
+        .map(goal=>{
+          if (selected_goals.indexOf(goal.goal) > -1) {
+            goal.isSelected = true 
+          } else {
+            goal.isSelected = false
+          }
+          return goal;
+        })
+    this.setState({Goals: newGoal})
   }
 
   // Update Goals --------
-  updateTargets = () => {
-    // Write Something
-  }
+  updateTargets = (selected_targets) => {
+    var gota = selected_targets.target.textContent.split(".")
+    var newTarget = this.state.Targets
+      .map(target => {
+        if (target.goal===Number(gota[0])) {
+          if (gota.join(".").indexOf(target.id)>-1) {
+            target.isSelected = true
+            target.color = "secondary"
+          } else {
+            target.isSelected = false
+            target.color = "primary"
+          }
+        }
+        return target
+      })
+    this.setState({Targets: newTarget})
+}
 
   render() {
+    const minHeight = "80vh";
     return (
       <div>
+        <MyAppBar title={stepConfig.filter(x=>x.key===this.state.step).flatMap(x=>x.label)}/>
+        <Container xs={12} sm={6} fixed={true}>
+          <Paper>
+            <Box my={6} p={2} minHeight={minHeight} className="main-container">
         <Form
           step={this.state.step}
-          goals={Goals}
-          targets={Targets}
+          goals={this.state.Goals}
+          targets={this.state.Targets}
           updateGoals={this.updateGoals}
           updateTargets={this.updateTargets}
         />
@@ -93,6 +136,9 @@ export default class App extends Component {
           next={this.nextStep}
           prev={this.prevStep}
           maxStep={stepConfig.length}/>
+          </Box>
+          </Paper>
+          </Container>
       </div>
     )
   }

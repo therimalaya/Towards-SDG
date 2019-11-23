@@ -13,8 +13,13 @@ export default class Form extends Component {
             Name: 'Raju',
             Faculty: 'kbm',
             Research: {title: 'Simrel', url: 'http://simulatr.github.io'},
-            Coauthors: {Faculty: ['kbm', 'mina']}
+            Coauthors: {Faculty: ['kbm', 'mina']},
+            Interaction: "neutral"
         }
+    }
+
+    handleInteraction = event => {
+        this.setState({Interaction: event.currentTarget.value})
     }
 
     // Change Handling -------
@@ -42,8 +47,8 @@ export default class Form extends Component {
         const {step} = this.props
         const { Name, Faculty, Research, Coauthors } = this.state
         const values = { Name, Faculty, Research, Coauthors }
-        const { goals, targets } = this.props
-        const { updateGoals, updateTargets } = this.props
+
+        const { goals, targets, updateGoals, updateTargets } = this.props
         const selectedGoals = goals.filter(goal => goal.isSelected)
 
         switch (step) {
@@ -77,7 +82,10 @@ export default class Form extends Component {
             case 4:
                 return(
                     <div>
-                        <Interaction />
+                        <Interaction 
+                            goals={selectedGoals} 
+                            interaction={this.state.Interaction}
+                            handleInteraction={this.handleInteraction}/>
                     </div>
                 )
             case 5:
