@@ -30,7 +30,6 @@ CLOSED: [2019-11-18 Mon 16:32]
 *** DONE Use Material-UI Design for the interface
 CLOSED: [2019-11-18 Mon 16:32]
 *** TODO Link the form to Firebase database
-*** TODO Use Firebase to populate the SDG goals and targets
 *** DONE Add Progress Panel to show the stage of form
 CLOSED: [2019-11-18 Mon 16:34]
 *** DONE Image Grid for SDG logo with logic of selecting at most 2 images
@@ -42,19 +41,24 @@ CLOSED: [2019-11-18 Mon 16:33]
 - [[https:https://upmostly.com/tutorials/react-onclick-event-handling-with-examples][Nice tutorial on the differences between class and functional components in React]]
 - [[https:https://reactjs.org/docs/hooks-state.html][Another tutorial on the different Hooks (state and props) in React]]
 :END:
-*** IN_PROGRESS Stages of Development [2/7]
+*** IN_PROGRESS Stages of Development [5/6]
 **** DONE Personal Details
 CLOSED: [2019-11-18 Mon 16:32]
 **** DONE SDG Goals Selection
 CLOSED: [2019-11-18 Mon 16:33]
-**** IN_PROGRESS SDG Targets Selection
-**** TODO Specify Cause, Effect and Interaction of the selected Targets
-**** TODO Display Summary
+**** DONE SDG Targets Selection
+CLOSED: [2019-11-25 ma. 00:21]
+- State "DONE"       from "IN_PROGRESS" [2019-11-25 ma. 00:21]
+**** DONE Display Summary
+CLOSED: [2019-11-25 ma. 00:21]
+- State "DONE"       from "IN_PROGRESS" [2019-11-25 ma. 00:21]
 **** TODO Submit to Firebase
-**** TODO Comfirmation Page (Back to Home)
+**** DONE Comfirmation Page (Back to Home)
+CLOSED: [2019-11-25 ma. 00:21]
+- State "DONE"       from "IN_PROGRESS" [2019-11-25 ma. 00:21]
 ** DONE Dockerize Application [0/0]
 CLOSED: [2019-11-18 Mon 16:35]
-** IN_PROGRESS Current state is very confusing and difficult to handle. Restructure the states. [4/12]
+** IN_PROGRESS Current state is very confusing and difficult to handle. Restructure the states. [4/7]
 - Try to use already created components
 - Make the flow of data and information as little as possible
 - Overall style can be managed later so focus more on to the functionality
@@ -67,7 +71,9 @@ CLOSED: [2019-11-21 to. 01:00]
 CLOSED: [2019-11-21 to. 00:59]
 - State "DONE"       from "IN_PROGRESS" [2019-11-21 to. 00:59]
 - Use previously created components just use the new states
-*** IN_PROGRESS Targets
+*** DONE Targets
+CLOSED: [2019-11-25 ma. 00:19]
+- State "DONE"       from "IN_PROGRESS" [2019-11-25 ma. 00:19]
 - Use previously created components with new states
 - It is now complete and it is possible to selection target per group
 - Can not be toggled. This needs to be fixed.
@@ -78,9 +84,14 @@ CLOSED: [2019-11-23 lø. 01:28]
 - Add a button to switch cause and effect (NOT SEPARATED AS CAUSE & EFFECT AT THIS MOMENT)
   - Need some discussions with Solve.
 - Add a button to select interaction (+/-)
-*** TODO Summary
-- Summary of the details that is needed to post to data set
+*** IN_PROGRESS Summary
+- Summary of the details that is needed to post to dataset
 - Add submit button
+- After the sucessful saving of data, test few times and discuss with Solve
+:Completed:
+- All information are collected and correctly displayed
+- Need to connect to firebase and submit the data
+:END:
 *** TODO Confirmation
 - Show the confirmation page
 - Add button to go back and add more records
@@ -88,15 +99,4 @@ CLOSED: [2019-11-18 Mon 16:32]
 :LOGBOOK:
 CLOCK: [2019-11-19 Thu 08:45]--[2019-11-19 Thu 15:36] =>  6:51
 :END:
-*** DONE SDG Goals Selection
-CLOSED: [2019-11-18 Mon 16:33]
-:LOGBOOK:
-CLOCK: [2019-11-20 Thu 09:05]--[2019-11-20 Thu 15:46] =>  6:41
-:END:
-*** IN_PROGRESS SDG Targets Selection
-- Style of the button mapped with state but selecting one target disables target from another goals
-- Targets needs to be selected per goal
-*** TODO Specify Cause, Effect and Interaction of the selected Targets
-*** TODO Display Summary
-*** TODO Submit to Firebase
-*** TODO Comfirmation Page (Back to Home)
+*** TODO Mobile Friendly Interface

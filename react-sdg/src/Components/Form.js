@@ -50,7 +50,8 @@ export default class Form extends Component {
 
         const { goals, targets, updateGoals, updateTargets, FacultyConfig } = this.props
         const selectedGoals = goals.filter(goal => goal.isSelected)
-        const summaryProps = Object.assign({}, values, {'Goals': selectedGoals})
+        const summaryProps = Object.assign({}, values, 
+            {'Goals': selectedGoals, 'Interaction': this.state.Interaction})
 
         switch (step) {
             case 1:
@@ -95,7 +96,8 @@ export default class Form extends Component {
                     <div>
                         <Summary 
                             states={summaryProps}
-                            Faculties={FacultyConfig} />
+                            Faculties={FacultyConfig}
+                             />
                     </div>
                 )
             default:
