@@ -1,5 +1,5 @@
-import React, {useState} from 'react'
-import { Grid, Card, Button, ButtonGroup, CardMedia, CardContent, Typography, Switch, CardActions, Hidden } from '@material-ui/core'
+import React from 'react'
+import { Grid, Card, Button, ButtonGroup, CardMedia, CardContent, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
@@ -33,38 +33,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function InteractionSwitch(props) {
-    const {value, handleInteraction} = props
-    const [PositiveColor, setPositiveColor] = React.useState("primary")
-    const [NegativeColor, setNegativeColor] = React.useState("primary")
-
-    const handlePositive = (event) => {
-        setPositiveColor("secondary")        
-        setNegativeColor("primary")
-        handleInteraction(event)
-    }
-    const handleNegative = (event) => {
-        setNegativeColor("secondary")        
-        setPositiveColor("primary")        
-        handleInteraction(event)
-    }
-    return(
-        <Typography component="div" style={{width: "100%", textAlign: "center"}} gutterBottom>
-            <ButtonGroup
-                variant="contained"
-                size="large"
-                aria-label="large contained secondary button group"
-                >
-                <Button value="positive" 
-                    color={PositiveColor}
-                    onClick={handlePositive}>Positive</Button>
-                <Button value="negative" 
-                    color={NegativeColor}
-                    onClick={handleNegative}>Negative</Button>
-            </ButtonGroup>
-        </Typography>
-    )
-}
 
 function GoalCard(props) {
     const classes = useStyles();
@@ -106,9 +74,69 @@ function TargetCard(props) {
     )
 }
 
+function NoTarget(props) {
+    const classes = useStyles();
+    return(
+        <Card className={classes.card}>
+            <CardContent className={classes.cardContent}>
+                <Typography className={classes.title} variant="h5" component="h3" color="textSecondary" gutterBottom>
+                No Target has been selected for this Goal.
+                </Typography>
+            </CardContent>
+        </Card>
+    )
+}
+
+function InteractionSwitch(props) {
+    const {interaction, handleInteraction} = props
+    const [PositiveColor, setPositiveColor] = React.useState("primary")
+    const [NegativeColor, setNegativeColor] = React.useState("primary")
+
+    const handlePositive = (event) => {
+        if (event.currentTarget.value === "neutral" ||
+            event.currentTarget.value === "negative") {
+            setPositiveColor("secondary")
+            setNegativeColor("primary")
+            handleInteraction("positive")
+        } else {
+            setPositiveColor("primary")
+            handleInteraction("neutral")
+        }
+    }
+    const handleNegative = (event) => {
+        if (event.currentTarget.value === "neutral" ||
+            event.currentTarget.value === "positive") {
+            setNegativeColor("secondary")
+            setPositiveColor("primary")
+            handleInteraction("negative")
+        } else {
+            setNegativeColor("primary")
+            handleInteraction("neutral")
+        }
+    }
+    return(
+        <Typography component="div" style={{width: "100%", textAlign: "center"}} gutterBottom>
+            <ButtonGroup
+                variant="contained"
+                size="large"
+                aria-label="large contained secondary button group"
+                >
+                <Button 
+                    value={interaction} 
+                    id="positive"
+                    color={interaction === "positive" ? "secondary" : PositiveColor}
+                    onClick={handlePositive}>Positive</Button>
+                <Button 
+                    value={interaction} 
+                    id="negative"
+                    color={interaction === "negative" ? "secondary" : NegativeColor}
+                    onClick={handleNegative}>Negative</Button>
+            </ButtonGroup>
+        </Typography>
+    )
+}
 
 export default function Interaction(props) {
-    const classes = useStyles();
     const { goals, interaction, handleInteraction } = props
     return (
         <div>
@@ -122,11 +150,12 @@ export default function Interaction(props) {
                             </Grid>
                             <Grid item sm={8} md={4}>
                                 {target && <TargetCard Target={target}/>}
+                                {!target && <NoTarget/>}
                             </Grid>
                         </React.Fragment>
                     )
                 })}
-                {goals.length > 1 && <InteractionSwitch handleInteraction={handleInteraction} value={interaction}/>}
+                {goals.length > 1 && <InteractionSwitch handleInteraction={handleInteraction} interaction={interaction}/>}
             </Grid>
         </div>
     )

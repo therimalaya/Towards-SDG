@@ -18,8 +18,8 @@ export default class Form extends Component {
         }
     }
 
-    handleInteraction = event => {
-        this.setState({Interaction: event.currentTarget.value})
+    handleInteraction = value => {
+        this.setState({'Interaction': value})
     }
 
     // Change Handling -------
@@ -48,14 +48,16 @@ export default class Form extends Component {
         const { Name, Faculty, Research, Coauthors } = this.state
         const values = { Name, Faculty, Research, Coauthors }
 
-        const { goals, targets, updateGoals, updateTargets } = this.props
+        const { goals, targets, updateGoals, updateTargets, FacultyConfig } = this.props
         const selectedGoals = goals.filter(goal => goal.isSelected)
+        const summaryProps = Object.assign({}, values, {'Goals': selectedGoals})
 
         switch (step) {
             case 1:
                 return(
                     <div>
                         <Personal 
+                            FacultyConfig={FacultyConfig}
                             values={values}
                             updateInput={this.updateInput}
                             updateCoauthor={this.updateCoauthor}
@@ -83,15 +85,17 @@ export default class Form extends Component {
                 return(
                     <div>
                         <Interaction 
-                            goals={selectedGoals} 
                             interaction={this.state.Interaction}
+                            goals={selectedGoals} 
                             handleInteraction={this.handleInteraction}/>
                     </div>
                 )
             case 5:
                 return(
                     <div>
-                        <Summary />
+                        <Summary 
+                            states={summaryProps}
+                            Faculties={FacultyConfig} />
                     </div>
                 )
             default:

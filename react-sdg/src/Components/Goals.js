@@ -19,8 +19,7 @@ export default class Goals extends Component {
         })
         return (
             <div>
-                <h2>Select SDG Goals (At most 2)</h2>
-                <div style={{width: '100%'}}>
+                <div style={{idth: '100%'}}>
                     <SDGImageGrid 
                     goals={goals}
                     images={images}

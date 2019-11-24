@@ -2,7 +2,7 @@ import React from 'react'
 import { InputLabel, Select, MenuItem, FormControl, Checkbox, Chip, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
-const FacultyConfig = {
+/* const FacultyConfig = {
   "biosciences": "Biosciences",
   "kbm": "Chemistry, Biotechnology and Food Science",
   "mina": "Environmental Sciences and Natural Resource Management",
@@ -10,7 +10,7 @@ const FacultyConfig = {
   "economics": "School of Economics and Business",
   "realtek": "Science and Technology",
   "vet": "Veterinary Medicine",
-}
+} */
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -79,10 +79,11 @@ export function Research(props) {
 
 export function Faculty(props) {
   const classes = useStyles();
+  const { FacultyConfig } = props
   const { multiple, updateInput, FacultyTitle } = props
   const { selectedFaculty } = props
 
-  const [Faculty, setFaculty] = React.useState(multiple ? [] : "");
+  const [Faculty, setFaculty] = React.useState(selectedFaculty);
   const handleChange = event => {
     setFaculty(event.target.value);
     updateInput(event)
@@ -103,7 +104,7 @@ export function Faculty(props) {
           labelWidth={labelWidth}
           id="faculty-checkbox"
           multiple={multiple}
-          value={selectedFaculty}
+          value={Faculty}
           onChange={handleChange}
           renderValue={selected => (
             <div className={classes.chips}>

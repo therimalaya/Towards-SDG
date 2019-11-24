@@ -32,6 +32,16 @@ const stepConfig = [
   {'label': 'Confirmation', 'key': 6}, 
 ]
 
+const FacultyConfig = {
+  "biosciences": "Biosciences",
+  "kbm": "Chemistry, Biotechnology and Food Science",
+  "mina": "Environmental Sciences and Natural Resource Management",
+  "landsam": "Landscape and Society",
+  "economics": "School of Economics and Business",
+  "realtek": "Science and Technology",
+  "vet": "Veterinary Medicine"
+}
+
 function MyAppBar(props) {
   return (
     <AppBar position="static">
@@ -101,8 +111,13 @@ export default class App extends Component {
       .map(target => {
         if (target.goal===Number(gota[0])) {
           if (gota.join(".").indexOf(target.id)>-1) {
-            target.isSelected = true
-            target.color = "secondary"
+            if (target.isSelected) {
+              target.isSelected = false
+              target.color = "primary"
+            } else {
+              target.isSelected = true
+              target.color = "secondary"
+            }
           } else {
             target.isSelected = false
             target.color = "primary"
@@ -122,6 +137,7 @@ export default class App extends Component {
           <Paper>
             <Box my={6} p={2} minHeight={minHeight} className="main-container">
         <Form
+          FacultyConfig={FacultyConfig}
           step={this.state.step}
           goals={this.state.Goals}
           targets={this.state.Targets}
@@ -132,6 +148,7 @@ export default class App extends Component {
           step={this.state.step}
           stepConfig={stepConfig}/>
         <NavButton
+          goals={this.state.Goals}
           step={this.state.step}
           next={this.nextStep}
           prev={this.prevStep}

@@ -12,9 +12,14 @@ export default class NavButton extends Component {
           </Button>
       );
     }
+    const selectedGoals = this.props.goals.filter(x=>x.isSelected)
     if (this.props.step !== this.props.maxStep) {
       navBtn.next = (
-          <Button variant="contained" color="primary" onClick={this.props.next}>
+          <Button 
+            variant="contained" 
+            color="primary" 
+            onClick={this.props.next} 
+            disabled={(selectedGoals.length<1)&&(this.props.step===2)}>
             {" "}
             Next{" "}
           </Button>
