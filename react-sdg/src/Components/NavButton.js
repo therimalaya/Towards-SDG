@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, ButtonGroup, Typography } from '@material-ui/core';
-import { Send } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles(theme => ({

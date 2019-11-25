@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Firebase from 'firebase';
 import Personal from './Personal';
 import Goals from './Goals';
 import Targets from './Targets';
@@ -46,7 +45,7 @@ export default class Form extends Component {
 
     render() {
         const {step} = this.props;
-        const { Name, Faculty, Research, Coauthors, nextStep } = this.state;
+        const { Name, Faculty, Research, Coauthors } = this.state;
         const values = { Name, Faculty, Research, Coauthors };
 
         const { goals, targets, updateGoals, updateTargets, FacultyConfig } = this.props;
@@ -55,7 +54,7 @@ export default class Form extends Component {
             {}, values,
             {'Goals': selectedGoals,
              'Interaction': this.state.Interaction,
-             'Next': nextStep});
+             'Next': this.props.nextStep});
 
         switch (step) {
         case 1:

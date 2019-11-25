@@ -7,6 +7,8 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from './theme';
 import './index.scss'
+import registerServiceWorker from './registerServiceWorker';
+
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
@@ -16,4 +18,5 @@ ReactDOM.render(
   </ThemeProvider>,
   document.querySelector('#root'),
 );
+registerServiceWorker();
 

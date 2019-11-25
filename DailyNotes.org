@@ -41,7 +41,7 @@ CLOSED: [2019-11-18 Mon 16:33]
 - [[https:https://upmostly.com/tutorials/react-onclick-event-handling-with-examples][Nice tutorial on the differences between class and functional components in React]]
 - [[https:https://reactjs.org/docs/hooks-state.html][Another tutorial on the different Hooks (state and props) in React]]
 :END:
-*** IN_PROGRESS Stages of Development [5/6]
+*** IN_PROGRESS Stages of Development [6/6]
 **** DONE Personal Details
 CLOSED: [2019-11-18 Mon 16:32]
 **** DONE SDG Goals Selection
@@ -52,7 +52,9 @@ CLOSED: [2019-11-25 ma. 00:21]
 **** DONE Display Summary
 CLOSED: [2019-11-25 ma. 00:21]
 - State "DONE"       from "IN_PROGRESS" [2019-11-25 ma. 00:21]
-**** TODO Submit to Firebase
+**** DONE Submit to Firebase
+CLOSED: [2019-11-25 ma. 22:29]
+- State "DONE"       from "IN_PROGRESS" [2019-11-25 ma. 22:29]
 **** DONE Comfirmation Page (Back to Home)
 CLOSED: [2019-11-25 ma. 00:21]
 - State "DONE"       from "IN_PROGRESS" [2019-11-25 ma. 00:21]
@@ -100,3 +102,9 @@ CLOSED: [2019-11-18 Mon 16:32]
 CLOCK: [2019-11-19 Thu 08:45]--[2019-11-19 Thu 15:36] =>  6:51
 :END:
 *** TODO Mobile Friendly Interface
+**** TODO Pull and display the records in tabular form in Summary Page (For now)
+** TODO User Authentication using Google
+:Resources:
+- [[https:https://css-tricks.com/firebase-react-part-2-user-authentication/][Google Authentication in Firebase from CSS Tricks]]
+:END:
+

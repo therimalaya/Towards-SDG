@@ -51,11 +51,6 @@ const useStyles = makeStyles(theme => ({
             padding: theme.spacing(3),
         },
     },
-    fab: {
-        position: 'absolute',
-        right: theme.spacing(2),
-    },
-
 }));
 
 function MyAppBar(props) {
