@@ -1,37 +1,34 @@
-import React from 'react'
-import { Button, ButtonGroup } from '@material-ui/core'
+import React from 'react';
+import { Button, ButtonGroup, Typography } from '@material-ui/core';
+import { Send } from '@material-ui/icons';
+import { makeStyles } from '@material-ui/styles';
+
+const useStyles = makeStyles(theme => ({
+  btnText: {
+    padding: "0 8px",
+    fontSize: "larger",
+  }
+}));
 
 export default function NavButton(props) {
+    const classes = useStyles();
   var navBtn = {};
   if (props.step !== 1 && props.step !== props.maxStep) {
     navBtn.prev = (
       <Button variant="contained" color="primary" onClick={props.prev}>
-        {" "}
-        Previous{" "}
+        <Typography variant="button" className={classes.btnText}>Previous</Typography>
       </Button>
     );
   }
-  const selectedGoals = props.goals.filter(x => x.isSelected)
-  if (props.step !== props.maxStep && props.step !== props.maxStep-1) {
+    const selectedGoals = props.goals.filter(x => x.isSelected);
+  if (props.step !== props.maxStep && props.step !== props.maxStep - 1) {
     navBtn.next = (
       <Button
         variant="contained"
         color="primary"
         onClick={props.next}
         disabled={(selectedGoals.length < 1) && (props.step === 2)}>
-        {" "}
-        Next{" "}
-      </Button>
-    );
-  }
-  if (props.step === props.maxStep-1) {
-    navBtn.submit = (
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={props.submit}>
-        {" "}
-        Submit{" "}
+        <Typography variant="button" className={classes.btnText}>Next</Typography>
       </Button>
     );
   }
@@ -41,8 +38,7 @@ export default function NavButton(props) {
         variant="contained"
         color="primary"
         onClick={props.home}>
-        {" "}
-        Home{" "}
+        <Typography variant="button" className={classes.btnText}>Home</Typography>
       </Button>
     );
   }
@@ -54,7 +50,6 @@ export default function NavButton(props) {
         aria-label="large outlined secondary button group">
         {navBtn.prev}
         {navBtn.next}
-        {navBtn.submit}
         {navBtn.home}
       </ButtonGroup>
     </React.Fragment>
