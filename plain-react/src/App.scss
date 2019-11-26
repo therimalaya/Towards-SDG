@@ -1,0 +1,64 @@
+$primary-color: rgb(0, 154, 129);
+$secondary-color: rgb(85, 102, 128);
+$primary-text: rgb(0, 0, 0);
+$secondary-text: rgb(230, 230, 230);
+$error-color: rgb(231, 82, 68);
+$background-color: rgb(209, 232, 223);
+$link-color: rgb(128, 74, 90);
+
+$sidebar-height: 200px;
+$sidebar-width: 350px;
+
+.App {
+  display: flex;
+
+  .App-sidebar {
+    background-color: $background-color;
+    min-height: 100vh;
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-rows: $sidebar-height 1fr 75px;
+    justify-content: start;
+    font-size: calc(12px + 1vmin);
+    color: $primary-text;
+    max-width: $sidebar-width;
+    -webkit-box-shadow: 1px 0px 7px 0px $primary-text;
+    -moz-box-shadow: 1px 0px 7px 0px $primary-text;
+    box-shadow: 1px 0px 7px 0px $primary-text;
+
+
+    .App-header{
+      max-height: $sidebar-height;
+      max-width: $sidebar-width;
+      background: url("./images/header.jpg");
+      background-position: center;
+      background-size: cover;
+    }
+
+    .App-info {
+      padding: 16px;
+    }
+
+    .App-footer {
+      background-color: $primary-color;
+      background-image: url("./images/NMBUwhite.svg");
+      background-position: left;
+      background-image: contain;
+      background-repeat: no-repeat;
+    }
+
+
+  }
+
+  .App-link {
+    color: $link-color;
+  }
+
+  .App-main {
+    width: 100%;
+    background-color: $secondary-text;
+    padding: 16px;
+  }
+}
+
+
