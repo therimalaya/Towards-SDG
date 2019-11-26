@@ -23,15 +23,16 @@ class MainForm extends React.Component {
         return(
           <Goal
             Goals={Goals}
-            handleSelect={handleSelect}
+            handleSelect={handleSelect("Goals")}
             nextStep={nextStep}
             prevStep={prevStep}/>
         );
       case 3:
         return(
           <Target
+            Goals={Goals}
             Targets={Targets}
-            handleSelect={handleSelect}
+            handleSelect={handleSelect("Targets")}
             nextStep={nextStep}
             prevStep={prevStep}/>
         );

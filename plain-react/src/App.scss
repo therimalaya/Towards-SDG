@@ -7,7 +7,7 @@ $background-color: rgb(209, 232, 223);
 $link-color: rgb(128, 74, 90);
 
 $sidebar-height: 200px;
-$sidebar-width: 350px;
+$sidebar-width: 25vw;
 
 .App {
   display: flex;
@@ -65,7 +65,7 @@ $sidebar-width: 350px;
       width: 100%;
       padding: 8px 12px;
       display: inline-block;
-      border: 1px solid #ccc;
+      border: 1px solid $secondary-text;
       border-radius: 4px;
       box-sizing: border-box;
     }
@@ -81,7 +81,32 @@ $sidebar-width: 350px;
       cursor: pointer;
     }
 
+    .image-grid {
+      display: grid;
+      grid-template-rows: repeat(auto-fit, 150px);
+      grid-gap: 10px;
+      justify-content: center;
+      margin: auto;
+      max-width: 100%;
+      grid-template-columns: repeat(auto-fit, 150px);
+
+      input {
+        width: 150px;
+        height: 150px;
+        cursor: pointer;
+      }
+
+      input.selected {
+        width: 140px;
+        height: 140px;
+        cursor: pointer;
+        border: 5px solid $link-color;
+      }
+    }
+
+
   }
 }
+
 
 
