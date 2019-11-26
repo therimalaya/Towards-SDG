@@ -58,6 +58,29 @@ $sidebar-width: 350px;
     width: 100%;
     background-color: $secondary-text;
     padding: 16px;
+
+    .App-Form-Inputs {
+      font-size: 16px;
+      font-weight: 400;
+      width: 100%;
+      padding: 8px 12px;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .App-Nav-Btn {
+      min-width: 100px;
+      padding: 12px;
+      font-size: 20px;
+      font-weight: 400;
+      background-color: $primary-color;
+      color: $secondary-text;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
   }
 }
 

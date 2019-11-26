@@ -2,8 +2,8 @@ import React from 'react';
 
 class SideInfo extends React.Component {
   render() {
-    const Step = this.props.Step
-    const Label = this.props.StepConfig.filter(x=>x.key===Step)[0].label
+    const {Step, StepConfig} = this.props
+    const Label = StepConfig.filter(x=>x.key===Step)[0].label
     return (
       <React.Fragment>
         <h2>Step {this.props.Step}</h2>

@@ -6,8 +6,8 @@ class InterAction extends React.Component {
         return (
           <React.Fragment>
             <h1>I am Interaction</h1>
-            <button onClick={this.props.nextStep} >Next</button>
-            <button onClick={this.props.prevStep} >Previous</button>
+            <button onClick={this.props.nextStep} className="App-Nav-Btn">Next</button>
+            <button onClick={this.props.prevStep} className="App-Nav-Btn">Previous</button>
           </React.Fragment>
         );
     }

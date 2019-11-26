@@ -1,7 +1,7 @@
 import React from 'react';
 import MainForm from './components/MainForm';
 import SideInfo from './components/SideInfo';
-import {StepConfig, FacultyConfig} from './config/app-config.js'
+import {StepConfig} from './config/app-config';
 import './App.scss';
 
 export default class App extends React.Component {
@@ -17,42 +17,78 @@ export default class App extends React.Component {
       Coauthors: {Faculty: ["KBM", "Realtek"]},
       Interaction: "Positive"
     }
+    this.handleInput = this.handleInput.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
+    this.nextStep = this.nextStep.bind(this);
+    this.prevStep = this.prevStep.bind(this);
+    this.goHome = this.goHome.bind(this);
+  }
+
+  handleInput = input => event => {
+    input = input.split(".")
+    var newState = this.state[input[0]]
+    if (input.length > 1) {
+      newState[input[1]] = event.target.value;
+    } else {
+      newState = event.target.value;
+    }
+    this.setState({
+      [input[0]]: newState
+    })
+  }
+  handleSelect = input => value => {
+    this.setState({
+      [input]: value
+    })
+  }
+  nextStep = (event) => {
+    event.preventDefault()
+    const { Step } = this.state
+    this.setState({
+      Step: Step + 1
+    });
+  }
+  prevStep = (event) => {
+    event.preventDefault()
+    const { Step } = this.state
+    this.setState({
+      Step: Step - 1
+    });
+  }
+  goHome = (event) => {
+    event.preventDefault()
+    this.setState({
+      Step: 1
+    });
   }
 
   render() {
-    const {Step} = this.state
     const {Goals, Targets, Interaction} = this.state
     const {Name, Faculty, Research, Coauthors} = this.state
     const values = {Name, Faculty, Research, Coauthors}
-
-    const handleInput = input => event => this.setState({[input]: event.target.value});
-    const handleSelect = input => value => this.setState({[input]: value});
-    const nextStep = () => this.setState({Step: Step+1})
-    const prevStep = () => this.setState({Step: Step-1})
-    const goHome = () => this.setState({Step: 1})
 
     return (
       <div className="App">
         <aside className="App-sidebar">
           <header className="App-header"></header>
           <div className="App-info">
-            <SideInfo Step={Step} StepConfig={StepConfig}/>
+            <SideInfo Step={this.state.Step} StepConfig={StepConfig}/>
           </div>
           <footer className="App-footer">
           </footer>
         </aside>
         <main className="App-main">
           <MainForm
-            Step={Step}
+            Step={this.state.Step}
             values={values}
             Goals={Goals}
             Targets={Targets}
             Interaction={Interaction}
-            handleInput={handleInput}
-            handleSelect={handleSelect }
-            nextStep={nextStep}
-            prevStep={prevStep}
-            goHome={goHome}
+            handleInput={this.handleInput}
+            handleSelect={this.handleSelect }
+            nextStep={this.nextStep}
+            prevStep={this.prevStep}
+            goHome={this.goHome}
           />
         </main>
       </div>

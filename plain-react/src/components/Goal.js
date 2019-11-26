@@ -1,16 +1,18 @@
 import React from 'react';
+import AllGoals from '../data/goals.json';
 
 class Goal extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
+      const {Goals, handleSelect, nextStep, prevStep} = this.props
+      console.log(handleSelect);
+      console.log(AllGoals);
+      console.log(Goals)
         return (
           <React.Fragment>
             <h1>I am Goal.</h1>
-            <button onClick={this.props.nextStep} >Next</button>
-            <button onClick={this.props.prevStep} >Previous</button>
+            <p>Current Goals: {Goals.join(", ")}</p>
+            <button onClick={nextStep} className="App-Nav-Btn">Next</button>
+            <button onClick={prevStep} className="App-Nav-Btn">Previous</button>
           </React.Fragment>
         );
     }
