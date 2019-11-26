@@ -1,4 +1,7 @@
 import React from 'react';
+import MainForm from './components/MainForm';
+import SideInfo from './components/SideInfo';
+import {StepConfig, FacultyConfig} from './config/app-config.js'
 import './App.scss';
 
 export default class App extends React.Component {
@@ -6,38 +9,51 @@ export default class App extends React.Component {
     super(props)
     this.state = {
       Step: 1,
-      Goal: 1,
-      Target: 1.1,
+      Goals: [1, 2],
+      Targets: [1.1, 2.5],
       Name: "Raju Rimal",
       Faculty: "KBM",
       Research: {Title: "Simrel", URL: "https://simulatr.github.io"},
-      Coauthors: {Faculty: ["KBM", "MINA"]},
+      Coauthors: {Faculty: ["KBM", "Realtek"]},
       Interaction: "Positive"
     }
   }
+
   render() {
+    const {Step} = this.state
+    const {Goals, Targets, Interaction} = this.state
+    const {Name, Faculty, Research, Coauthors} = this.state
+    const values = {Name, Faculty, Research, Coauthors}
+
+    const handleInput = input => event => this.setState({[input]: event.target.value});
+    const handleSelect = input => value => this.setState({[input]: value});
+    const nextStep = () => this.setState({Step: Step+1})
+    const prevStep = () => this.setState({Step: Step-1})
+    const goHome = () => this.setState({Step: 1})
+
     return (
       <div className="App">
         <aside className="App-sidebar">
           <header className="App-header"></header>
           <div className="App-info">
-            <p>Information about this application. Include help per stages. This section might include login and logout afterwards.</p>
+            <SideInfo Step={Step} StepConfig={StepConfig}/>
           </div>
           <footer className="App-footer">
           </footer>
         </aside>
         <main className="App-main">
-          <dl>
-            <dt>Step:</dt><dd>{this.state.Step}</dd>
-            <dt>Goal:</dt><dd>{this.state.Goal}</dd>
-            <dt>Target:</dt><dd>{this.state.Target}</dd>
-            <dt>Name:</dt><dd>{this.state.Name}</dd>
-            <dt>Faculty:</dt><dd>{this.state.Faculty}</dd>
-            <dt>Research Title:</dt><dd>{this.state.Research.Title}</dd>
-            <dt>Research URL:</dt><dd>{this.state.Research.URL}</dd>
-            <dt>Coauthor's Faculty:</dt><dd>{this.state.Coauthors.Faculty.join(", ")}</dd>
-            <dt>Interaction:</dt><dd>{this.state.Interaction}</dd>
-          </dl>
+          <MainForm
+            Step={Step}
+            values={values}
+            Goals={Goals}
+            Targets={Targets}
+            Interaction={Interaction}
+            handleInput={handleInput}
+            handleSelect={handleSelect }
+            nextStep={nextStep}
+            prevStep={prevStep}
+            goHome={goHome}
+          />
         </main>
       </div>
     );
