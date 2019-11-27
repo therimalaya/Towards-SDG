@@ -15,6 +15,7 @@ class Personal extends React.Component {
                 value={values.Name}
                 onChange={handleInput("Name")} />
               <Faculty
+                className="App-Form-Inputs"
                 isMulti={false}
                 value={values.Faculty}
                 handleSelect={handleSelect("Faculty")}
@@ -34,12 +35,15 @@ class Personal extends React.Component {
                 value={values.Research.URL}
                 onChange={handleInput("Research.URL")} />
               <Faculty
+                className="App-Form-Inputs"
                 isMulti={true}
                 value={values.Coauthors.Faculty}
                 handleSelect={handleSelect("Coauthors")}
                 placeholder="Coauthor's Faculty"/>
-              <button onClick={nextStep} className="App-Nav-Btn">Next</button>
             </form>
+            <div className="nav-btn">
+              <button onClick={nextStep} className="App-Nav-Btn">Next</button>
+            </div>
           </React.Fragment>
         );
     }

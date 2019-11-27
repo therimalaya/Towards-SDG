@@ -6,8 +6,7 @@ class SideInfo extends React.Component {
     const Label = StepConfig.filter(x=>x.key===Step)[0].label
     return (
       <React.Fragment>
-        <h2>Step {this.props.Step}</h2>
-        <h3>{Label}</h3>
+        <p><span className="App-Step">Step {this.props.Step}</span></p><p><span className="App-Step-Label">{Label}</span></p>
         <p>Information about this application. Include help per stages. This section might include login and logout afterwards.</p>
       </React.Fragment>
     );

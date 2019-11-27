@@ -5,38 +5,123 @@ $secondary-text: rgb(230, 230, 230);
 $error-color: rgb(231, 82, 68);
 $background-color: rgb(209, 232, 223);
 $link-color: rgb(128, 74, 90);
+$box-shadow: #ababab;
+$box-shadow-dark: #565656;
 
-$sidebar-height: 200px;
-$sidebar-width: 25vw;
+$app-height: 80vh;
+$app-width: 80%;
+$sidebar-width: 25%;
+$header-height: 150px;
+$goal-image-size: 13vmin;
+$goal-image-border: 0.5vmin;
 
-.App {
+
+#root{
+  height: 100vh;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $secondary-text;
+}
+.App {
+  width: $app-width;
+  height: $app-height;
+
+  background-color: #eee;
+
+  -webkit-box-shadow: 0px 0px 7px 2px $box-shadow;
+  -moz-box-shadow: 0px 0px 7px 2px $box-shadow;
+  box-shadow: 0px 0px 7px 2px $box-shadow;
+  border: 3px solid #ababab;
+
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: $sidebar-width 1fr;
+  overflow: scroll;
+
+  @media only screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    flex-flow: column-reverse;
+  }
 
   .App-sidebar {
     background-color: $background-color;
-    min-height: 100vh;
     display: grid;
     grid-auto-flow: row;
-    grid-template-rows: $sidebar-height 1fr 75px;
+    grid-template-rows: auto 1fr 75px;
     justify-content: start;
-    font-size: calc(12px + 1vmin);
-    color: $primary-text;
-    max-width: $sidebar-width;
-    -webkit-box-shadow: 1px 0px 7px 0px $primary-text;
-    -moz-box-shadow: 1px 0px 7px 0px $primary-text;
-    box-shadow: 1px 0px 7px 0px $primary-text;
 
+    max-height: $app-height;
+    position: sticky;
+    top: 0;
+    left: 0;
+    overflow-y: scroll;
+
+    font-size: calc(9px + 0.8vmin);
+    color: $primary-text;
+
+    -webkit-box-shadow: 1px 0px 7px 0px $box-shadow-dark;
+    -moz-box-shadow: 1px 0px 7px 0px $box-shadow-dark;
+    box-shadow: 1px 0px 7px 0px $box-shadow-dark;
+
+    @media only screen and (max-width: 768px) {
+      height: $header-height;
+      grid-template-columns: auto 1fr 75px;
+      align-content: start;
+      min-width: $app-width;
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      font-size: calc(8px + 0.6hmin);
+      h2 {
+        display: none;
+      }
+    }
 
     .App-header{
-      max-height: $sidebar-height;
-      max-width: $sidebar-width;
       background: url("./images/header.jpg");
       background-position: center;
       background-size: cover;
+      height: $header-height;
     }
 
     .App-info {
       padding: 16px;
+
+      p:not(:last-child) {
+        margin: 0;
+      }
+
+      p:first-child {
+        text-transform: uppercase;
+        color: grey;
+      }
+
+      p:nth-child(2) {
+        font-size: 1.2rem;
+        font-weight: 300;
+        border-bottom: 1px solid grey;
+        padding-bottom: 12px;
+      }
+
+      p:last-child {
+        font-size: calc(0.4rem + 1vh);
+      }
+
+      @media only screen and (max-width: 768px) {
+        p:first-child{
+          display: none;
+        }
+        p:nth-child(2){
+          padding-bottom: 6px;
+        }
+        p:last-child{
+          margin: 6px 0;
+        }
+      }
     }
 
     .App-footer {
@@ -45,68 +130,120 @@ $sidebar-width: 25vw;
       background-position: left;
       background-image: contain;
       background-repeat: no-repeat;
+
+
+      @media only screen and (max-width: 768px) {
+        background-image: url("./images/NMBUwhiteRot.svg");
+      }
     }
 
 
   }
 
-  .App-link {
-    color: $link-color;
-  }
+  /* .App-link { */
+  /*   color: $link-color; */
+  /* } */
 
   .App-main {
-    width: 100%;
-    background-color: $secondary-text;
+    /* max-width: calc($app-width - $sidebar-width); */
     padding: 16px;
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-rows: 1fr auto;
+    background-color: whitesmoke;
+    grid-gap: 10px;
 
-    .App-Form-Inputs {
-      font-size: 16px;
-      font-weight: 400;
-      width: 100%;
-      padding: 8px 12px;
-      display: inline-block;
-      border: 1px solid $secondary-text;
-      border-radius: 4px;
-      box-sizing: border-box;
+    @media only screen and (max-width: 768px) {
+      flex: 1;
     }
+
+    form{
+      display: grid;
+      grid-gap: 10px;
+      justify-content: flex-start;
+      grid-template-columns: 1fr;
+      grid-auto-rows: max-content;
+
+      .App-Form-Inputs {
+        font-size: 16px;
+        font-weight: 400;
+        padding: 8px 12px;
+        display: inline-block;
+        border: 1px solid $secondary-text;
+        border-radius: 4px;
+        box-sizing: border-box;
+        width: 100%;
+      }
+
+      .css-2b097c-container{
+        padding: 0;
+      }
+    }
+
 
     .App-Nav-Btn {
       min-width: 100px;
-      padding: 12px;
-      font-size: 20px;
+      padding: 8px;
+      font-size: 1.3rem;
       font-weight: 400;
       background-color: $primary-color;
       color: $secondary-text;
       text-transform: uppercase;
       cursor: pointer;
+
     }
 
     .image-grid {
       display: grid;
-      grid-template-rows: repeat(auto-fit, 150px);
+      grid-template-columns: repeat(auto-fit, $goal-image-size);
+      grid-template-rows: repeat(auto-fit, $goal-image-size);
       grid-gap: 10px;
-      justify-content: center;
-      margin: auto;
-      max-width: 100%;
-      grid-template-columns: repeat(auto-fit, 150px);
 
       input {
-        width: 150px;
-        height: 150px;
+        width: $goal-image-size;
+        height: $goal-image-size;
         cursor: pointer;
-      }
+      } /* input */
 
       input.selected {
-        width: 140px;
-        height: 140px;
+        width: $goal-image-size - 2 * $goal-image-border;
+        height: $goal-image-size - 2 * $goal-image-border;
         cursor: pointer;
-        border: 5px solid $link-color;
-      }
-    }
+        border: $goal-image-border solid $link-color;
+      } /* input.selected */
+    } /* image-grid */
 
 
-  }
-}
+    .target-list {
+      display: grid;
+      grid-auto-flow: column;
+
+      .target-group>div>label{
+        display: grid;
+        grid-auto-flow: column;
+        padding: 4px 8px;
+        grid-template-columns: 50px 1fr;
+        border-bottom: 2px solid lightgrey;
+        grid-gap: 10px;
+        align-items: center;
+
+        button {
+          width: 50px;
+          height: 50px;
+          font-size: calc(10px + 1vmin);
+          background-color: $primary-color;
+          color: $secondary-text;
+          text-align: center;
+        } /* BUTTON END */
+
+        p {
+          font-size: calc(10px + 1vmin);
+        } /* P END */
+      } /* .target-group>div>label END */
+
+    } /* target-list END */
+  } /* App-Main */
+} /* App */
 
 
 

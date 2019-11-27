@@ -37,21 +37,37 @@ class Target extends React.Component {
   render() {
     const {Targets, handleSelect, nextStep, prevStep} = this.props
     const {PossibleTargets} = this.state
+    const NestedTargets = [...new Set(PossibleTargets.map(target=>target.goal))]
+      .reduce((acc, curr) => {
+        acc[curr]=PossibleTargets.filter(target=>target.goal===curr)
+        return acc;
+      }, {});
+
     return (
       <React.Fragment>
         <div id="target-list" className="target-list">
           {
-            PossibleTargets.map(target=>{
+            Object.keys(NestedTargets).map((goal, idx)=>{
               return(
-                <div id={"Target-"+target.id}>
-                  <p><span>{target.id}</span> <span>{target.title}</span></p>
+                <div id={"Goal-"+goal} key={goal} className="target-group">
+                  {
+                    NestedTargets[goal].map(target=>{
+                      return(
+                        <div id={"Target-"+target.id} key={target.id}>
+                          <label><button name={target.id} key={target.id}>{target.id}</button><p>{target.title}</p></label>
+                        </div>
+                      )
+                    })
+                  }
                 </div>
               )
             })
           }
         </div>
-        <button onClick={this.props.nextStep} className="App-Nav-Btn">Next</button>
-        <button onClick={this.props.prevStep} className="App-Nav-Btn">Previous</button>
+        <div className="nav-btn">
+          <button onClick={this.props.nextStep} className="App-Nav-Btn">Next</button>
+          <button onClick={this.props.prevStep} className="App-Nav-Btn">Previous</button>
+        </div>
       </React.Fragment>
     );
   }

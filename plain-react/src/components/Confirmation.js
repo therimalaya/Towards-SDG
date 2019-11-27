@@ -5,7 +5,9 @@ class Confirmation extends React.Component {
     return (
       <React.Fragment>
         <h1>I am confirmation</h1>
-        <button onClick={this.props.goHome} className="App-Nav-Btn">Home</button>
+        <div className="nav-btn">
+          <button onClick={this.props.goHome} className="App-Nav-Btn">Home</button>
+        </div>
       </React.Fragment>
     );
   }

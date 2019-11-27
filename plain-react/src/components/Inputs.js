@@ -4,7 +4,7 @@ import {FacultyConfig} from '../config/app-config';
 
 export class Faculty extends React.Component {
   render() {
-    const {isMulti, placeholder, value, handleSelect} = this.props
+    const {className, isMulti, placeholder, value, handleSelect} = this.props
     const initialValue = FacultyConfig.filter(faculty=>value.includes(faculty.value))
     const handleChange = (selected) => {
       if (Array.isArray(selected)) {
@@ -16,6 +16,7 @@ export class Faculty extends React.Component {
     return (
       <React.Fragment>
         <Select
+          className={className}
           placeholder={placeholder}
           isMulti={isMulti}
           isClearable={false}

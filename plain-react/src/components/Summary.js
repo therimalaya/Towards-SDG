@@ -5,8 +5,10 @@ class Summary extends React.Component {
         return (
           <React.Fragment>
             <h1>I am the summary</h1>
-            <button onClick={this.props.nextStep} className="App-Nav-Btn">Next</button>
-            <button onClick={this.props.prevStep} className="App-Nav-Btn">Previous</button>
+            <div className="nav-btn">
+              <button onClick={this.props.nextStep} className="App-Nav-Btn">Next</button>
+              <button onClick={this.props.prevStep} className="App-Nav-Btn">Previous</button>
+            </div>
           </React.Fragment>
         );
     }

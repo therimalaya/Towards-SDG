@@ -61,8 +61,10 @@ class Goal extends React.Component {
           onSelectImage={this.onSelectImage}
           />
           <p>Current Goals: {Goals.join(", ")}</p> */}
-      <button onClick={nextStep} className="App-Nav-Btn">Next</button>
-      <button onClick={prevStep} className="App-Nav-Btn">Previous</button>
+      <div className="nav-btn">
+        <button onClick={nextStep} className="App-Nav-Btn">Next</button>
+        <button onClick={prevStep} className="App-Nav-Btn">Previous</button>
+      </div>
       </React.Fragment>
     );
   }

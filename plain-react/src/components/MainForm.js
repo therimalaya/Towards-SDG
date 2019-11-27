@@ -17,7 +17,7 @@ class MainForm extends React.Component {
             values={values}
             handleInput={handleInput}
             handleSelect={handleSelect}
-            nextStep={nextStep}/>
+            nextStep={nextStep} />
         );
       case 2:
         return(
