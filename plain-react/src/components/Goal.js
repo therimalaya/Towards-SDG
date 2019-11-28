@@ -33,7 +33,7 @@ class Goal extends React.Component {
   }
 
   render() {
-    const {Goals, handleSelect, nextStep, prevStep} = this.props
+    const {Goals, nextStep, prevStep} = this.props;
     const {AllGoals} = this.state
     /* console.log(AllGoals) */
     return (
@@ -53,17 +53,22 @@ class Goal extends React.Component {
         })
       }
       </div>
-      {/* <h1>I am Goal.</h1>
-          <Gallery
-          enableLightbox={false}
-          onClickThumbnail={this.onSelectImage}
-          images={this.state.Images}
-          onSelectImage={this.onSelectImage}
-          />
-          <p>Current Goals: {Goals.join(", ")}</p> */}
+      <div className="goal-details">
+        {console.log(AllGoals)}
+        {
+          AllGoals.filter(goal=>Goals.includes(goal.goal)).map((goal, idx)=>{
+            return(
+              <React.Fragment key={idx}>
+                <p className="goal-label" style={{background: goal.colorInfo.hex}}>Goal {goal.goal}</p>
+                <p className="goal-title">{goal.title}</p>
+              </React.Fragment>
+            )
+          })
+        }
+      </div>
       <div className="nav-btn">
-        <button onClick={nextStep} className="App-Nav-Btn">Next</button>
         <button onClick={prevStep} className="App-Nav-Btn">Previous</button>
+        <button onClick={nextStep} className="App-Nav-Btn">Next</button>
       </div>
       </React.Fragment>
     );

@@ -8,9 +8,9 @@ export default class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      Step: 1,
-      Goals: [1, 2],
-      Targets: [1.1, 2.5],
+      Step: 3,
+      Goals: [13, 17],
+      Targets: [13.1, 17.12],
       Name: "Raju Rimal",
       Faculty: "KBM",
       Research: {Title: "Simrel", URL: "https://simulatr.github.io"},
@@ -22,6 +22,7 @@ export default class App extends React.Component {
     this.nextStep = this.nextStep.bind(this);
     this.prevStep = this.prevStep.bind(this);
     this.goHome = this.goHome.bind(this);
+    this.Submit = this.Submit.bind(this);
   }
 
   handleInput = input => event => {
@@ -40,6 +41,11 @@ export default class App extends React.Component {
     this.setState({
       [input]: value
     })
+  }
+  Submit = (event) => {
+    event.preventDefault()
+    console.log("Submitted")
+    this.nextStep(event)
   }
   nextStep = (event) => {
     event.preventDefault()
@@ -89,6 +95,7 @@ export default class App extends React.Component {
             nextStep={this.nextStep}
             prevStep={this.prevStep}
             goHome={this.goHome}
+            Submit={this.Submit}
           />
         </main>
       </div>

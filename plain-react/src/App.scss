@@ -35,7 +35,7 @@ $goal-image-border: 0.5vmin;
   -moz-box-shadow: 0px 0px 7px 2px $box-shadow;
   box-shadow: 0px 0px 7px 2px $box-shadow;
   border: 3px solid #ababab;
-  border-radius: 15px;
+  border-radius: 10px;
 
   display: grid;
   grid-auto-flow: column;
@@ -72,19 +72,9 @@ $goal-image-border: 0.5vmin;
     box-shadow: 1px 0px 7px 0px $box-shadow-dark;
 
     @media only screen and (max-width: 768px) {
-      height: $header-height;
+      grid-auto-flow: column;
       grid-template-columns: auto 1fr 75px;
-      align-content: start;
-      min-width: $app-width;
-      position: sticky;
-      bottom: 0;
-      left: 0;
-      overflow-x: scroll;
-      overflow-y: hidden;
-      font-size: calc(8px + 0.6vh);
-      h2 {
-        display: none;
-      }
+      grid-template-rows: auto;
     }
 
     .App-header{
@@ -93,6 +83,10 @@ $goal-image-border: 0.5vmin;
       background-size: cover;
       height: $header-height;
       border-bottom: 5px solid $primary-color;
+
+      @media only screen and (max-width: 768px) {
+        display: none;
+      }
     }
 
     .App-info {
@@ -119,6 +113,7 @@ $goal-image-border: 0.5vmin;
       }
 
       @media only screen and (max-width: 768px) {
+        grid-column: 1/2;
         p:first-child{
           display: none;
         }
@@ -135,12 +130,14 @@ $goal-image-border: 0.5vmin;
       background-color: $primary-color;
       background-image: url("./images/NMBUwhite.svg");
       background-position: left;
-      background-image: contain;
+      background-size: contain;
       background-repeat: no-repeat;
 
 
       @media only screen and (max-width: 768px) {
         background-image: url("./images/NMBUwhiteRot.svg");
+        background-position: top;
+        grid-column: 3/3;
       }
     }
 
@@ -162,14 +159,29 @@ $goal-image-border: 0.5vmin;
 
     @media only screen and (max-width: 768px) {
       flex: 1;
+      overflow-y: scroll;
     }
 
     form{
       display: grid;
       grid-gap: 10px;
       justify-content: flex-start;
-      grid-template-columns: 1fr;
+      align-items: center;
+      grid-template-columns: max-content 1fr;
       grid-auto-rows: max-content;
+
+      @media only screen and (max-width: 850px) {
+        grid-template-columns: 1fr;
+      }
+
+      .app-input-label{
+        text-align: right;
+        font-weight: 600;
+
+        @media only screen and (max-width: 850px) {
+          text-align: inherit;
+        }
+      }
 
       .App-Form-Inputs {
         font-size: 16px;
@@ -187,24 +199,40 @@ $goal-image-border: 0.5vmin;
       }
     }
 
+    .nav-btn {
+      text-align: right;
 
-    .App-Nav-Btn {
-      min-width: 100px;
-      padding: 8px;
-      font-size: 1.3rem;
-      font-weight: 400;
-      background-color: $primary-color;
-      color: $secondary-text;
-      text-transform: uppercase;
-      cursor: pointer;
+      .App-Nav-Btn {
+        min-width: 100px;
+        padding: 8px;
+        font-size: 1rem;
+        font-weight: 400;
+        background-color: $primary-color;
+        color: $secondary-text;
+        text-transform: uppercase;
+        cursor: pointer;
+        border: none;
+      }
 
+      .App-Nav-Btn:first-child {
+        border-right: 1px solid rgba($background-color, 0.5);
+      }
+
+
+      @media only screen and (max-width: 768px) {
+        &:after {
+          content: "";
+          display: block;
+          height: 8px;
+        }
+      }
     }
 
     .image-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, $goal-image-size);
       grid-template-rows: repeat(auto-fit, $goal-image-size);
-      grid-gap: 10px;
+      grid-gap: 8px;
 
       input {
         width: $goal-image-size;
@@ -220,10 +248,40 @@ $goal-image-border: 0.5vmin;
       } /* input.selected */
     } /* image-grid */
 
+    .goal-details{
+      display: grid;
+      grid-auto-flow: row;
+      grid-template-columns: max-content 1fr;
+      grid-gap: 3px;
+
+      p {
+        margin: 0;
+        padding: 10px;
+        font-size: 0.9rem;
+      }
+
+      p:nth-child(2n) {
+        background-color: rgba($background-color, 0.4);
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+
+      p:nth-child(2n+1) {
+        font-weight: 700;
+        text-transform: uppercase;
+        color: whitesmoke;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+      }
+    }
+
 
     .target-list {
       display: grid;
       grid-auto-flow: row;
+      grid-template-columns: repeat(2, 1fr);
+      align-items: flex-start;
+      grid-gap: 10px;
 
       .target-group>div>label{
         display: grid;
@@ -232,20 +290,33 @@ $goal-image-border: 0.5vmin;
         grid-template-columns: 50px 1fr;
         border-bottom: 2px solid lightgrey;
         grid-gap: 10px;
-        align-items: center;
 
         button {
           width: 50px;
-          height: 50px;
-          font-size: calc(10px + 1vmin);
+          height: 35px;
+          font-size: calc(6px + 1.3vmin);
           background-color: $primary-color;
           color: $secondary-text;
           text-align: center;
         } /* BUTTON END */
 
         p {
-          font-size: calc(10px + 1vmin);
+          text-overflow: ellipsis;
+          font-size: calc(8px + 0.8vmin);
+          margin: 0;
+          padding-bottom: 10px;
+          white-space: nowrap;
+          overflow: hidden;
+
         } /* P END */
+
+        p:hover{
+          text-overflow: unset;
+          white-space: initial;
+          overflow: unset;
+        }
+
+
       } /* .target-group>div>label END */
 
     } /* target-list END */

@@ -10,7 +10,6 @@ class Target extends React.Component {
     var newTargets = TargetList
       .filter(target=>props.Goals.includes(target.goal))
       .filter(target=>target.id.match("[0-9]$"))
-    console.log(newTargets)
     newTargets.forEach(target=>{
       target.goal_img = "images/Goals/Goal-"+numnum(target.goal)+".png"
       target.isSelected = props.Targets.includes(Number(target.id))
@@ -22,7 +21,7 @@ class Target extends React.Component {
   }
 
   handleClick = (event) => {
-    const newTargets = this.state.AllTargets
+    const newTargets = this.state.AllTargets;
     /* newTargets.forEach(target=>{
      *   if(target.id === Number(event.target.name)) {
      *     target.isSelected = !target.isSelected
@@ -35,7 +34,7 @@ class Target extends React.Component {
      * this.setState({AllTargets: newTargets}) */
   }
   render() {
-    const {Targets, handleSelect, nextStep, prevStep} = this.props
+    const {Targets, handleSelect, nextStep, prevStep} = this.props;
     const {PossibleTargets} = this.state
     const NestedTargets = [...new Set(PossibleTargets.map(target=>target.goal))]
       .reduce((acc, curr) => {
@@ -51,7 +50,7 @@ class Target extends React.Component {
               return(
                 <div id={"Goal-"+goal} key={goal} className="target-group">
                   {
-                    NestedTargets[goal].map(target=>{
+                    NestedTargets[goal].map((target, idx)=>{
                       return(
                         <div id={"Target-"+target.id} key={target.id}>
                           <label><button name={target.id} key={target.id}>{target.id}</button><p>{target.title}</p></label>
@@ -64,21 +63,13 @@ class Target extends React.Component {
             })
           }
         </div>
-        <div className="nav-btn">
-          <button onClick={this.props.nextStep} className="App-Nav-Btn">Next</button>
-          <button onClick={this.props.prevStep} className="App-Nav-Btn">Previous</button>
-        </div>
+      <div className="nav-btn">
+        <button onClick={prevStep} className="App-Nav-Btn">Previous</button>
+        <button onClick={nextStep} className="App-Nav-Btn">Next</button>
+      </div>
       </React.Fragment>
     );
   }
 };
-
-{/* <ImageLink
-    AllGoals={AllGoals}
-    goal={goal}
-    handleClick={this.handleClick.bind(this)}
-    key={goal.goal}
-    disabled={Goals.length >= 2 & !goal.isSelected}
-    /> */}
 
 export default Target;

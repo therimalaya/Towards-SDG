@@ -9,7 +9,7 @@ import Confirmation from './Confirmation';
 class MainForm extends React.Component {
   render() {
     const {Step, values, Goals, Targets, Interaction} = this.props;
-    const {handleInput, handleSelect, goHome, nextStep, prevStep} = this.props;
+    const {handleInput, handleSelect, goHome, nextStep, prevStep, Submit} = this.props;
     switch(Step) {
       case 1:
         return(
@@ -51,7 +51,7 @@ class MainForm extends React.Component {
             Goals={Goals}
             Targets={Targets}
             Interaction={Interaction}
-            nextStep={nextStep}
+            Submit={Submit}
             prevStep={prevStep} />
         );
       case 6:

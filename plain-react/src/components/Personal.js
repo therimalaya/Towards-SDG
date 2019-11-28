@@ -7,6 +7,7 @@ class Personal extends React.Component {
         return (
           <React.Fragment>
             <form onSubmit={this.handleSubmit}>
+              <label className="app-input-label" htmlFor="fullname">Full Name</label>
               <input
                 name="fullname"
                 className="App-Form-Inputs"
@@ -14,12 +15,14 @@ class Personal extends React.Component {
                 type="text"
                 value={values.Name}
                 onChange={handleInput("Name")} />
+              <label className="app-input-label" htmlFor="faculty">Faculty</label>
               <Faculty
                 className="App-Form-Inputs"
                 isMulti={false}
                 value={values.Faculty}
                 handleSelect={handleSelect("Faculty")}
                 placeholder="Faculty"/>
+              <label className="app-input-label" htmlFor="research-title">Research Title</label>
               <input
                 name="research-title"
                 className="App-Form-Inputs"
@@ -27,6 +30,7 @@ class Personal extends React.Component {
                 type="text"
                 value={values.Research.Title}
                 onChange={handleInput("Research.Title")} />
+              <label className="app-input-label" htmlFor="research-url">Research URL</label>
               <input
                 name="research-url"
                 className="App-Form-Inputs"
@@ -34,6 +38,7 @@ class Personal extends React.Component {
                 type="url"
                 value={values.Research.URL}
                 onChange={handleInput("Research.URL")} />
+              <label className="app-input-label" htmlFor="coauthors-faculty">Coauthor's Faculty</label>
               <Faculty
                 className="App-Form-Inputs"
                 isMulti={true}
