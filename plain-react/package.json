@@ -2,6 +2,7 @@
   "name": "sdg",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://cloudrimalaya.com/sdg-new",
   "dependencies": {
     "firebase": "^7.5.0",
     "node-sass": "^4.13.0",
