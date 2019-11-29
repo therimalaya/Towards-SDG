@@ -38,38 +38,38 @@ class Goal extends React.Component {
     /* console.log(AllGoals) */
     return (
       <React.Fragment>
-      <div id="goal-image-grid" className="image-grid">
-      {
-        AllGoals.map(goal=>{
-          return(
-            <ImageLink
-              AllGoals={AllGoals}
-              goal={goal}
-              handleClick={this.handleClick.bind(this)}
-              key={goal.goal}
-              disabled={Goals.length >= 2 & !goal.isSelected}
-            />
-          )
-        })
-      }
-      </div>
-      <div className="goal-details">
-        {console.log(AllGoals)}
-        {
-          AllGoals.filter(goal=>Goals.includes(goal.goal)).map((goal, idx)=>{
-            return(
-              <React.Fragment key={idx}>
-                <p className="goal-label" style={{background: goal.colorInfo.hex}}>Goal {goal.goal}</p>
-                <p className="goal-title">{goal.title}</p>
-              </React.Fragment>
-            )
-          })
-        }
-      </div>
-      <div className="nav-btn">
-        <button onClick={prevStep} className="App-Nav-Btn">Previous</button>
-        <button onClick={nextStep} className="App-Nav-Btn">Next</button>
-      </div>
+        <div id="goal-image-grid" className="image-grid">
+          {
+            AllGoals.map(goal=>{
+              return(
+                <ImageLink
+                  AllGoals={AllGoals}
+                  goal={goal}
+                  handleClick={this.handleClick.bind(this)}
+                  key={goal.goal}
+                  disabled={Goals.length >= 2 & !goal.isSelected}
+                />
+              )
+            })
+          }
+        </div>
+        <div className="goal-details">
+          {console.log(AllGoals)}
+          {
+            AllGoals.filter(goal=>Goals.includes(goal.goal)).map((goal, idx)=>{
+              return(
+                <React.Fragment key={idx}>
+                  <p className="goal-label" style={{background: goal.colorInfo.hex}}>Goal {goal.goal}</p>
+                  <p className="goal-title">{goal.title}</p>
+                </React.Fragment>
+              )
+            })
+          }
+        </div>
+        <div className="nav-btn">
+          <button onClick={prevStep} className="App-Nav-Btn">Previous</button>
+          <button onClick={nextStep} className="App-Nav-Btn">Next</button>
+        </div>
       </React.Fragment>
     );
   }

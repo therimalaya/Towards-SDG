@@ -40,7 +40,6 @@ $goal-image-border: 0.5vmin;
   display: grid;
   grid-auto-flow: column;
   grid-template-columns: $sidebar-width 1fr;
-  overflow: scroll;
 
   @media only screen and (max-width: 768px) {
     width: $app-width-small;
@@ -57,12 +56,9 @@ $goal-image-border: 0.5vmin;
     grid-auto-flow: row;
     grid-template-rows: auto 1fr 75px;
     justify-content: start;
+    grid-column: 1/1;
 
     max-height: $app-height;
-    position: sticky;
-    top: 0;
-    left: 0;
-    overflow-y: scroll;
 
     font-size: calc(9px + 0.8vmin);
     color: $primary-text;
@@ -156,6 +152,15 @@ $goal-image-border: 0.5vmin;
     grid-template-rows: 1fr auto;
     background-color: whitesmoke;
     grid-gap: 10px;
+    grid-column: 2/2;
+    overflow-y: scroll;
+
+    &:after {
+      content: "";
+      display: block;
+      height: 8px;
+    }
+
 
     @media only screen and (max-width: 768px) {
       flex: 1;
@@ -218,14 +223,6 @@ $goal-image-border: 0.5vmin;
         border-right: 1px solid rgba($background-color, 0.5);
       }
 
-
-      @media only screen and (max-width: 768px) {
-        &:after {
-          content: "";
-          display: block;
-          height: 8px;
-        }
-      }
     }
 
     .image-grid {
