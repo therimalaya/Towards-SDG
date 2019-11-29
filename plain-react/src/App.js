@@ -9,8 +9,8 @@ export default class App extends React.Component {
     super(props)
     this.state = {
       Step: 3,
-      Goals: [13, 17],
-      Targets: [13.1, 17.12],
+      Goals: [16, 17],
+      Targets: [16.10, 17.17],
       Name: "Raju Rimal",
       Faculty: "KBM",
       Research: {Title: "Simrel", URL: "https://simulatr.github.io"},

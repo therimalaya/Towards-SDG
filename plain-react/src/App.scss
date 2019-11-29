@@ -279,43 +279,67 @@ $goal-image-border: 0.5vmin;
       grid-template-columns: repeat(2, 1fr);
       align-items: flex-start;
       grid-gap: 10px;
+      height: auto;
+      overflow: hidden;
 
-      .target-group>div>label{
-        display: grid;
-        grid-auto-flow: column;
-        padding: 4px 8px;
-        grid-template-columns: 50px 1fr;
-        border-bottom: 2px solid lightgrey;
-        grid-gap: 10px;
+      .target-group {
+        max-height: 95%;
+        overflow-y: scroll;
 
-        button {
-          width: 50px;
-          height: 35px;
-          font-size: calc(6px + 1.3vmin);
-          background-color: $primary-color;
-          color: $secondary-text;
-          text-align: center;
-        } /* BUTTON END */
+        &>div>label{
+          display: grid;
+          grid-auto-flow: column;
+          padding: 4px 8px;
+          grid-template-columns: 50px 1fr;
+          border-bottom: 2px solid lightgrey;
+          grid-gap: 10px;
 
-        p {
-          text-overflow: ellipsis;
-          font-size: calc(8px + 0.8vmin);
-          margin: 0;
-          padding-bottom: 10px;
-          white-space: nowrap;
-          overflow: hidden;
+          .clicked-target-btn, .target-btn {
+            width: 50px;
+            height: 35px;
+            font-size: calc(6px + 1.3vmin);
+            background-color: $primary-color;
+            color: $secondary-text;
+            text-align: center;
+            border: none;
+          } /* BUTTON END */
 
-        } /* P END */
+          .clicked-target-btn {
+            border: 2px solid firebrick;
+          }
 
-        p:hover{
-          text-overflow: unset;
-          white-space: initial;
-          overflow: unset;
-        }
+          .target-text {
+            text-overflow: ellipsis;
+            font-size: calc(8px + 0.8vmin);
+            margin: 0;
+            padding-bottom: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+
+          } /* P END */
+
+          .clicked-target-btn + .target-text {
+            text-overflow: unset;
+            white-space: initial;
+            overflow: unset;
+            font-weight: 600;
+          }
+
+          .target-btn:hover + .target-text {
+            text-overflow: unset;
+            white-space: initial;
+            overflow: unset;
+          }
+
+          .target-text:hover {
+            text-overflow: unset;
+            white-space: initial;
+            overflow: unset;
+          }
 
 
-      } /* .target-group>div>label END */
-
+        } /* &>div>label END */
+      } /* Target group END */
     } /* target-list END */
   } /* App-Main */
 } /* App */

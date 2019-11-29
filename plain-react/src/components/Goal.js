@@ -35,7 +35,6 @@ class Goal extends React.Component {
   render() {
     const {Goals, nextStep, prevStep} = this.props;
     const {AllGoals} = this.state
-    /* console.log(AllGoals) */
     return (
       <React.Fragment>
         <div id="goal-image-grid" className="image-grid">
@@ -54,7 +53,6 @@ class Goal extends React.Component {
           }
         </div>
         <div className="goal-details">
-          {console.log(AllGoals)}
           {
             AllGoals.filter(goal=>Goals.includes(goal.goal)).map((goal, idx)=>{
               return(
