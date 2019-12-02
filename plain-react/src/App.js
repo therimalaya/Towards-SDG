@@ -9,13 +9,15 @@ export default class App extends React.Component {
     super(props)
     this.state = {
       Step: 3,
-      Goals: [16, 17],
-      Targets: [16.10, 17.17],
+      Goals: [1, 2],
+      Targets: [1.2, 2.4],
       Name: "Raju Rimal",
       Faculty: "KBM",
-      Research: {Title: "Simrel", URL: "https://simulatr.github.io"},
-      Coauthors: {Faculty: ["KBM", "Realtek"]},
-      Interaction: "Positive"
+      Research: {
+        Title: "Simulation of Linear Model Data",
+        URL: "https://simulatr.github.io/simrel"},
+      Coauthors: {Faculty: ["KBM", "MINA", "Realtek"]},
+      Interaction: ""
     }
     this.handleInput = this.handleInput.bind(this);
     this.handleSelect = this.handleSelect.bind(this);

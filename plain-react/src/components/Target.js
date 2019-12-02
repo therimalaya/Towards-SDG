@@ -19,33 +19,39 @@ class Target extends React.Component {
       PossibleTargets: newTargets
     }
     this.handleClick = this.handleClick.bind(this)
-    /* console.log(GoalList.filter(goal=>goal.isSelected).flatMap(goal=>goal.targets.filter(x=>x.isSelected))); */
-  }
-
-  componentDidMount() {
-    const clicked_btn = document.getElementsByClassName('clicked-target-btn');
-    [...clicked_btn].forEach(btn=>btn.scrollIntoView());
   }
 
   handleClick = (event) => {
     const newTargets = this.state.PossibleTargets;
+    console.log(newTargets)
+    console.log(event.target)
+    console.log(event.currentTarget)
     newTargets.forEach(target=>{
-      if(target.id === event.target.name) {
-        // MAKE TARGET AUTO DISSELECT OLD ONE WHEN NEW IS SELECTED
+      if(target.id === event.currentTarget.name) {
         target.isSelected = !target.isSelected
-        event.target.classList.toggle("clicked-target-btn")
-        event.target.classList.toggle("target-btn")
-        event.target.scrollIntoView()
+        event.currentTarget.classList.toggle("clicked-target-btn")
+        event.currentTarget.classList.toggle("target-btn")
+        /* event.currentTarget.scrollIntoView() */
       }
     })
-    console.log(newTargets)
     this.props.handleSelect(
       newTargets.filter(target=>target.isSelected).map(target=>target.id)
     )
     this.setState({PossibleTargets: newTargets})
   }
+
+  setInteraction = (event) => {
+    console.log(event.target);
+    this.props.handleSelect(event.target.value)
+  }
+
+  componentDidMount(){
+    [...document.getElementsByClassName("clicked-target-btn")]
+      .map(btn=>btn.scrollIntoView())
+  }
+
   render() {
-    const {Targets, handleSelect, nextStep, prevStep} = this.props;
+    const {Interaction, nextStep, prevStep} = this.props;
     const {PossibleTargets} = this.state
     const NestedTargets = [...new Set(PossibleTargets.map(target=>target.goal))]
       .reduce((acc, curr) => {
@@ -60,61 +66,58 @@ class Target extends React.Component {
 
     return (
       <React.Fragment>
-        <div id="target-list" className="target-list">
+        <div id="target-panel" className="target-panel">
           {
             SelectedGoals.map((goal, idx)=>{
               return(
-                <div id={"Goal-"+goal.goal} key={goal.goal} className="target-group">
-                  {
-                    goal.targets.map((target, idx)=>{
-                      return(
-                        <div id={"Target-"+target.id} key={target.id}>
-                          <label>
-                            <button
-                              className={target.isSelected ? "clicked-target-btn" : "target-btn"}
-                              onClick={this.handleClick}
-                              name={target.id}
-                              key={target.id}
-                              style={{backgroundColor: goal.colorInfo.hex}}>
-                              {target.id}
-                            </button>
-                            <p className="target-text">{target.title}</p>
-                          </label>
-                        </div>
-                      )
-                    })
-                  }
-                </div>
-              )
-            })
-          }
-        </div>
-        <div className="goal-details">
-          {
-            SelectedGoals.flatMap(goal=>{
-              const res = {
-                color: goal.colorInfo.hex,
-                targetTitle: goal.targets
-                  .filter(target=>target.isSelected)
-                  .flatMap(target=>target.title).toString(),
-                targetID: goal.targets
-                  .filter(target=>target.isSelected)
-                  .flatMap(target=>target.id).toString(),
-              };
-              return(res);
-            }).map((goal, idx)=>{
-              return(
                 <React.Fragment key={idx}>
-                  <p className="goal-label" style={{background: goal.color}}>Target {goal.targetID}</p>
-                  <p className="goal-title">{goal.targetTitle}</p>
+                  <div id={"Goal-"+goal.goal+"-header"} className="goal-header">
+                    <img src={goal.image_src} alt={goal.goal} />
+                    <p>{goal.short}</p>
+                    <p>{goal.title}</p>
+                  </div>
+                  <div className="target-list">
+                    {
+                      goal.targets.map((target, idx)=>{
+                        return(
+                          <button
+                            disabled={this.props.Targets.length>=2 & !target.isSelected}
+                            id={"Target-"+target.id}
+                            name={target.id}
+                            key={target.id}
+                            width="100%"
+                            height="100%"
+                            onClick={this.handleClick}
+                            className={target.isSelected ? "clicked-target-btn" : "target-btn"}>
+                            <p className="target-text">
+                              <span className="target-id">{target.id} </span>
+                              {target.title}
+                            </p>
+                          </button>
+                        )
+                      })
+                    }
+                  </div>
                 </React.Fragment>
               )
             })
           }
         </div>
-        <div className="nav-btn">
-          <button onClick={prevStep} className="App-Nav-Btn">Previous</button>
-          <button onClick={nextStep} className="App-Nav-Btn">Next</button>
+        <div className="target-page-buttons">
+          <div className="Interaction-Buttons">
+            <p className="Interaction-Text">Set Interaction</p>
+            <button onClick={this.setInteraction}
+              value="Positive"
+              className="Btn-Interaction PositiveInteraction">+</button>
+            <button onClick={this.setInteraction}
+              value="Negative"
+              className="Btn-Interaction NegativeInteraction">-</button>
+            <div className="Interaction-Status">{Interaction}</div>
+          </div>
+          <div className="nav-btn">
+            <button onClick={prevStep} className="App-Nav-Btn">Previous</button>
+            <button onClick={nextStep} className="App-Nav-Btn">Next</button>
+          </div>
         </div>
       </React.Fragment>
     );

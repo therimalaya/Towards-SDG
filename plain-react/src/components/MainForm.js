@@ -2,7 +2,6 @@ import React from 'react';
 import Personal from './Personal';
 import Goal from './Goal';
 import Target from './Target';
-import InterAction from './InterAction';
 import Summary from './Summary';
 import Confirmation from './Confirmation';
 
@@ -32,19 +31,12 @@ class MainForm extends React.Component {
           <Target
             Goals={Goals}
             Targets={Targets}
-            handleSelect={handleSelect("Targets")}
+            handleSelect={handleSelect("Interaction")}
             nextStep={nextStep}
-            prevStep={prevStep}/>
+            prevStep={prevStep}
+            Interaction={Interaction}/>
         );
       case 4:
-        return(
-          <InterAction
-            Interaction={Interaction}
-            handleInput={handleInput}
-            nextStep={nextStep}
-            prevStep={prevStep}/>
-        );
-      case 5:
         return(
           <Summary
             values={values}
@@ -54,7 +46,7 @@ class MainForm extends React.Component {
             Submit={Submit}
             prevStep={prevStep} />
         );
-      case 6:
+      case 5:
         return(
           <Confirmation
             goHome={goHome}/>

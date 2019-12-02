@@ -1,6 +1,5 @@
 import React from 'react';
 import GoalList from '../data/goals.json';
-import Gallery from 'react-grid-gallery';
 const numnum = num => num <=9 ? "0"+num : num;
 
 GoalList.forEach(goal=>{
