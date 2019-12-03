@@ -31,7 +31,8 @@ class MainForm extends React.Component {
           <Target
             Goals={Goals}
             Targets={Targets}
-            handleSelect={handleSelect("Interaction")}
+            handleSelect={handleSelect}
+            handleInput={handleInput}
             nextStep={nextStep}
             prevStep={prevStep}
             Interaction={Interaction}/>

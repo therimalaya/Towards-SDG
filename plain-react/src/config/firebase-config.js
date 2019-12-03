@@ -1,4 +1,4 @@
-export const firebaseConfig = {
+export const FirebaseConfig = {
   apiKey: "AIzaSyAdNDJMx90lnaR-Wj8M0I6dProCI7TTS-o",
   authDomain: "towardsdg.firebaseapp.com",
   databaseURL: "https://towardsdg.firebaseio.com",

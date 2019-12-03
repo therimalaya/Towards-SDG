@@ -22,10 +22,8 @@ class Target extends React.Component {
   }
 
   handleClick = (event) => {
+    event.preventDefault()
     const newTargets = this.state.PossibleTargets;
-    console.log(newTargets)
-    console.log(event.target)
-    console.log(event.currentTarget)
     newTargets.forEach(target=>{
       if(target.id === event.currentTarget.name) {
         target.isSelected = !target.isSelected
@@ -34,15 +32,10 @@ class Target extends React.Component {
         /* event.currentTarget.scrollIntoView() */
       }
     })
-    this.props.handleSelect(
+    this.props.handleSelect('Targets')(
       newTargets.filter(target=>target.isSelected).map(target=>target.id)
     )
     this.setState({PossibleTargets: newTargets})
-  }
-
-  setInteraction = (event) => {
-    console.log(event.target);
-    this.props.handleSelect(event.target.value)
   }
 
   componentDidMount(){
@@ -51,14 +44,16 @@ class Target extends React.Component {
   }
 
   render() {
-    const {Interaction, nextStep, prevStep} = this.props;
+    const {handleInput, Interaction, nextStep, prevStep} = this.props;
     const {PossibleTargets} = this.state
     const NestedTargets = [...new Set(PossibleTargets.map(target=>target.goal))]
       .reduce((acc, curr) => {
         acc[curr]=PossibleTargets.filter(target=>target.goal===curr)
         return acc;
       }, {});
-    var SelectedGoals = GoalList.filter(goal=>Object.keys(NestedTargets).includes(goal.goal.toString()))
+    var SelectedGoals = GoalList
+      .filter(goal=>Object.keys(NestedTargets)
+        .includes(goal.goal.toString()))
     SelectedGoals.forEach(goal=>{
       goal.targets = NestedTargets[goal.goal];
       return(goal);
@@ -83,6 +78,7 @@ class Target extends React.Component {
                           <button
                             disabled={this.props.Targets.length>=2 & !target.isSelected}
                             id={"Target-"+target.id}
+                            value={target.id}
                             name={target.id}
                             key={target.id}
                             width="100%"
@@ -104,16 +100,9 @@ class Target extends React.Component {
           }
         </div>
         <div className="target-page-buttons">
-          <div className="Interaction-Buttons">
-            <p className="Interaction-Text">Set Interaction</p>
-            <button onClick={this.setInteraction}
-              value="Positive"
-              className="Btn-Interaction PositiveInteraction">+</button>
-            <button onClick={this.setInteraction}
-              value="Negative"
-              className="Btn-Interaction NegativeInteraction">-</button>
-            <div className="Interaction-Status">{Interaction}</div>
-          </div>
+          <InteractionButtons
+              Interaction={Interaction}
+              handleInput={handleInput}/>
           <div className="nav-btn">
             <button onClick={prevStep} className="App-Nav-Btn">Previous</button>
             <button onClick={nextStep} className="App-Nav-Btn">Next</button>
@@ -125,3 +114,19 @@ class Target extends React.Component {
 };
 
 export default Target;
+
+const InteractionButtons = (props) => {
+  const {Interaction, handleInput} = props;
+  return(
+    <div className="Interaction-Buttons">
+      <p className="Interaction-Text">Set Interaction</p>
+      <button onClick={handleInput("Interaction")}
+        value="Positive"
+        className="Btn-Interaction PositiveInteraction">+</button>
+      <button onClick={handleInput("Interaction")}
+        value="Negative"
+        className="Btn-Interaction NegativeInteraction">-</button>
+      <div className="Interaction-Status">{Interaction}</div>
+    </div>
+  )
+}

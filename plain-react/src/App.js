@@ -1,4 +1,6 @@
 import React from 'react';
+import Firebase from 'firebase';
+import {FirebaseConfig} from './config/firebase-config.js'
 import MainForm from './components/MainForm';
 import SideInfo from './components/SideInfo';
 import {StepConfig} from './config/app-config';
@@ -7,18 +9,19 @@ import './App.scss';
 export default class App extends React.Component {
   constructor(props) {
     super(props)
+    Firebase.initializeApp(FirebaseConfig);
+
     this.state = {
-      Step: 3,
-      Goals: [1, 2],
-      Targets: [1.2, 2.4],
-      Name: "Raju Rimal",
-      Faculty: "KBM",
-      Research: {
-        Title: "Simulation of Linear Model Data",
-        URL: "https://simulatr.github.io/simrel"},
-      Coauthors: {Faculty: ["KBM", "MINA", "Realtek"]},
-      Interaction: ""
+      Step: 5,
+      Goals: [],
+      Targets: [],
+      Name: "",
+      Faculty: "",
+      Research: {Title: "", URL: ""},
+      Coauthors: {Faculty: []},
+      Interaction: "",
     }
+
     this.handleInput = this.handleInput.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
     this.nextStep = this.nextStep.bind(this);
@@ -35,8 +38,9 @@ export default class App extends React.Component {
     } else {
       newState = event.target.value;
     }
+
     this.setState({
-      [input[0]]: newState
+      [input[0]]: newState,
     })
   }
   handleSelect = input => value => {
@@ -44,9 +48,27 @@ export default class App extends React.Component {
       [input]: value
     })
   }
+
+  writeData = (data) => {
+    Firebase.database().ref('/').push(data);
+    console.log("Data Saved");
+  }
+
   Submit = (event) => {
     event.preventDefault()
-    console.log("Submitted")
+    var currentDate = new Date()
+    const data = {
+      Name: this.state.Name,
+      Faculty: this.state.Faculty,
+      Research: this.state.Research,
+      Coauthors: this.state.Coauthors,
+      Goals: this.state.Goals,
+      Targets: this.state.Targets,
+      Interaction: this.state.Interaction,
+      CurrentDate: currentDate
+    }
+    this.writeData(data)
+    console.log(data)
     this.nextStep(event)
   }
   nextStep = (event) => {

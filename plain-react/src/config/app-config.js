@@ -3,9 +3,8 @@ export const StepConfig = [
   { 'label': 'Personal Details', 'key': 1 },
   { 'label': 'Goals', 'key': 2 },
   { 'label': 'Targets', 'key': 3 },
-  { 'label': 'Interaction', 'key': 4 },
-  { 'label': 'Summary', 'key': 5 },
-  { 'label': 'Confirmation', 'key': 6 },
+  { 'label': 'Summary', 'key': 4 },
+  { 'label': 'Confirmation', 'key': 5 },
 ]
 
 export const FacultyConfig = [
