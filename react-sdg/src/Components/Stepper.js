@@ -12,17 +12,10 @@ const stepperStyle = makeStyles(theme => ({
 
 export default function MyStepper(props) {
   const classes = stepperStyle()
-  const steps = [
-    {'label': 'Personal Details', 'key': 1}, 
-    {'label': 'SDG Goals', 'key': 2}, 
-    {'label': 'SDG Targets', 'key': 3}, 
-    {'label': 'Summary', 'key': 4}, 
-    {'label': 'Confirmation', 'key': 5}  
-  ]
   return (
       <div>
-      <Stepper alternativeLabel activeStep={props.Step-1} className={classes.root}>
-        {steps.map(s => (
+      <Stepper alternativeLabel activeStep={props.step-1} className={classes.root}>
+        {props.stepConfig.map(s => (
           <Step key={s.key}>
             <StepLabel>{s.label}</StepLabel>
           </Step>
