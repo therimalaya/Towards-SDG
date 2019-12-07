@@ -10,7 +10,7 @@ GoalList.forEach(goal=>{
 class Goal extends React.Component {
   constructor(props){
     super(props);
-    GoalList.forEach(goal=>goal.isSelected = props.Goals.includes(goal.goal))
+    GoalList.forEach(goal=>goal.isSelected = props.CurrentRecord.Goals.includes(goal.goal))
     this.state = {
       AllGoals: GoalList
     }
@@ -25,21 +25,23 @@ class Goal extends React.Component {
       }
     })
     event.target.classList.toggle("selected")
-    this.props.handleSelect("Goals")(
+    this.props.UpdateCurrentRecord(
+      "Goals",
       newGoals.filter(goal=>goal.isSelected).map(goal=>goal.goal)
     )
     this.setState({AllGoals: newGoals})
   }
 
-  componentDidUpdate(){
-    if (this.props.Targets.length) {
-      this.props.handleSelect("Targets")([])
+  componentDidUpdate(props){
+    if (props.CurrentRecord.Targets.length) {
+      props.UpdateCurrentRecord("Targets", [])
     }
   }
 
   render() {
-    const {Goals, nextStep, prevStep} = this.props;
+    const {NextStep, PrevStep} = this.props;
     const {AllGoals} = this.state
+    const {Goals} = this.props.CurrentRecord
     return (
       <React.Fragment>
         <div id="goal-image-grid" className="image-grid">
@@ -70,8 +72,8 @@ class Goal extends React.Component {
           }
         </div>
         <div className="nav-btn">
-          <button onClick={prevStep} className="App-Nav-Btn">Previous</button>
-          <button onClick={nextStep} className="App-Nav-Btn">Next</button>
+          <button onClick={PrevStep} className="App-Nav-Btn">Previous</button>
+          <button onClick={NextStep} className="App-Nav-Btn">Next</button>
         </div>
       </React.Fragment>
     );

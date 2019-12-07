@@ -7,53 +7,45 @@ import Confirmation from './Confirmation';
 
 class MainForm extends React.Component {
   render() {
-    const {Step, values, Goals, Targets, Interaction} = this.props;
-    const {handleInput, handleSelect, goHome, nextStep, prevStep, Submit} = this.props;
+    const {Step, FormData, CurrentRecord} = this.props;
+    const {UpdateFormData, UpdateCurrentRecord, NextStep, PrevStep, GoHome, Submit} = this.props;
     switch(Step) {
       case 1:
         return(
           <Personal
-            values={values}
-            handleInput={handleInput}
-            handleSelect={handleSelect}
-            nextStep={nextStep} />
+            FormData={FormData}
+            UpdateFormData={UpdateFormData}
+            NextStep={NextStep} />
         );
       case 2:
         return(
           <Goal
-            Goals={Goals}
-            Targets={Targets}
-            handleSelect={handleSelect}
-            nextStep={nextStep}
-            prevStep={prevStep}/>
+            CurrentRecord={CurrentRecord}
+            UpdateCurrentRecord={UpdateCurrentRecord}
+            NextStep={NextStep}
+            PrevStep={PrevStep}/>
         );
       case 3:
         return(
           <Target
-            Goals={Goals}
-            Targets={Targets}
-            handleSelect={handleSelect}
-            handleInput={handleInput}
-            nextStep={nextStep}
-            prevStep={prevStep}
-            Interaction={Interaction}/>
+            CurrentRecord={CurrentRecord}
+            UpdateCurrentRecord={UpdateCurrentRecord}
+            NextStep={NextStep}
+            PrevStep={PrevStep} />
         );
       case 4:
         return(
           <React.Fragment>
             <Summary
-              values={values}
-              Goals={Goals}
-              Targets={Targets}
-              Interaction={Interaction}
+              FormData={FormData}
+              CurrentRecord={CurrentRecord}
               Submit={Submit}
-              prevStep={prevStep} />
+              PrevStep={PrevStep} />
           </React.Fragment>
         );
       case 5:
         return(
-          <Confirmation
-            goHome={goHome}/>
+          <Confirmation GoHome={GoHome}/>
         );
       default:
         throw new Error('Opss!');

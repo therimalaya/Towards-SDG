@@ -36,20 +36,23 @@ const adjustLine = (from, to, line) => {
 class Target extends React.Component {
   constructor(props) {
     super(props)
-    /* TargetList.filter(target=>target.id.match('[0-9]$')) */
     var newTargets = TargetList
-      .filter(target=>props.Goals.includes(target.goal))
+      .filter(target=>props.CurrentRecord.Goals.includes(target.goal))
       .filter(target=>target.id.match("[0-9]$"))
     newTargets.forEach(target=>{
       target.goal_img = "images/Goals/Goal-"+numnum(target.goal)+".png"
-      target.isSelected = props.Targets.map(x=>x.toString()).includes(target.id)
+      target.isSelected = props.CurrentRecord.Targets.map(x=>x.toString()).includes(target.id)
     });
     this.state = {
       PossibleTargets: newTargets,
     }
     this.handleClick = this.handleClick.bind(this)
+    this.handleInput = this.handleInput.bind(this)
   }
 
+  handleInput = (event) => {
+    this.props.UpdateCurrentRecord("Interaction", event.target.value)
+  }
   handleClick = (event) => {
     event.preventDefault()
     const newTargets = this.state.PossibleTargets;
@@ -58,10 +61,10 @@ class Target extends React.Component {
         target.isSelected = !target.isSelected
         event.currentTarget.classList.toggle("clicked-target-btn")
         event.currentTarget.classList.toggle("target-btn")
-        /* event.currentTarget.scrollIntoView() */
       }
     })
-    this.props.handleSelect('Targets')(
+    this.props.UpdateCurrentRecord(
+      'Targets',
       newTargets.filter(target=>target.isSelected).map(target=>target.id)
     )
     this.setState({PossibleTargets: newTargets})
@@ -94,7 +97,7 @@ class Target extends React.Component {
   }
 
   render() {
-    const {handleInput, Interaction, nextStep, prevStep} = this.props;
+    const {CurrentRecord, NextStep, PrevStep} = this.props;
     const {PossibleTargets} = this.state
     const NestedTargets = [...new Set(PossibleTargets.map(target=>target.goal))]
       .reduce((acc, curr) => {
@@ -116,7 +119,7 @@ class Target extends React.Component {
             SelectedGoals.map((goal, idx)=>{
               return(
                 <React.Fragment key={idx}>
-                  <div id={"Goal-"+goal.goal+"-header"} className="goal-header">
+                  <div id={"goal-"+goal.goal+"-header"} className="goal-header">
                     <img src={goal.image_src} alt={goal.goal} />
                     <p>{goal.short}</p>
                     <p>{goal.title}</p>
@@ -126,7 +129,7 @@ class Target extends React.Component {
                       goal.targets.map((target, idx)=>{
                         return(
                           <button
-                            disabled={this.props.Targets.length>=2 & !target.isSelected}
+                            disabled={CurrentRecord.Targets.length>=2 & !target.isSelected}
                             id={"Target-"+target.id}
                             value={target.id}
                             name={target.id}
@@ -152,11 +155,11 @@ class Target extends React.Component {
         <div className="target-join"></div>
         <div className="target-page-buttons">
           <InteractionButtons
-              Interaction={Interaction}
-              handleInput={handleInput}/>
+              Interaction={CurrentRecord.Interaction}
+              handleInput={this.handleInput}/>
           <div className="nav-btn">
-            <button onClick={prevStep} className="App-Nav-Btn">Previous</button>
-            <button onClick={nextStep} className="App-Nav-Btn">Next</button>
+            <button onClick={PrevStep} className="App-Nav-Btn">Previous</button>
+            <button onClick={NextStep} className="App-Nav-Btn">Next</button>
           </div>
         </div>
       </React.Fragment>
@@ -171,10 +174,10 @@ const InteractionButtons = (props) => {
   return(
     <div className="Interaction-Buttons">
       <p className="Interaction-Text">Set Interaction</p>
-      <button onClick={handleInput("Interaction")}
+      <button onClick={handleInput}
         value="Positive"
         className="Btn-Interaction PositiveInteraction">+</button>
-      <button onClick={handleInput("Interaction")}
+      <button onClick={handleInput}
         value="Negative"
         className="Btn-Interaction NegativeInteraction">-</button>
       <div className="Interaction-Status">{Interaction}</div>

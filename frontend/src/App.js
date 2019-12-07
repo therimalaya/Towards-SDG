@@ -10,84 +10,89 @@ import './App.scss';
 export default class App extends React.Component {
   constructor(props) {
     super(props)
-    Firebase.initializeApp(FirebaseConfig);
+    if (!Firebase.apps.length) {
+      Firebase.initializeApp(FirebaseConfig);
+    }
 
     this.state = {
-      Step: 0,
-      Goals: [],
-      Targets: [],
-      Name: "",
-      Faculty: "",
-      Research: {Title: "", URL: ""},
-      Coauthors: {Faculty: []},
-      Interaction: "",
+      Step: 5,
+      FormData: {
+        Name: "",
+        Faculty: "",
+        Research: {Title: "", URL: ""},
+        Coauthors: {Faculty: []},
+      },
+      CurrentRecord: {
+        Goals: [],
+        Targets: [],
+        Interaction: ""
+      },
       Records: []
     }
 
-    this.handleInput = this.handleInput.bind(this);
-    this.handleSelect = this.handleSelect.bind(this);
-    this.nextStep = this.nextStep.bind(this);
-    this.prevStep = this.prevStep.bind(this);
-    this.goHome = this.goHome.bind(this);
+    this.UpdateFormData = this.UpdateFormData.bind(this);
+    this.UpdateCurrentRecord = this.UpdateCurrentRecord.bind(this);
+    this.NextStep = this.NextStep.bind(this);
+    this.PrevStep = this.PrevStep.bind(this);
+    this.GoHome = this.GoHome.bind(this);
     this.Submit = this.Submit.bind(this);
   }
 
-  handleInput = input => event => {
-    input = input.split(".")
-    var newState = this.state[input[0]]
-    if (input.length > 1) {
-      newState[input[1]] = event.target.value;
+  UpdateFormData = (field, data) => {
+    field = field.split(".")
+    var newState = this.state.FormData
+    if (field.length > 1) {
+      newState[field[0]][field[1]] = data;
     } else {
-      newState = event.target.value;
+      newState[field[0]] = data;
     }
 
     this.setState({
-      [input[0]]: newState,
+      FormData: newState,
     })
   }
-  handleSelect = input => value => {
+  UpdateCurrentRecord = (input, value) => {
     this.setState({
-      [input]: value
+      CurrentRecord: {
+        ...this.state.CurrentRecord,
+        [input]: value
+      }
     })
   }
-
-  writeData = (data) => {
+  WriteData = (data) => {
     Firebase.database().ref('/').push(data);
     console.log("Data Saved");
   }
-
   Submit = (event) => {
     event.preventDefault()
     var currentDate = new Date()
     const data = {
-      Name: this.state.Name,
-      Faculty: this.state.Faculty,
-      Research: this.state.Research,
-      Coauthors: this.state.Coauthors,
-      Goals: this.state.Goals,
-      Targets: this.state.Targets,
-      Interaction: this.state.Interaction,
+      Name: this.state.FormData.Name,
+      Faculty: this.state.FormData.Faculty,
+      Research: this.state.FormData.Research,
+      Coauthors: this.state.FormData.Coauthors,
+      SDGRecords: this.state.CurrentRecord,
       CurrentDate: currentDate
     }
-    this.writeData(data)
+    this.WriteData(data)
     console.log(data)
-    this.nextStep(event)
+    this.NextStep(event)
   }
-  nextStep = (event) => {
+  NextStep = (event) => {
     event.preventDefault()
     const { Step } = this.state
     this.setState({
       Step: Step + 1
     });
   }
-  prevStep = (event) => {
+  PrevStep = (event) => {
     event.preventDefault()
     const { Step } = this.state
     this.setState({
       Step: Step - 1
     });
   }
-  goHome = (event) => {
+  GoHome = (event) => {
     event.preventDefault()
     this.setState({
       Step: 0
@@ -95,9 +100,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    const {Goals, Targets, Interaction} = this.state
-    const {Name, Faculty, Research, Coauthors} = this.state
-    const values = {Name, Faculty, Research, Coauthors}
+    const {Step, CurrentRecord, FormData} = this.state
 
     return (
       <div className="App">
@@ -110,21 +113,18 @@ export default class App extends React.Component {
           </footer>
         </aside>
         <main className="App-main">
-          {this.state.Step === 0
+          {Step === 0
           ? <FrontCover
-              nextStep={this.nextStep}
-              Step={this.state.Step} />
+              NextStep={this.NextStep}/>
           : <MainForm
-              Step={this.state.Step}
-              values={values}
-              Goals={Goals}
-              Targets={Targets}
-              Interaction={Interaction}
-              handleInput={this.handleInput}
-              handleSelect={this.handleSelect }
-              nextStep={this.nextStep}
-              prevStep={this.prevStep}
-              goHome={this.goHome}
+              Step={Step}
+              FormData={FormData}
+              CurrentRecord={CurrentRecord}
+              UpdateFormData={this.UpdateFormData}
+              UpdateCurrentRecord ={this.UpdateCurrentRecord}
+              NextStep={this.NextStep}
+              PrevStep={this.PrevStep}
+              GoHome={this.GoHome}
               Submit={this.Submit}
           />
           }

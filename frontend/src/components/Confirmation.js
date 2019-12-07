@@ -25,10 +25,10 @@ class Confirmation extends React.Component {
         <div className="record-table">
           <h1>Recent Records</h1>
           <RecordTable
-            data={this.state.records} />
+              data={this.state.records} />
         </div>
         <div className="nav-btn">
-          <button onClick={this.props.goHome} className="App-Nav-Btn">Home</button>
+          <button onClick={this.props.GoHome} className="App-Nav-Btn">Home</button>
         </div>
       </React.Fragment>
     );
@@ -58,7 +58,7 @@ const RecordTable = (data) => {
             <div className="record">
               {record.Research.Title ? record.Research.Title : ""}
             </div>
-            {record.Targets ? record.Targets.map((target, idx)=>{
+            {record.SDGRecords.Targets ? record.SDGRecords.Targets.map((target, idx)=>{
             return(
             <div className="record" key={idx}>{target ? target : ""}</div>
             )
@@ -67,7 +67,7 @@ const RecordTable = (data) => {
               <div className="record"></div>
               <div className="record"></div>
             </React.Fragment>}
-            <div className="record">{record.Interaction ? record.Interaction : ""}</div>
+            <div className="record">{record.SDGRecords.Interaction ? record.SDGRecords.Interaction : ""}</div>
           </React.Fragment>
           )
           })

@@ -4,13 +4,13 @@ import {FacultyConfig} from '../config/app-config';
 
 export class Faculty extends React.Component {
   render() {
-    const {className, isMulti, placeholder, value, handleSelect} = this.props
+    const {className, isMulti, placeholder, value, HandleChange} = this.props
     const initialValue = FacultyConfig.filter(faculty=>value.includes(faculty.value))
     const handleChange = (selected) => {
       if (Array.isArray(selected)) {
-        handleSelect({Faculty: selected.map(x=>x.value)})
+        HandleChange({Faculty: selected.map(x=>x.value)})
       } else {
-        handleSelect(selected.value)
+        HandleChange(selected.value)
       }
     }
     return (

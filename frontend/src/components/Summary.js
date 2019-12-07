@@ -5,12 +5,12 @@ import { FacultyConfig } from '../config/app-config.js'
 
 class Summary extends React.Component {
   render() {
-    const {values, Goals, Targets, Interaction, Submit, prevStep} = this.props
-    const SelectedGoals = GoalList.filter(goal=>Goals.includes(goal.goal));
+    const {FormData, CurrentRecord, Submit, PrevStep} = this.props
+    const SelectedGoals = GoalList.filter(goal=>CurrentRecord.Goals.includes(goal.goal));
     SelectedGoals.forEach(goal=>{
       goal.targets = TargetList
         .filter(target=>target.goal===goal.goal)
-        .filter(target=>Targets.map(x=>x.toString()).includes(target.id));
+        .filter(target=>CurrentRecord.Targets.map(x=>x.toString()).includes(target.id));
       return(goal)
     })
     return (
@@ -18,23 +18,23 @@ class Summary extends React.Component {
         <div className="summary-panel">
           <div className="smry-name">
             <div className="smry-label">Name</div>
-            <div className="smry-txt">{values.Name}</div>
+            <div className="smry-txt">{FormData.Name}</div>
           </div>
           <div className="smry-faculty">
             <div className="smry-label">Faculty</div>
-            <div className="smry-txt">{values.Faculty}</div>
+            <div className="smry-txt">{FormData.Faculty}</div>
           </div>
           <div className="smry-research-title">
             <div className="smry-label">Research.Title</div>
-            <div className="smry-txt">{values.Research.Title}</div>
+            <div className="smry-txt">{FormData.Research.Title}</div>
           </div>
           <div className="smry-research-url">
             <div className="smry-label">Research.URL</div>
-            <div className="smry-txt">{values.Research.URL}</div>
+            <div className="smry-txt">{FormData.Research.URL}</div>
           </div>
           <div className="smry-coauthors">
             <div className="smry-label">Coauthor's Faculty</div>
-            {values.Coauthors.Faculty.map((fclty, idx)=>{
+            {FormData.Coauthors.Faculty.map((fclty, idx)=>{
               return(
                 <div className="smry-txt" key={idx}>
                   {FacultyConfig.filter(x=>x.value===fclty).map(x=>x.label).toString()}
@@ -66,12 +66,12 @@ class Summary extends React.Component {
           </div>
           <div className="smry-interaction">
             <div className="smry-label">Interaction</div>
-            <div className="smry-txt">{Interaction}</div>
+            <div className="smry-txt">{CurrentRecord.Interaction}</div>
           </div>
         </div>
         <div className="nav-btn">
-          <button onClick={prevStep} className="App-Nav-Btn">Previous</button>
-          {/* <button onClick={Submit} className="App-Nav-Btn">Submit</button> */}
+          <button onClick={PrevStep} className="App-Nav-Btn">Previous</button>
+          <button onClick={Submit} className="App-Nav-Btn">Submit</button>
         </div>
       </React.Fragment>
     );
