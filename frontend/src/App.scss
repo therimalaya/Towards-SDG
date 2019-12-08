@@ -64,7 +64,7 @@ $goal-image-border: 0.5vmin;
     justify-content: start;
     grid-column: 1/1;
 
-    max-height: $app-height;
+    max-height: 100vh;
 
     font-size: calc(9px + 0.8vmin);
     color: $primary-text;
@@ -152,6 +152,7 @@ $goal-image-border: 0.5vmin;
 
   .App-main {
     /* max-width: calc($app-width - $sidebar-width); */
+    color: $primary-text;
     padding: 25px;
     display: grid;
     grid-auto-flow: row;
@@ -214,6 +215,11 @@ $goal-image-border: 0.5vmin;
         border-radius: 4px;
         box-sizing: border-box;
         width: 100%;
+        background-color: white;
+
+        &::placeholder {
+          color: hsl(0,0%,50%);
+        }
       }
 
       .css-2b097c-container{
@@ -388,12 +394,14 @@ $goal-image-border: 0.5vmin;
         }
 
         .target-btn {
+          color: $primary-text;
           background: none;
           border: none;
           margin: 0;
           padding: 0;
         }
         .target-btn:hover {
+          color: $primary-text;
           background: none;
           border: none;
           margin: 0;

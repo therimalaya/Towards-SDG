@@ -48,8 +48,17 @@ class Target extends React.Component {
     }
     this.handleClick = this.handleClick.bind(this)
     this.handleInput = this.handleInput.bind(this)
+    this.ResetAndUpdate = this.ResetAndUpdate.bind(this)
   }
-
+  ResetAndUpdate = (event) => {
+    event.preventDefault()
+    const currentPossible = this.state.PossibleTargets;
+    currentPossible.forEach(target=>{
+      target.isSelected = false;
+      return target;
+    })
+    this.props.UpdateRecords(event)
+  }
   handleInput = (event) => {
     this.props.UpdateCurrentRecord("Interaction", event.target.value)
   }
@@ -69,13 +78,11 @@ class Target extends React.Component {
     )
     this.setState({PossibleTargets: newTargets})
   }
-
   componentDidMount(){
     [...document.getElementsByClassName("clicked-target-btn")]
       .map(btn=>btn.scrollIntoView())
     this.drawLine(this.state)
   }
-
   drawLine = (state) => {
     if (state.PossibleTargets.filter(x=>x.isSelected).length === 2) {
       let target_goal = state.PossibleTargets.filter(x=>x.isSelected).map(x=>x.goal);
@@ -91,11 +98,11 @@ class Target extends React.Component {
       document.getElementsByClassName("target-join")[0].style["display"] = "none";
     }
   }
-
   componentDidUpdate() {
-    this.drawLine(this.state)
+    /* if(this.props.CurrentRecord.Targets.length > 1) {
+     *   this.drawLine(this.state)
+     * } */
   }
-
   render() {
     const {CurrentRecord, NextStep, PrevStep} = this.props;
     const {PossibleTargets} = this.state
@@ -129,7 +136,7 @@ class Target extends React.Component {
                       goal.targets.map((target, idx)=>{
                         return(
                           <button
-                            disabled={CurrentRecord.Targets.length>=2 & !target.isSelected}
+                            disabled={CurrentRecord.Targets.length>1 & !target.isSelected}
                             id={"Target-"+target.id}
                             value={target.id}
                             name={target.id}
@@ -152,11 +159,23 @@ class Target extends React.Component {
             })
           }
         </div>
+        <div className="nav-btn add-btn">
+          <button
+            disabled={CurrentRecord.Targets.length<=0}
+            onClick={this.ResetAndUpdate}
+            className="App-Nav-Btn">
+            Add More Records
+          </button>
+        </div>
         <div className="target-join"></div>
         <div className="target-page-buttons">
-          <InteractionButtons
+          {
+            CurrentRecord.Targets.length === 2
+            ? <InteractionButtons
               Interaction={CurrentRecord.Interaction}
-              handleInput={this.handleInput}/>
+                handleInput={this.handleInput}/>
+            : null
+          }
           <div className="nav-btn">
             <button onClick={PrevStep} className="App-Nav-Btn">Previous</button>
             <button onClick={NextStep} className="App-Nav-Btn">Next</button>
@@ -184,3 +203,4 @@ const InteractionButtons = (props) => {
     </div>
   )
 }
+

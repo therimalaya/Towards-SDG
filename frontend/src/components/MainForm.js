@@ -8,7 +8,9 @@ import Confirmation from './Confirmation';
 class MainForm extends React.Component {
   render() {
     const {Step, FormData, CurrentRecord} = this.props;
-    const {UpdateFormData, UpdateCurrentRecord, NextStep, PrevStep, GoHome, Submit} = this.props;
+    const {UpdateFormData, UpdateCurrentRecord, UpdateRecords} = this.props;
+    const {NextStep, PrevStep, GoHome, Submit} = this.props;
+
     switch(Step) {
       case 1:
         return(
@@ -30,6 +32,7 @@ class MainForm extends React.Component {
           <Target
             CurrentRecord={CurrentRecord}
             UpdateCurrentRecord={UpdateCurrentRecord}
+            UpdateRecords={UpdateRecords}
             NextStep={NextStep}
             PrevStep={PrevStep} />
         );

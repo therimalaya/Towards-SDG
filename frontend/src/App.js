@@ -15,7 +15,7 @@ export default class App extends React.Component {
     }
 
     this.state = {
-      Step: 5,
+      Step: 2,
       FormData: {
         Name: "",
         Faculty: "",
@@ -30,12 +30,24 @@ export default class App extends React.Component {
       Records: []
     }
 
+    this.UpdateRecords = this.UpdateRecords.bind(this);
     this.UpdateFormData = this.UpdateFormData.bind(this);
     this.UpdateCurrentRecord = this.UpdateCurrentRecord.bind(this);
     this.NextStep = this.NextStep.bind(this);
     this.PrevStep = this.PrevStep.bind(this);
     this.GoHome = this.GoHome.bind(this);
     this.Submit = this.Submit.bind(this);
+  }
+
+  UpdateRecords = (event) => {
+    event.preventDefault()
+    const clicked_targets = [...document.getElementsByClassName("clicked-target-btn")]
+    clicked_targets.map(btn=>btn.classList.toggle("clicked-target-btn"))
+    clicked_targets.map(btn=>btn.classList.toggle("target-btn"))
+    this.setState({
+      Records: [...this.state.Records, this.state.CurrentRecord],
+      CurrentRecord: {...this.state.CurrentRecord, Targets: []}
+    })
   }
 
   UpdateFormData = (field, data) => {
@@ -100,14 +112,17 @@ export default class App extends React.Component {
   }
 
   render() {
-    const {Step, CurrentRecord, FormData} = this.state
+    const {Step, CurrentRecord, FormData, Records} = this.state
 
     return (
       <div className="App">
         <aside className="App-sidebar">
           <header className="App-header"></header>
           <div className="App-info">
-            <SideInfo Step={this.state.Step} StepConfig={StepConfig}/>
+            <SideInfo
+              Records={Records}
+              Step={this.state.Step}
+              StepConfig={StepConfig}/>
           </div>
           <footer className="App-footer">
           </footer>
@@ -122,6 +137,7 @@ export default class App extends React.Component {
               CurrentRecord={CurrentRecord}
               UpdateFormData={this.UpdateFormData}
               UpdateCurrentRecord ={this.UpdateCurrentRecord}
+              UpdateRecords={this.UpdateRecords}
               NextStep={this.NextStep}
               PrevStep={this.PrevStep}
               GoHome={this.GoHome}
