@@ -94,25 +94,51 @@ $goal-image-border: 0.5vmin;
     .App-info {
       padding: 16px;
 
-      p:not(:last-child) {
+      &>p:not(:last-child) {
         margin: 0;
       }
 
-      p:first-child {
+      &>p:first-child {
         text-transform: uppercase;
         color: grey;
       }
 
-      p:nth-child(2) {
+      &>p:nth-child(2) {
         font-size: 1.2rem;
         font-weight: 300;
         border-bottom: 1px solid grey;
         padding-bottom: 12px;
       }
 
-      p:last-child {
+      &>p:last-child {
         font-size: calc(0.4rem + 1vh);
       }
+
+      .sidebar-record-table {
+        display: grid;
+        grid-gap: 6px;
+        font-size: 85%;
+
+        p {
+          margin: 0;
+        }
+
+        .sidebar-table-header {
+          border-bottom: 1px solid lightgray;
+          padding-bottom: 6px;
+          font-weight: 600;
+        }
+
+        .sidebar-table-row {
+          display: grid;
+          grid-auto-flow: column;
+          grid-gap: 6px;
+          grid-template-columns: repeat(3, 1fr);
+        }
+
+      }
+
+
 
       @media only screen and (max-width: 768px) {
         grid-column: 1/2;
@@ -499,6 +525,8 @@ $goal-image-border: 0.5vmin;
       display: grid;
       grid-auto-flow: column;
       align-items: flex-end;
+      grid-template-columns: 1fr auto auto;
+      justify-items: flex-start;
 
       .Interaction-Buttons {
         display: grid;

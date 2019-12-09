@@ -46,7 +46,7 @@ export default class App extends React.Component {
     clicked_targets.map(btn=>btn.classList.toggle("target-btn"))
     this.setState({
       Records: [...this.state.Records, this.state.CurrentRecord],
-      CurrentRecord: {...this.state.CurrentRecord, Targets: []}
+      CurrentRecord: {...this.state.CurrentRecord, Targets: [], Interaction: ""}
     })
   }
 

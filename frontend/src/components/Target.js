@@ -52,7 +52,7 @@ class Target extends React.Component {
   }
   ResetAndUpdate = (event) => {
     event.preventDefault()
-    const currentPossible = this.state.PossibleTargets;
+    let currentPossible = this.state.PossibleTargets;
     currentPossible.forEach(target=>{
       target.isSelected = false;
       return target;
@@ -81,7 +81,7 @@ class Target extends React.Component {
   componentDidMount(){
     [...document.getElementsByClassName("clicked-target-btn")]
       .map(btn=>btn.scrollIntoView())
-    this.drawLine(this.state)
+    /* this.drawLine(this.state) */
   }
   drawLine = (state) => {
     if (state.PossibleTargets.filter(x=>x.isSelected).length === 2) {
@@ -159,23 +159,23 @@ class Target extends React.Component {
             })
           }
         </div>
-        <div className="nav-btn add-btn">
-          <button
-            disabled={CurrentRecord.Targets.length<=0}
-            onClick={this.ResetAndUpdate}
-            className="App-Nav-Btn">
-            Add More Records
-          </button>
-        </div>
         <div className="target-join"></div>
         <div className="target-page-buttons">
           {
             CurrentRecord.Targets.length === 2
             ? <InteractionButtons
-              Interaction={CurrentRecord.Interaction}
+                Interaction={CurrentRecord.Interaction}
                 handleInput={this.handleInput}/>
-            : null
+            : <div></div>
           }
+          <div className="nav-btn add-btn">
+            <button
+              disabled={CurrentRecord.Targets.length<=0}
+              onClick={this.ResetAndUpdate}
+              className="App-Nav-Btn">
+              Add More Records
+            </button>
+          </div>
           <div className="nav-btn">
             <button onClick={PrevStep} className="App-Nav-Btn">Previous</button>
             <button onClick={NextStep} className="App-Nav-Btn">Next</button>
