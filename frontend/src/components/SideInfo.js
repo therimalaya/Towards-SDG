@@ -21,7 +21,7 @@ class SideInfo extends React.Component {
               <p>TODO:</p>
               <ul>
                 <li>Think about alternative database.</li>
-                <li>Give a proper title to the form.</li>
+                <li><strike>Give a proper title to the form.</strike></li>
                 <li>Validate the fields before going to next step.</li>
               </ul>
             </div>
@@ -35,7 +35,7 @@ class SideInfo extends React.Component {
             <div>
               <p>TODO:</p>
               <ul>
-                <li>Give a proper title to the image grid.</li>
+                <li><strike>Give a proper title to the image grid.</strike></li>
                 <li>Make the thumbnails a little larger.</li>
               </ul>
             </div>

@@ -15,7 +15,7 @@ export default class App extends React.Component {
     }
 
     this.state = {
-      Step: 2,
+      Step: 0,
       FormData: {
         Name: "",
         Faculty: "",

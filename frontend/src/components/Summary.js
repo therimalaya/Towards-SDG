@@ -15,6 +15,7 @@ class Summary extends React.Component {
     })
     return (
       <React.Fragment>
+        <h2 className="AppStepTitle">Summary</h2>
         <div className="summary-panel">
           <div className="smry-name">
             <div className="smry-label">Name</div>

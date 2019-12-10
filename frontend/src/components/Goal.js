@@ -44,6 +44,7 @@ class Goal extends React.Component {
     const {Goals} = this.props.CurrentRecord
     return (
       <React.Fragment>
+        <h2 className="AppStepTitle">Select Goals</h2>
         <div id="goal-image-grid" className="image-grid">
           {
             AllGoals.map(goal=>{

@@ -11,61 +11,64 @@ const validateUrl  = (str) => {
   return !!pattern.test(str);
 }
 
+function classList(...classes) {
+  return classes
+    .filter(item => !!item)
+    .join(' ');
+}
+
 class Personal extends React.Component {
   constructor(props) {
     super(props)
-    /* this.state = {
-     *   noError: false,
-     *   errors: {
-     *     Name: values.Name === "" ? "Name is Empty." : "",
-     *     Research: {
-     *       Title: values.Research.Title === "" ? "Reseach Title is Empty" : "",
-     *       URL: values.Research.URL === "" ? "Research URL is Empty" : ""
-     *     }
-     *   }
-     * } */
-    /* this.checkValidFields = this.checkValidFields.bind(this) */
+    this.state = {
+      noError: false,
+      errors: {
+        Name: "",
+        Faculty: "",
+        Research: {
+          Title: "",
+          URL: ""
+        },
+        CoauthorFaculty: ""
+      }
+    }
+    this.checkValidFields = this.checkValidFields.bind(this)
     this.HandleChange = this.HandleChange.bind(this)
+    this.CheckAndProceed = this.CheckAndProceed.bind(this)
   }
 
-  /* checkValidFields = (input) => (event) => {
-   *   let value = event.target.value
-   *   let newError = this.state.errors;
-   *   let inp_arr = input.split(".")
+  checkValidFields = (event) => {
+    const FormData = this.props.FormData
+    let isValid = true;
+    let errors = {}
 
-   *   if (inp_arr[0] === "Name" ) {
-   *     if (value.length < 5) {
-   *       newError.Name = "Full Name must be a least 5 characters long!";
-   *     } else {
-   *       newError.Name = ""
-   *     }
-   *   }
-   *   if (inp_arr[0] === "Research") {
-   *     if (inp_arr[1] === "Title") {
-   *       if (value.length < 5) {
-   *         newError.Research.Title = "Research Title much have at least 5 characters!"
-   *       } else {
-   *         newError.Research.Title = ""
-   *       }
+    // Update error state based on the
+    // fetching values from Form state
+    // All the checking goes here
+    // Update the error state
+    if (!FormData.Name) {
+      errors.Name = "Name can not be empty";
+      isValid = false;
+    }
 
-   *     }
-   *     if (inp_arr[1] === "URL") {
-   *       if (!validateUrl(value)) {
-   *         newError.Research.URL = "Research URL is not valid!"
-   *       } else {
-   *         newError.Research.URL = ""
-   *       }
+    this.setState({
+      noError: isValid,
+      errors: {...this.state.errors, ...errors}
+    })
 
-   *     }
-   *   }
-
-   *   this.setState({
-   *     noError: newError.Name === "" && newError.Research.Title === "" && newError.Research.URL === "",
-   *     errors: newError
-   *   })
-   * } */
+    this.setState({
+      noError: isValid
+    })
+    return isValid
+  }
 
   HandleChange = input => event => {
+    let errors = {}
+    errors[input] = "";
+    this.setState({
+      noError: "",
+      errors: {...this.state.errors, ...errors}
+    })
     if (event.target) {
       this.props.UpdateFormData(input, event.target.value)
     } else {
@@ -73,52 +76,85 @@ class Personal extends React.Component {
     }
   }
 
+  CheckAndProceed = (event) => {
+    /* event.preventDefault() */
+    const isValid = this.checkValidFields(event)
+    // Call checkValidFields function
+    // This will update all the state
+    // If noError is false, Error should automatically displayed
+    // If noError is true, proceed to next step
+    if (isValid) {
+      this.props.NextStep(event)
+    }
+  }
+
   render() {
-    const {FormData, NextStep} = this.props
+    const {FormData} = this.props
+    const {errors} = this.state
     return (
       <React.Fragment>
+        <h2 className="AppStepTitle">
+          Personal Details
+        </h2>
         <form>
           <label className="app-input-label" htmlFor="fullname">Full Name</label>
-          <input
-            name="Name"
-            className="App-Form-Inputs"
-            placeholder="Name (First and Last)"
-            type="text"
-            value={FormData.Name}
-            onChange={this.HandleChange("Name")} />
+          <div className="App-form-field">
+            <div className="App-Form-Error" id="Name-Error">{errors.Name}</div>
+            <input
+              name="Name"
+              className={classList("App-Form-Inputs", errors.Name!=="" && "has-error")}
+              placeholder="Name (First and Last)"
+              type="text"
+              value={FormData.Name}
+              onChange={this.HandleChange("Name")} />
+          </div>
           <label className="app-input-label" htmlFor="faculty">Faculty</label>
-          <Faculty
-              className="App-Form-Inputs"
+          <div className="App-form-field">
+            <div className="App-Form-Error" id="Faculty-Error"></div>
+            <Faculty
+              name="Faculty"
+              className={classList("App-Form-Inputs", errors.Faculty!=="" && "has-error")}
               isMulti={false}
               value={FormData.Faculty}
               HandleChange={this.HandleChange("Faculty")}
               placeholder="Faculty"/>
+          </div>
           <label className="app-input-label" htmlFor="research-title">Research Title</label>
-          <input
-            name="research-title"
-            className="App-Form-Inputs"
-            placeholder="Research Title"
-            type="text"
-            value={FormData.Research.Title}
-            onChange={this.HandleChange("Research.Title")} />
+          <div className="App-form-field">
+            <div className="App-Form-Error" id="Research-Title-Error"></div>
+            <input
+              name="research-title"
+              className={classList("App-Form-Inputs", errors.Research.Title!=="" && "has-error")}
+              placeholder="Research Title"
+              type="text"
+              value={FormData.Research.Title}
+              onChange={this.HandleChange("Research.Title")} />
+          </div>
           <label className="app-input-label" htmlFor="research-url">Research URL</label>
-          <input
-            name="research-url"
-            className="App-Form-Inputs"
-            placeholder="Research URL"
-            type="url"
-            value={FormData.Research.URL}
-            onChange={this.HandleChange("Research.URL")} />
+          <div className="App-form-field">
+            <div className="App-Form-Error" id="Research-URL-Error"></div>
+            <input
+              name="research-url"
+              className={classList("App-Form-Inputs", errors.Research.URL!=="" && "has-error")}
+              placeholder="Research URL"
+              type="url"
+              value={FormData.Research.URL}
+              onChange={this.HandleChange("Research.URL")} />
+          </div>
           <label className="app-input-label" htmlFor="coauthors-faculty">Coauthor's Faculty</label>
-          <Faculty
-            className="App-Form-Inputs"
-            isMulti={true}
-            value={FormData.Coauthors.Faculty}
-            HandleChange={this.HandleChange("Coauthors")}
-            placeholder="Coauthor's Faculty"/>
+          <div className="App-form-field">
+            <div className="App-Form-Error" id="Coauthors-Faculty-Error"></div>
+            <Faculty
+              name="Coauthors-Faculty"
+              className={classList("App-Form-Inputs", errors.CoauthorFaculty!=="" && "has-error")}
+              isMulti={true}
+              value={FormData.Coauthors.Faculty}
+              HandleChange={this.HandleChange("Coauthors")}
+              placeholder="Coauthor's Faculty"/>
+          </div>
         </form>
         <div className="nav-btn">
-          <button onClick={NextStep} className="App-Nav-Btn">Next</button>
+          <button onClick={this.CheckAndProceed} className="App-Nav-Btn">Next</button>
         </div>
       </React.Fragment>
     );
