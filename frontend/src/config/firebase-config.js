@@ -1,10 +1,9 @@
 export const FirebaseConfig = {
-  apiKey: "AIzaSyAdNDJMx90lnaR-Wj8M0I6dProCI7TTS-o",
-  authDomain: "towardsdg.firebaseapp.com",
-  databaseURL: "https://towardsdg.firebaseio.com",
-  projectId: "towardsdg",
-  storageBucket: "towardsdg.appspot.com",
-  messagingSenderId: "936725677678",
-  appId: "1:936725677678:web:7e61a4c23abd859f4c487f",
-  measurementId: "G-FM1SND8GBT"
+	apiKey: "AIzaSyAXR_F5PI_05rz1lNVHYvcjsyFpRCcPoGc",
+	authDomain: "towards-sdg.firebaseapp.com",
+	databaseURL: "https://towards-sdg.firebaseio.com",
+	projectId: "towards-sdg",
+	storageBucket: "towards-sdg.appspot.com",
+	messagingSenderId: "431265797823",
+	appId: "1:431265797823:web:3fdea673ce1dc9195f980a"
 };
