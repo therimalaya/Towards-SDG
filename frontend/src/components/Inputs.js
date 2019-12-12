@@ -7,10 +7,14 @@ export class Faculty extends React.Component {
     const {name, className, isMulti, placeholder, value, HandleChange} = this.props
     const initialValue = FacultyConfig.filter(faculty=>value.includes(faculty.value))
     const handleChange = (selected) => {
-      if (Array.isArray(selected)) {
-        HandleChange({Faculty: selected.map(x=>x.value)})
+      if (selected === null) {
+        HandleChange({Faculty: []})
       } else {
-        HandleChange(selected.value)
+        if (Array.isArray(selected)) {
+          HandleChange({Faculty: selected.map(x=>x.value)})
+        } else {
+          HandleChange(selected.value)
+        }
       }
     }
     return (

@@ -15,7 +15,7 @@ export default class App extends React.Component {
     }
 
     this.state = {
-      Step: 0,
+      Step: 5,
       FormData: {
         Name: "",
         Faculty: "",
@@ -72,8 +72,15 @@ export default class App extends React.Component {
     })
   }
   WriteData = (data) => {
-    Firebase.database().ref('/').push(data);
-    console.log("Data Saved");
+    var db = Firebase.firestore();
+    db.collection("records").add(data)
+      .then(function(docRef) {
+        console.log("Document written with ID: ", docRef.id);
+      }).catch(function(error) {
+        console.error("Error adding document: ", error);
+      });
+    /* Firebase.database().ref('/').push(data); */
+    /* console.log("Data Saved"); */
   }
   Submit = (event) => {
     event.preventDefault()
@@ -83,11 +90,11 @@ export default class App extends React.Component {
       Faculty: this.state.FormData.Faculty,
       Research: this.state.FormData.Research,
       Coauthors: this.state.FormData.Coauthors,
-      SDGRecords: this.state.CurrentRecord,
+      SDGRecords: this.state.Records,
       CurrentDate: currentDate
     }
     this.WriteData(data)
-    console.log(data)
+    /* console.log(data) */
     this.NextStep(event)
   }
   NextStep = (event) => {

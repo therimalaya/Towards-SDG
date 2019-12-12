@@ -9,7 +9,7 @@ class SideInfo extends React.Component {
         return (
           <React.Fragment>
             <p><span className="App-Step"></span></p><p><span className="App-Step-Label">{Label}</span></p>
-            <p>Information about this application. Include help per stages. This section might include login and logout afterwards.</p>
+            <p>Welcome to NMBU towards SDG. Here you can help NMBU by providing information how you have contributed to Sustanable Developement Goals formulated by UN. You research can have direct or indirect connection to the 17 goals of SDG and they might interact positively or negatively with your research work. This will not only helps NMBU to plan better but also helps other researcher to find your research and collaborate with you.</p>
           </React.Fragment>
         );
       case 1:

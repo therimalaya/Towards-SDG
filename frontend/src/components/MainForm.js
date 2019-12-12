@@ -48,7 +48,9 @@ class MainForm extends React.Component {
         );
       case 5:
         return(
-          <Confirmation GoHome={GoHome}/>
+          <React.Fragment>
+            <Confirmation GoHome={GoHome}/>
+          </React.Fragment>
         );
       default:
         throw new Error('Opss!');
