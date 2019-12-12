@@ -1,5 +1,5 @@
 import React from 'react';
-import Firebase from 'firebase';
+import {firestore, apps, initializeApp} from 'firebase';
 import {FirebaseConfig} from './config/firebase-config.js'
 import FrontCover from './components/FrontCover';
 import MainForm from './components/MainForm';
@@ -10,12 +10,11 @@ import './App.scss';
 export default class App extends React.Component {
   constructor(props) {
     super(props)
-    if (!Firebase.apps.length) {
-      Firebase.initializeApp(FirebaseConfig);
+    if (!apps.length) {
+      initializeApp(FirebaseConfig);
     }
-
     this.state = {
-      Step: 5,
+      Step: 2,
       FormData: {
         Name: "",
         Faculty: "",
@@ -31,6 +30,7 @@ export default class App extends React.Component {
     }
 
     this.UpdateRecords = this.UpdateRecords.bind(this);
+    this.RemoveCurrentRecord = this.RemoveCurrentRecord.bind(this)
     this.UpdateFormData = this.UpdateFormData.bind(this);
     this.UpdateCurrentRecord = this.UpdateCurrentRecord.bind(this);
     this.NextStep = this.NextStep.bind(this);
@@ -47,6 +47,12 @@ export default class App extends React.Component {
     this.setState({
       Records: [...this.state.Records, this.state.CurrentRecord],
       CurrentRecord: {...this.state.CurrentRecord, Targets: [], Interaction: ""}
+    })
+  }
+
+  RemoveCurrentRecord = (event) => {
+    this.setState({
+      Records: this.state.Records.filter((value, idx) => idx !== Number(event.target.value))
     })
   }
 
@@ -72,8 +78,9 @@ export default class App extends React.Component {
     })
   }
   WriteData = (data) => {
-    var db = Firebase.firestore();
-    db.collection("records").add(data)
+    var db = firestore();
+    db.collection("records")
+      .add({...data, created: firestore.Timestamp.fromDate(new Date())})
       .then(function(docRef) {
         console.log("Document written with ID: ", docRef.id);
       }).catch(function(error) {
@@ -84,17 +91,17 @@ export default class App extends React.Component {
   }
   Submit = (event) => {
     event.preventDefault()
-    var currentDate = new Date()
     const data = {
       Name: this.state.FormData.Name,
       Faculty: this.state.FormData.Faculty,
       Research: this.state.FormData.Research,
       Coauthors: this.state.FormData.Coauthors,
-      SDGRecords: this.state.Records,
-      CurrentDate: currentDate
+      SDGRecords: this.state.Records
     }
     this.WriteData(data)
-    /* console.log(data) */
+    this.setState({
+      Records: []
+    })
     this.NextStep(event)
   }
   NextStep = (event) => {
@@ -128,6 +135,7 @@ export default class App extends React.Component {
           <div className="App-info">
             <SideInfo
               Records={Records}
+              RemoveCurrentRecord={this.RemoveCurrentRecord}
               Step={this.state.Step}
               StepConfig={StepConfig}/>
           </div>

@@ -17,7 +17,8 @@ $app-width-small: 95%;
 
 $sidebar-width: 25%;
 $header-height: 150px;
-$goal-image-size: 13vmin;
+$goal-image-size: 16vmin;
+$goal-image-size-small: 13vmin;
 $goal-image-border: 0.5vmin;
 
 
@@ -54,6 +55,13 @@ $goal-image-border: 0.5vmin;
   @media only screen and (max-width: 1024px) {
     width: $app-width-small;
     height: $app-height-small;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #555;
+    font-weight: 300;
+    margin: 0;
+    padding: 0;
   }
 
   .App-sidebar {
@@ -297,10 +305,20 @@ $goal-image-border: 0.5vmin;
       grid-template-rows: repeat(auto-fit, $goal-image-size);
       grid-gap: 8px;
 
+      @media only screen and (max-width: 768px) {
+        grid-template-columns: repeat(auto-fit, $goal-image-size-small);
+        grid-template-rows: repeat(auto-fit, $goal-image-size-small);
+      }
+
       input {
         width: $goal-image-size;
         height: $goal-image-size;
         cursor: pointer;
+
+        @media only screen and (max-width: 768px) {
+          width: $goal-image-size-small;
+          height: $goal-image-size-small;
+        }
       } /* input */
 
       input.selected {
@@ -308,6 +326,12 @@ $goal-image-border: 0.5vmin;
         height: $goal-image-size - 2 * $goal-image-border;
         cursor: pointer;
         border: $goal-image-border solid $link-color;
+
+        @media only screen and (max-width: 768px) {
+          width: $goal-image-size-small - 2 * $goal-image-border;
+          height: $goal-image-size-small - 2 * $goal-image-border;
+        }
+
       } /* input.selected */
     } /* image-grid */
 
@@ -372,7 +396,7 @@ $goal-image-border: 0.5vmin;
       .goal-header {
         grid-row: 1/1;
         display: grid;
-        grid-template-columns: 25% 1fr;
+        grid-template-columns: 15% 1fr;
         grid-template-rows: auto 1fr;
         grid-gap: 10px;
         margin-bottom: 1vh;
@@ -382,10 +406,10 @@ $goal-image-border: 0.5vmin;
         position: sticky;
 
         @media only screen and (max-width: 450px) {
-          grid-template-columns: 10vw 1fr;
+          grid-template-columns: 15% 1fr;
           grid-template-rows: 1fr 0 0;
           grid-gap: 5px;
-          justify-items: center;
+          /* justify-items: center; */
         }
 
         img {
@@ -682,7 +706,6 @@ $goal-image-border: 0.5vmin;
               display: none;
             }
           }
-
           div:not(.smry-goal-img) {
             grid-column: 2/2;
           }
@@ -715,22 +738,146 @@ $goal-image-border: 0.5vmin;
     }
 
     .records {
-      display: grid;
-      grid-template-columns: repeat(6, auto);
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+      max-width: 100%;
+      overflow-y: auto;
 
-      .record-heading {
-        font-weight: 600;
-        padding-bottom: 5px;
-        border-bottom: 2px solid grey;
-        margin-bottom: 5px;
+      // Reset Margin and Padding for this div
+      p, a, div, span, summary, details, h3 {
+        margin: 0;
+        padding: 0;
       }
 
-      .record {
-        border-bottom: 1px solid lightgrey;
-        padding: 10px 0;
+      details.records-details[open] {
+        summary.records-summary {
+          border-bottom: 3px solid $primary-color;
+          background-color: $background-color;
+
+          &::after{
+            content: "-";
+          }
+        }
+      }
+      details.records-details {
+        border: 1px solid #aaa;
+        border-radius: 4px;
+        padding: .5em .5em 0;
+        margin: 0.25em 0;
+
+        summary.records-summary {
+          margin: -0.5em -0.5em 0;
+          padding: 0.5em;
+          display: grid;
+          grid-gap: 5px;
+          grid-template-columns: 1fr auto;
+          align-items: center;
+
+          &::after{
+            content: "+";
+            display: block;
+            grid-row: 1/3;
+            text-align: center;
+            align-self: end;
+
+            color: $primary-color;
+            font-size: 1.5em;
+            font-weight: 900;
+            width: 1em;
+          }
+
+          &:focus {
+            outline: none;
+          }
+
+          &::-webkit-details-marker {
+            display: none;
+          }
+
+          p:first-child {
+            display: inline-grid;
+            grid-auto-flow: column;
+            grid-template-columns: 1fr auto;
+            grid-gap: 5px;
+            width: 100%;
+
+            .record-title {
+              font-weight: 600;
+              color: $primary-color;
+              text-shadow: 0 0 0.5px #555;
+            }
+            .record-research-url a {
+              text-decoration: none;
+              color: $link-color;
+              font-size: 75%;
+
+              &::before {
+                content: "« ";
+                font-size: 120%;
+              }
+              &::after {
+                content: " »";
+                font-size: 120%;
+              }
+            }
+
+          }
+
+          p.record-research-author {
+            font-size: 75%;
+            grid-row: 2/2;
+            grid-column: 1/1;
+
+            .author-name{
+              &::after{
+                content: ", ";
+              }
+            }
+
+            .author-name-label {
+              font-weight: 600;
+
+              &::after {
+                content: ": ";
+              }
+            }
+          }
+        }
+
+        p.record-coauthors {
+          font-size: 75%;
+          .record-coauthors-label {
+            font-weight: 600;
+            &::after {
+              content: ": ";
+            }
+          }
+        }
+        table.sdg-records {
+          min-width: 100%;
+          font-size: 75%;
+          margin: 5px 0;
+          border-bottom: 2px solid $primary-color;
+          border-top: 2px solid $primary-color;
+
+          thead{
+            text-align: left;
+            background-color: $background-color;
+
+            th{
+              padding: 5px;
+              border-bottom: 1px solid $primary-color;
+            }
+          }
+          tbody {
+            td {
+              padding: 0 5px;
+            }
+          }
+        }
       }
     }
-
   } /* App-Main */
 } /* App */
 

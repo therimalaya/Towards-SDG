@@ -2,7 +2,7 @@ import React from 'react';
 
 class SideInfo extends React.Component {
   render() {
-    const {Step, StepConfig, Records} = this.props
+    const {Step, StepConfig, Records, RemoveCurrentRecord} = this.props
     const Label = StepConfig.filter(x=>x.key===Step)[0].label
     switch(Step) {
       case 0:
@@ -36,7 +36,7 @@ class SideInfo extends React.Component {
               <p>TODO:</p>
               <ul>
                 <li><strike>Give a proper title to the image grid.</strike></li>
-                <li>Make the thumbnails a little larger.</li>
+                <li><strike>Make the thumbnails a little larger.</strike></li>
               </ul>
             </div>
           </React.Fragment>
@@ -55,7 +55,7 @@ class SideInfo extends React.Component {
               </ul>
             </div>
             {Records.length>0 && <h4>Selected Records</h4>}
-            {Records.length>0 && <SideTable Records={Records}/>}
+            {Records.length>0 && <SideTable Records={Records} removeCurrent={RemoveCurrentRecord}/>}
           </React.Fragment>
         );
       case 4:
@@ -90,6 +90,8 @@ class SideInfo extends React.Component {
             </div>
           </React.Fragment>
         );
+      default:
+        throw new Error('Opss!');
     }
   }
 };
@@ -109,6 +111,7 @@ const SideTable = props => {
             return(
               <div className="sidebar-table-row sidebar-table-record" key={key}>
                 <p>{record.Targets[0]}</p><p>{record.Targets[1]}</p><p>{record.Interaction}</p>
+                <button onClick={props.removeCurrent} value={key}>x</button>
               </div>
             )
           })
