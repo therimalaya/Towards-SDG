@@ -44,7 +44,7 @@ class Summary extends React.Component {
       })
     })
 
-    const size = 500
+    const size = 420
 
     return (
       <React.Fragment>

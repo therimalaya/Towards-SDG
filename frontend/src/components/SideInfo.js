@@ -22,7 +22,7 @@ class SideInfo extends React.Component {
               <ul>
                 <li>Think about alternative database.</li>
                 <li><strike>Give a proper title to the form.</strike></li>
-                <li>Validate the fields before going to next step.</li>
+                <li><strike>Validate the fields before going to next step.</strike></li>
               </ul>
             </div>
           </React.Fragment>
@@ -49,9 +49,9 @@ class SideInfo extends React.Component {
             <div>
               <p>TODO:</p>
               <ul>
-                <li>Make the goal image a bit small.</li>
+                <li><strike>Make the goal image a bit small.</strike></li>
                 <li>Write an instruction to the user so that they can go back to Goal page and selection other goal pairs as well.</li>
-                <li>Fix the size of Interaction button before and after click. Try go make them more visible.</li>
+                <li><strike>Fix the size of Interaction button before and after click. Try go make them more visible.</strike></li>
               </ul>
             </div>
             {Records.length>0 && <h4>Selected Records</h4>}
@@ -66,11 +66,9 @@ class SideInfo extends React.Component {
             <div>
               <p>TODO:</p>
               <ul>
-                <li>Make the goal image a bit small.</li>
-                <li>Change the summary of all selected records.</li>
-                <li>Try to group the records by goal and its small image.</li>
-                <li>Try to show the title of target at the bottom somewhere when user hovers over them.</li>
-                <li>Keep the two sides of the summary span equal space even if there are not enough records.</li>
+                <li><strike>Change the summary of all selected records.</strike></li>
+                <li><strike>Keep the two sides of the summary span equal space even if there are not enough records.</strike></li>
+                <li>May be go for Network Graph for visualization. Or just use Table.</li>
               </ul>
             </div>
           </React.Fragment>

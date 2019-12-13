@@ -1,7 +1,7 @@
 import React from 'react';
 import {Faculty} from './Inputs';
 
-const validateUrl  = (str) => {
+const validateURL  = (str) => {
   var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
     '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
     '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
@@ -48,6 +48,30 @@ class Personal extends React.Component {
     // Update the error state
     if (!FormData.Name) {
       errors.Name = "Name can not be empty";
+      isValid = false;
+    } else if (FormData.Name.length <= 5) {
+      errors.Name = "Name must be at least 5 character long.";
+      isValid = false;
+    }
+
+    if (!FormData.Faculty) {
+      errors.Faculty = "Must select a faculty";
+      isValid = false;
+    }
+
+    if (!FormData.Research.Title) {
+      errors.Research = {...errors.Research, Title: "Research title must not be empty."};
+      isValid = false;
+    } else if (FormData.Research.Title.length <= 5) {
+      errors.Research = {...errors.Research, Title: "Research title must be at least 5 character long."};
+      isValid = false;
+    }
+
+    if (!FormData.Research.URL) {
+      errors.Research = {...errors.Research, URL: "Research URL must not be empty."};
+      isValid = false;
+    } else if (!validateURL(FormData.Research.URL)) {
+      errors.Research = {...errors.Research, URL: "Research URL is not valid."};
       isValid = false;
     }
 
@@ -110,7 +134,7 @@ class Personal extends React.Component {
           </div>
           <label className="app-input-label" htmlFor="faculty">Faculty</label>
           <div className="App-form-field">
-            <div className="App-Form-Error" id="Faculty-Error"></div>
+            <div className="App-Form-Error" id="Faculty-Error">{errors.Faculty}</div>
             <Faculty
               name="Faculty"
               className={classList("App-Form-Inputs", errors.Faculty!=="" && "has-error")}
@@ -121,7 +145,7 @@ class Personal extends React.Component {
           </div>
           <label className="app-input-label" htmlFor="research-title">Research Title</label>
           <div className="App-form-field">
-            <div className="App-Form-Error" id="Research-Title-Error"></div>
+            <div className="App-Form-Error" id="Research-Title-Error">{errors.Research.Title}</div>
             <input
               name="research-title"
               className={classList("App-Form-Inputs", errors.Research.Title!=="" && "has-error")}
@@ -132,7 +156,7 @@ class Personal extends React.Component {
           </div>
           <label className="app-input-label" htmlFor="research-url">Research URL</label>
           <div className="App-form-field">
-            <div className="App-Form-Error" id="Research-URL-Error"></div>
+            <div className="App-Form-Error" id="Research-URL-Error">{errors.Research.URL}</div>
             <input
               name="research-url"
               className={classList("App-Form-Inputs", errors.Research.URL!=="" && "has-error")}
@@ -143,7 +167,7 @@ class Personal extends React.Component {
           </div>
           <label className="app-input-label" htmlFor="coauthors-faculty">Coauthor's Faculty</label>
           <div className="App-form-field">
-            <div className="App-Form-Error" id="Coauthors-Faculty-Error"></div>
+            <div className="App-Form-Error" id="Coauthors-Faculty-Error">{errors.CoauthorFaculty}</div>
             <Faculty
               name="Coauthors-Faculty"
               className={classList("App-Form-Inputs", errors.CoauthorFaculty!=="" && "has-error")}

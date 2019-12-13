@@ -172,17 +172,19 @@ class Target extends React.Component {
                 handleInput={this.handleInput}/>
             : <div></div>
           }
-          <div className="nav-btn add-btn">
-            <button
-              disabled={CurrentRecord.Targets.length<=0}
-              onClick={this.ResetAndUpdate}
-              className="App-Nav-Btn">
-              Add More Records
-            </button>
-          </div>
-          <div className="nav-btn">
-            <button onClick={PrevStep} className="App-Nav-Btn">Previous</button>
-            <button onClick={NextStep} className="App-Nav-Btn">Next</button>
+          <div className="nav-btns">
+            <div className="nav-btn add-btn">
+              <button
+                disabled={CurrentRecord.Targets.length<=0}
+                onClick={this.ResetAndUpdate}
+                className="App-Nav-Btn">
+                Add More Records
+              </button>
+            </div>
+            <div className="nav-btn">
+              <button onClick={PrevStep} className="App-Nav-Btn">Previous</button>
+              <button onClick={NextStep} className="App-Nav-Btn">Next</button>
+            </div>
           </div>
         </div>
       </React.Fragment>

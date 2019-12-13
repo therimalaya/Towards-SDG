@@ -16,10 +16,12 @@ export default class App extends React.Component {
     this.state = {
       Step: 1,
       FormData: {
-        Name: "",
-        Faculty: "",
-        Research: {Title: "", URL: ""},
-        Coauthors: {Faculty: []},
+        Name: "Raju Rimal",
+        Faculty: "KBM",
+        Research: {
+          Title: "Simulation of Multivariate Methods",
+          URL: "https://simulatr.github.io/simrel"},
+        Coauthors: {Faculty: ["KBM"]},
       },
       CurrentRecord: {
         Goals: [],
