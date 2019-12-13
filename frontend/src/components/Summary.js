@@ -13,33 +13,13 @@ class Summary extends React.Component {
     console.log(TargetList)
     console.log(GoalList)
 
-    const nodes = targets_distinct.map((target, idx)=>({
-	    id: target,
-      label: target,
-      cid: target.split(".")[0],
-      color: GoalList.filter(goal=>goal.goal===Number(target.split(".")[0]))[0].colorInfo.hex
+    const layout = GoalList.map((goal) => ({
+      len: TargetList.filter(x=>x.goal===goal.goal).length,
+      color: goal.colorInfo.hex,
+      label: "Goal "+goal.goal,
+      id: goal.goal
     }))
-
-
-    const edges = Records.map((record, idx) => ({
-      id: {idx},
-      from: record.Targets[0],
-      to: record.Targets[1],
-      color: record.Interaction === "Positive" ?
-             {color: 'red'} :
-             record.Interaction === "Negative" ?
-             {color: 'blue'} :
-             {color: 'grey'},
-      arrows: 'to'
-    }))
-
-    const options = {
-      layout:{
-        hierarchical: {
-          enabled: false,
-        }
-      }
-    }
+    const size = 500
 
     return (
       <React.Fragment>
@@ -74,10 +54,34 @@ class Summary extends React.Component {
             </div>
           </div>
           <div className="sdg-data-panel">
-            <Network options={options}>
-              {nodes.map(node => <Node id={node.id} label={node.label} cid={node.cid} color={node.color}/>)}
-              {edges.map(edge => <Edge from={edge.from} to={edge.to} color={edge.color} arrows={edge.arrows}/>)}
-            </Network>
+            <Circos
+              size={size}
+              layout={layout}
+              config={{
+                innerRadius: size / 2 - 80,
+                outerRadius: size / 2 - 40,
+                ticks: {
+                  display: true,
+                  majorSpacing: 2,
+                  spacing: 1,
+                  spacing: 1,
+                  labels: true,
+                  labelDisplay0: true,
+                  step: 1,
+                  size: {
+                    minor: 1,
+                    major: 2
+                  }
+                },
+                labels: {
+                  position: 'center',
+                  display: true,
+                  size: 10,
+                  color: '#000',
+                  radialOffset: -15,
+                }
+              }}
+            />
           </div>
         </div>
         <div className="nav-btn">
