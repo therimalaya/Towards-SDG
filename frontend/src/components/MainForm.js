@@ -7,7 +7,7 @@ import Confirmation from './Confirmation';
 
 class MainForm extends React.Component {
   render() {
-    const {Step, FormData, CurrentRecord} = this.props;
+    const {Step, FormData, CurrentRecord, Records} = this.props;
     const {UpdateFormData, UpdateCurrentRecord, UpdateRecords} = this.props;
     const {NextStep, PrevStep, GoHome, Submit} = this.props;
 
@@ -41,7 +41,7 @@ class MainForm extends React.Component {
           <React.Fragment>
             <Summary
               FormData={FormData}
-              CurrentRecord={CurrentRecord}
+              Records={Records}
               Submit={Submit}
               PrevStep={PrevStep} />
           </React.Fragment>

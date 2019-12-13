@@ -150,6 +150,7 @@ export default class App extends React.Component {
               Step={Step}
               FormData={FormData}
               CurrentRecord={CurrentRecord}
+              Records={Records}
               UpdateFormData={this.UpdateFormData}
               UpdateCurrentRecord ={this.UpdateCurrentRecord}
               UpdateRecords={this.UpdateRecords}

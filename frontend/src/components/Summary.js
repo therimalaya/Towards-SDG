@@ -1,73 +1,83 @@
 import React from 'react';
 import TargetList from '../data/targets.json';
 import GoalList from '../data/goals.json';
-import { FacultyConfig } from '../config/app-config.js'
+import { FacultyConfig } from '../config/app-config.js';
+import Circos from 'react-circos';
 
 class Summary extends React.Component {
   render() {
-    const {FormData, CurrentRecord, Submit, PrevStep} = this.props
-    const SelectedGoals = GoalList.filter(goal=>CurrentRecord.Goals.includes(goal.goal));
-    SelectedGoals.forEach(goal=>{
-      goal.targets = TargetList
-        .filter(target=>target.goal===goal.goal)
-        .filter(target=>CurrentRecord.Targets.map(x=>x.toString()).includes(target.id));
-      return(goal)
-    })
+    const {FormData, Records, Submit, PrevStep} = this.props
+    const targets = Records.flatMap(record=>record.Targets)
+    const targets_distinct = [...new Set(targets)]
+
+    console.log(TargetList)
+    console.log(GoalList)
+
+    const nodes = targets_distinct.map((target, idx)=>({
+	    id: target,
+      label: target,
+      cid: target.split(".")[0],
+      color: GoalList.filter(goal=>goal.goal===Number(target.split(".")[0]))[0].colorInfo.hex
+    }))
+
+
+    const edges = Records.map((record, idx) => ({
+      id: {idx},
+      from: record.Targets[0],
+      to: record.Targets[1],
+      color: record.Interaction === "Positive" ?
+             {color: 'red'} :
+             record.Interaction === "Negative" ?
+             {color: 'blue'} :
+             {color: 'grey'},
+      arrows: 'to'
+    }))
+
+    const options = {
+      layout:{
+        hierarchical: {
+          enabled: false,
+        }
+      }
+    }
+
     return (
       <React.Fragment>
         <h2 className="AppStepTitle">Summary</h2>
         <div className="summary-panel">
-          <div className="smry-name">
-            <div className="smry-label">Name</div>
-            <div className="smry-txt">{FormData.Name}</div>
-          </div>
-          <div className="smry-faculty">
-            <div className="smry-label">Faculty</div>
-            <div className="smry-txt">{FormData.Faculty}</div>
-          </div>
-          <div className="smry-research-title">
-            <div className="smry-label">Research.Title</div>
-            <div className="smry-txt">{FormData.Research.Title}</div>
-          </div>
-          <div className="smry-research-url">
-            <div className="smry-label">Research.URL</div>
-            <div className="smry-txt">{FormData.Research.URL}</div>
-          </div>
-          <div className="smry-coauthors">
-            <div className="smry-label">Coauthor's Faculty</div>
-            {FormData.Coauthors.Faculty.map((fclty, idx)=>{
-              return(
-                <div className="smry-txt" key={idx}>
-                  {FacultyConfig.filter(x=>x.value===fclty).map(x=>x.label).toString()}
-                </div>
-              )
-            })}
-          </div>
-          <div className="smry-goal-card-list">
-            {SelectedGoals.map(goal=>{
-              return(
-                <div className="smry-goal-card" key={goal.goal}>
-                  <div className="smry-goal-img">
-                    <img src={goal.image_src} alt={goal.short} width="100%" />
+          <div className="form-data-panel">
+            <div className="smry-name">
+              <div className="smry-label">Name</div>
+              <div className="smry-txt">{FormData.Name}</div>
+            </div>
+            <div className="smry-faculty">
+              <div className="smry-label">Faculty</div>
+              <div className="smry-txt">{FormData.Faculty}</div>
+            </div>
+            <div className="smry-research-title">
+              <div className="smry-label">Research.Title</div>
+              <div className="smry-txt">{FormData.Research.Title}</div>
+            </div>
+            <div className="smry-research-url">
+              <div className="smry-label">Research.URL</div>
+              <div className="smry-txt">{FormData.Research.URL}</div>
+            </div>
+            <div className="smry-coauthors">
+              <div className="smry-label">Coauthor's Faculty</div>
+              {FormData.Coauthors.Faculty.map((fclty, idx)=>{
+                return(
+                  <div className="smry-txt" key={idx}>
+                    {FacultyConfig.filter(x=>x.value===fclty).map(x=>x.label).toString()}
                   </div>
-                  <div className="smry-goal-short">{goal.short}</div>
-                  <div className="smry-target-title">
-                    {goal.targets.map(target=>{
-                      return(
-                        <p key={target.id} className="sumry-target-text">
-                          <span className="sumry-target-id">{target.id}</span>
-                          {target.title}
-                        </p>
-                      )
-                    })}
-                  </div>
-                </div>
-              )
-            })}
+                )
+              })}
+            </div>
           </div>
-          <div className="smry-interaction">
-            <div className="smry-label">Interaction</div>
-            <div className="smry-txt">{CurrentRecord.Interaction}</div>
+          <div className="sdg-data-panel">
+            <Network options={options}>
+              {nodes.map(node => <Node id={node.id} label={node.label} cid={node.cid} color={node.color}/>)}
+              {edges.map(edge => <Edge from={edge.from} to={edge.to} color={edge.color} arrows={edge.arrows}/>)}
+            </Network>
           </div>
         </div>
         <div className="nav-btn">

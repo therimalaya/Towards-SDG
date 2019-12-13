@@ -180,12 +180,7 @@ $goal-image-border: 0.5vmin;
 
   }
 
-  /* .App-link { */
-  /*   color: $link-color; */
-  /* } */
-
   .App-main {
-    /* max-width: calc($app-width - $sidebar-width); */
     color: $primary-text;
     padding: 25px;
     display: grid;
@@ -624,6 +619,8 @@ $goal-image-border: 0.5vmin;
           text-transform: uppercase;
           cursor: pointer;
           border: none;
+          width: 4vw;
+          height: 4vw;
 
           @media only screen and (max-width: 450px) {
             grid-row: 2/2;
@@ -640,101 +637,11 @@ $goal-image-border: 0.5vmin;
       }
     }
 
-    .summary-panel {
+    .summary-panel{
       display: grid;
-      grid-auto-flow: column;
-      grid-template-columns: minmax(min-content, max-content);
-      grid-auto-rows: minmax(min-content, max-content);
-      grid-gap: 2vw;
-      font-size: calc(8px + 1.2vmin);
 
-      @media only screen and (max-width: 740px) {
-        grid-gap: 1vw;
-      }
-
-      .smry-label {
-        text-transform: uppercase;
-        font-weight: 600;
-        color: $secondary-color;
-        font-size: 65%;
-      }
-      .smry-txt {
-        font-weight: 300;
-        color: $primary-text;
-        font-size: 90%;
-        margin-left: 1vmin;
-        padding-left: 0.5vmin;
-        border-left: 3px solid $primary-color;
-      }
-
-      .smry-coauthors {
-        .smry-txt {
-          margin-bottom: 0.5vmin;
-        }
-      }
-
-      &>div:not(.smry-goal-card-list) {
-        grid-column: 1/1;
-      }
-
-
-      .smry-goal-card-list {
-        grid-column: 2/2;
-        grid-row: 1/7;
-
-        display: grid;
-        grid-auto-flow: row;
-
-        .smry-goal-card {
-          display: grid;
-          grid-auto-flow: column;
-          grid-template-columns: 10vw 1fr;
-          grid-gap: 0.5vw;
-          align-items: flex-start;
-
-          @media only screen and (max-width: 450px) {
-            display: flex;
-            flex-direction: column;
-            padding-left: 10px;
-          }
-
-          .smry-goal-img {
-            grid-row: 1/3;
-            grid-column: 1/1;
-
-            @media only screen and (max-width: 450px) {
-              display: none;
-            }
-          }
-          div:not(.smry-goal-img) {
-            grid-column: 2/2;
-          }
-
-          .smry-target-title {
-            .sumry-target-text {
-              margin: 0;
-              font-size: calc(9px + 0.8vmin);
-              padding: 8px 0;
-              text-align: left;
-
-              .sumry-target-id {
-                font-weight: 600;
-                display:inline-block;
-                width: 30px;
-                text-align: right;
-                margin-right: 5px;
-                border-right: 1px solid #ccc;
-                padding-right: 5px;
-                color: $primary-color;
-                font-weight: 900;
-                background-color: $background-color;
-              }
-            }
-
-          }
-        }
-
-      }
+      .form-data-panel {}
+      .sdg-data-panel {}
     }
 
     .records {
