@@ -7,18 +7,43 @@ import Circos from 'react-circos';
 class Summary extends React.Component {
   render() {
     const {FormData, Records, Submit, PrevStep} = this.props
-    const targets = Records.flatMap(record=>record.Targets)
-    const targets_distinct = [...new Set(targets)]
-
-    console.log(TargetList)
-    console.log(GoalList)
-
-    const layout = GoalList.map((goal) => ({
-      len: TargetList.filter(x=>x.goal===goal.goal).length,
-      color: goal.colorInfo.hex,
-      label: "Goal "+goal.goal,
-      id: goal.goal
+    const targetColors = TargetList.filter(target=>target.id.match("[0-9]$")).map(target=>({
+      id: target.id,
+      color: GoalList.map(goal=>goal.colorInfo.hex)[target.goal-1]
     }))
+
+
+    const layout = TargetList
+      .filter(target=>target.id.match("[0-9]$"))
+      .map(target => ({
+        id: target.id,
+        len: 1,
+        label: target.id,
+        color: targetColors.filter(col=>col.id===target.id).map(target=>target.color).toString(),
+        block_id: String(target.goal),
+        position: (TargetList.indexOf(target) +
+          TargetList.indexOf(target))/2,
+        value: target.id.split(".")[1],
+        start: TargetList.indexOf(target)-1,
+        end: TargetList.indexOf(target)
+      }))
+
+    const chordData = Records.map((record, idx) => {
+      return({
+        source: {
+          id: record.Targets[0],
+          start: layout.filter(trgt=>trgt.id===record.Targets[0])[0].start,
+          end: layout.filter(trgt=>trgt.id===record.Targets[0])[0].end,
+        },
+        target: {
+          id: record.Targets[1],
+          start: layout.filter(trgt=>trgt.id===record.Targets[1])[0].start,
+          end: layout.filter(trgt=>trgt.id===record.Targets[1])[0].end,
+        },
+        value: record.Interaction === "Positive" ? 1 : record.Interaction === "Negative" ? -1 : 0
+      })
+    })
+
     const size = 500
 
     return (
@@ -58,29 +83,33 @@ class Summary extends React.Component {
               size={size}
               layout={layout}
               config={{
-                innerRadius: size / 2 - 80,
+                innerRadius: size / 2 - 65,
                 outerRadius: size / 2 - 40,
+                gap: 0.01,
                 ticks: {
-                  display: true,
-                  majorSpacing: 2,
-                  spacing: 1,
-                  spacing: 1,
-                  labels: true,
-                  labelDisplay0: true,
-                  step: 1,
-                  size: {
-                    minor: 1,
-                    major: 2
-                  }
+                  display: false,
                 },
                 labels: {
-                  position: 'center',
-                  display: true,
-                  size: 10,
-                  color: '#000',
-                  radialOffset: -15,
+                  position: 'out',
+                  display: false,
+                  size: 8,
+                  color: 'black',
+                  radialOffset: 29,
                 }
               }}
+              tracks={[
+                {
+                  type: "CHORDS",
+                  data: chordData,
+                  config: {
+                    color: d => d.value > 0 ? "red" : (d.value < 0 ? "blue" : "grey"),
+                    tooltipContent: function (d) {
+                      const interaction = d.value > 0 ? "Interaction: Positive" : (d.value < 0 ? "Interaction: Negative" : "")
+                      return `<h3>Target: ${d.source.id} ➤ Target: ${d.target.id} ${interaction}</h3>`;
+                    },
+                  }
+                },
+              ]}
             />
           </div>
         </div>

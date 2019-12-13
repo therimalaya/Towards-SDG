@@ -60,7 +60,11 @@ class Target extends React.Component {
     this.props.UpdateRecords(event)
   }
   handleInput = (event) => {
-    this.props.UpdateCurrentRecord("Interaction", event.target.value)
+    if (this.props.CurrentRecord.Interaction === event.target.value) {
+      this.props.UpdateCurrentRecord("Interaction", "")
+    } else {
+      this.props.UpdateCurrentRecord("Interaction", event.target.value)
+    }
   }
   handleClick = (event) => {
     event.preventDefault()

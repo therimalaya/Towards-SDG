@@ -639,8 +639,28 @@ $goal-image-border: 0.5vmin;
 
     .summary-panel{
       display: grid;
+      grid-auto-flow: column;
+      grid-template-columns: 1fr 1fr;
 
-      .form-data-panel {}
+      .form-data-panel {
+        display: grid;
+        grid-auto-rows: minmax(min-content, max-content);
+        grid-gap: 2vh;
+
+        .smry-label {
+          font-weight: 600;
+          font-size: 90%;
+          font-variant: all-small-caps;
+          color: #555;
+        }
+
+        .smry-txt {
+          font-weight: 300;
+          padding-left: 5px;
+          border-left: 2px solid $primary-color;
+          margin: 5px 10px;
+        }
+      }
       .sdg-data-panel {}
     }
 

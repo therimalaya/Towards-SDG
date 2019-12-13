@@ -14,7 +14,7 @@ export default class App extends React.Component {
       initializeApp(FirebaseConfig);
     }
     this.state = {
-      Step: 4,
+      Step: 1,
       FormData: {
         Name: "",
         Faculty: "",
