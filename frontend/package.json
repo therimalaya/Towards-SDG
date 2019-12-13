@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://cloudrimalaya.com/sdg",
+  "homepage": "https://therimalaya.github.io/Towards-SDG",
   "dependencies": {
     "firebase": "^7.5.0",
     "node-sass": "^4.13.0",
@@ -16,7 +16,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -32,5 +34,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^2.1.1"
   }
 }
