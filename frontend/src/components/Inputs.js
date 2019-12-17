@@ -6,7 +6,6 @@ export class SelectInput extends React.Component {
     const {options, field, name, className, isMulti, placeholder, value, HandleChange} = this.props
     const initialValue = options.filter(item=>value.includes(item.value))
     const handleChange = (selected) => {
-      debugger
       if (selected === null) {
         HandleChange({[field]: []})
       } else {

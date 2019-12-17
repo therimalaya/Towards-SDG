@@ -1,4 +1,5 @@
 import React from 'react';
+import Select from 'react-select';
 import {SelectInput} from './Inputs';
 import {FacultyConfig} from '../config/app-config';
 
@@ -103,6 +104,8 @@ class Personal extends React.Component {
     })
     if (event.target) {
       this.props.UpdateFormData(input, event.target.value)
+    } else if (event.value) {
+      this.props.UpdateFormData(input, event.value)
     } else {
       this.props.UpdateFormData(input, event)
     }
@@ -206,15 +209,16 @@ class Personal extends React.Component {
           <label className="app-input-label" htmlFor="outreach">Research Outreach</label>
           <div className="App-form-field">
             <div className="App-Form-Error" id="Research-Outreach-Error">{errors.Research.Outreach}</div>
-            <SelectInput
-              options={OutreachOptions}
-              field="Outreach"
+            <Select
               name="outreach"
               className={classList("App-Form-Inputs", errors.Research.Outreach!=="" && "has-error")}
+              placeholder="Communicated with decision maker about the research?"
               isMulti={false}
+              isClearable={false}
               value={FormData.Research.Outreach}
-              HandleChange={this.HandleChange("Research")}
-              placeholder="Communicated with decision maker about the research?"/>
+              onChange={this.HandleChange("Research.Outreach")}
+              options={OutreachOptions}
+            />
           </div>
         </form>
         <div className="nav-btn">
