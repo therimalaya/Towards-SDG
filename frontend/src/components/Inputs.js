@@ -1,17 +1,17 @@
 import React from 'react';
 import Select from 'react-select';
-import {FacultyConfig} from '../config/app-config';
 
-export class Faculty extends React.Component {
+export class SelectInput extends React.Component {
   render() {
-    const {name, className, isMulti, placeholder, value, HandleChange} = this.props
-    const initialValue = FacultyConfig.filter(faculty=>value.includes(faculty.value))
+    const {options, field, name, className, isMulti, placeholder, value, HandleChange} = this.props
+    const initialValue = options.filter(item=>value.includes(item.value))
     const handleChange = (selected) => {
+      debugger
       if (selected === null) {
-        HandleChange({Faculty: []})
+        HandleChange({[field]: []})
       } else {
         if (Array.isArray(selected)) {
-          HandleChange({Faculty: selected.map(x=>x.value)})
+          HandleChange({[field]: selected.map(x=>x.value)})
         } else {
           HandleChange(selected.value)
         }
@@ -27,7 +27,7 @@ export class Faculty extends React.Component {
           isClearable={false}
           value={initialValue}
           onChange={handleChange}
-          options={FacultyConfig}
+          options={options}
         />
       </React.Fragment>
     );

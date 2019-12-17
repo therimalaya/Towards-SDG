@@ -20,8 +20,11 @@ export default class App extends React.Component {
         Faculty: "KBM",
         Research: {
           Title: "Simulation of Multivariate Methods",
-          URL: "https://simulatr.github.io/simrel"},
-        Coauthors: {Faculty: ["KBM"]},
+          URL: "https://simulatr.github.io/simrel",
+          Type: "Theoretical/Conceptual Work",
+          Outreach: "Yes"
+        },
+        Coauthors: {Faculty: ["KBM"]}
       },
       CurrentRecord: {
         Goals: [],

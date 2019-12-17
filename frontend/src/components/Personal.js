@@ -1,5 +1,11 @@
 import React from 'react';
-import {Faculty} from './Inputs';
+import {SelectInput} from './Inputs';
+import {FacultyConfig} from '../config/app-config';
+
+const OutreachOptions = [
+  {value: 'Yes', label: 'Yes'},
+  {value: 'No', label: 'No'},
+]
 
 const validateURL  = (str) => {
   var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
@@ -27,7 +33,9 @@ class Personal extends React.Component {
         Faculty: "",
         Research: {
           Title: "",
-          URL: ""
+          URL: "",
+          Type: "",
+          Outreach: ""
         },
         CoauthorFaculty: ""
       }
@@ -135,7 +143,9 @@ class Personal extends React.Component {
           <label className="app-input-label" htmlFor="faculty">Faculty</label>
           <div className="App-form-field">
             <div className="App-Form-Error" id="Faculty-Error">{errors.Faculty}</div>
-            <Faculty
+            <SelectInput
+              field="Faculty"
+              options={FacultyConfig}
               name="Faculty"
               className={classList("App-Form-Inputs", errors.Faculty!=="" && "has-error")}
               isMulti={false}
@@ -168,13 +178,43 @@ class Personal extends React.Component {
           <label className="app-input-label" htmlFor="coauthors-faculty">Coauthor's Faculty</label>
           <div className="App-form-field">
             <div className="App-Form-Error" id="Coauthors-Faculty-Error">{errors.CoauthorFaculty}</div>
-            <Faculty
+            <SelectInput
+              field="Faculty"
+              options={FacultyConfig}
               name="Coauthors-Faculty"
               className={classList("App-Form-Inputs", errors.CoauthorFaculty!=="" && "has-error")}
               isMulti={true}
               value={FormData.Coauthors.Faculty}
               HandleChange={this.HandleChange("Coauthors")}
               placeholder="Coauthor's Faculty"/>
+          </div>
+          <div></div><div className="App-Form-Message" id="Question-Type">How will you classify this work by Method?</div>
+          <label className="app-input-label" htmlFor="type">Research Type</label>
+          <div className="App-form-field">
+            <div className="App-Form-Error" id="Research-Type-Error">{errors.Research.Type}</div>
+            <SelectInput
+              options={FacultyConfig}
+              field="Type"
+              name="type"
+              className={classList("App-Form-Inputs", errors.Research.Type!=="" && "has-error")}
+              isMulti={false}
+              value={FormData.Research.Type}
+              HandleChange={this.HandleChange("Research")}
+              placeholder="Type of Research"/>
+          </div>
+          <div></div><div className="App-Form-Message" id="Question-Type">Have you taken any particular steps to communicate this research to policy/decision makers (e.g. meetings/ presentations)?</div>
+          <label className="app-input-label" htmlFor="outreach">Research Outreach</label>
+          <div className="App-form-field">
+            <div className="App-Form-Error" id="Research-Outreach-Error">{errors.Research.Outreach}</div>
+            <SelectInput
+              options={OutreachOptions}
+              field="Outreach"
+              name="outreach"
+              className={classList("App-Form-Inputs", errors.Research.Outreach!=="" && "has-error")}
+              isMulti={false}
+              value={FormData.Research.Outreach}
+              HandleChange={this.HandleChange("Research")}
+              placeholder="Communicated with decision maker about the research?"/>
           </div>
         </form>
         <div className="nav-btn">
