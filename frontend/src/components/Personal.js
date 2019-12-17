@@ -1,11 +1,22 @@
 import React from 'react';
 import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import {SelectInput} from './Inputs';
 import {FacultyConfig} from '../config/app-config';
 
 const OutreachOptions = [
   {value: 'Yes', label: 'Yes'},
+  {value: 'Planned', label: 'No, but I do have concrete plans for do so'},
   {value: 'No', label: 'No'},
+]
+const ResearchOptions = [
+  {value: 'Theoretical/ Conceptual work', label: 'Theoretical/ Conceptual work'},
+  {value: 'Experiments', label: 'Experiments'},
+  {value: 'Statistical analysis of primary observational data', label: 'Statistical analysis of primary observational data'},
+  {value: 'Statistical analysis of secondary data', label: 'Statistical analysis of secondary data'},
+  {value: 'Simulations', label: 'Simulations'},
+  {value: 'Case studies (Qualitative analysis)', label: 'Case studies (Qualitative analysis)'},
+  {value: 'Reviews/ Synthesis', label: 'Reviews/ Synthesis'},
 ]
 
 const validateURL  = (str) => {
@@ -191,31 +202,32 @@ class Personal extends React.Component {
               HandleChange={this.HandleChange("Coauthors")}
               placeholder="Coauthor's Faculty"/>
           </div>
-          <div></div><div className="App-Form-Message" id="Question-Type">How will you classify this work by Method?</div>
           <label className="app-input-label" htmlFor="type">Research Type</label>
           <div className="App-form-field">
             <div className="App-Form-Error" id="Research-Type-Error">{errors.Research.Type}</div>
-            <SelectInput
-              options={FacultyConfig}
-              field="Type"
+            <div className="App-Form-Message" id="Question-Type">How will you classify this work by Method?</div>
+            <CreatableSelect
               name="type"
               className={classList("App-Form-Inputs", errors.Research.Type!=="" && "has-error")}
+              placeholder="Type of Research"
               isMulti={false}
-              value={FormData.Research.Type}
-              HandleChange={this.HandleChange("Research")}
-              placeholder="Type of Research"/>
+              isClearable={false}
+              value={ResearchOptions.find(item=>item.value === FormData.Research.Type)}
+              onChange={this.HandleChange("Research.Type")}
+              options={ResearchOptions}
+            />
           </div>
-          <div></div><div className="App-Form-Message" id="Question-Type">Have you taken any particular steps to communicate this research to policy/decision makers (e.g. meetings/ presentations)?</div>
           <label className="app-input-label" htmlFor="outreach">Research Outreach</label>
           <div className="App-form-field">
             <div className="App-Form-Error" id="Research-Outreach-Error">{errors.Research.Outreach}</div>
+            <div className="App-Form-Message" id="Question-Type">Have you taken any particular steps to communicate this research to policy/decision makers (e.g. meetings/ presentations)?</div>
             <Select
               name="outreach"
               className={classList("App-Form-Inputs", errors.Research.Outreach!=="" && "has-error")}
               placeholder="Communicated with decision maker about the research?"
               isMulti={false}
               isClearable={false}
-              value={FormData.Research.Outreach}
+              value={OutreachOptions.find(item=>item.value === FormData.Research.Outreach)}
               onChange={this.HandleChange("Research.Outreach")}
               options={OutreachOptions}
             />

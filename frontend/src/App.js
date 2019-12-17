@@ -21,7 +21,7 @@ export default class App extends React.Component {
         Research: {
           Title: "Simulation of Multivariate Methods",
           URL: "https://simulatr.github.io/simrel",
-          Type: "Theoretical/Conceptual Work",
+          Type: "Theoretical/ Conceptual work",
           Outreach: "Yes"
         },
         Coauthors: {Faculty: ["KBM"]}
