@@ -1,6 +1,7 @@
 import React from 'react';
 import {firestore} from 'firebase';
 import { FacultyConfig } from '../config/app-config';
+import _ from 'lodash';
 var unsubscribe;
 
 class Confirmation extends React.Component {
@@ -19,6 +20,7 @@ class Confirmation extends React.Component {
         let records = [];
         snapshot.forEach(doc => records.push({ ...doc.data() }))
         this.setState({records})
+        console.log(records)
       });
   }
 

@@ -654,6 +654,7 @@ $goal-image-border: 0.5vmin;
       display: grid;
       grid-auto-flow: column;
       grid-template-columns: 1fr 1fr;
+      grid-gap: 1vmax;
 
       @media only screen and (max-width: 768px) {
         grid-auto-flow: row;
@@ -682,7 +683,7 @@ $goal-image-border: 0.5vmin;
       .sdg-data-panel {
         svg {
           g.all {
-              transform: translate(180px, 200px);
+              transform: translate(220px, 220px);
           }
         }
       }

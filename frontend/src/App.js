@@ -14,7 +14,7 @@ export default class App extends React.Component {
       initializeApp(FirebaseConfig);
     }
     this.state = {
-      Step: 1,
+      Step: 4,
       FormData: {
         Name: "Raju Rimal",
         Faculty: "KBM",
@@ -31,7 +31,13 @@ export default class App extends React.Component {
         Targets: [],
         Interaction: ""
       },
-      Records: []
+      Records: [
+        {
+          Goals: [15, 15],
+          Interaction: "Positive",
+          Targets: ["15.1", "15.3"]
+        }
+      ]
     }
 
     this.UpdateRecords = this.UpdateRecords.bind(this);
