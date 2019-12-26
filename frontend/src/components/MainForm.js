@@ -49,7 +49,10 @@ class MainForm extends React.Component {
       case 5:
         return(
           <React.Fragment>
-            <Confirmation GoHome={GoHome}/>
+            <Confirmation 
+              Records={Records}
+              FormData={FormData}
+              GoHome={GoHome}/>
           </React.Fragment>
         );
       default:

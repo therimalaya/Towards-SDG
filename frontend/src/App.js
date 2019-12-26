@@ -1,10 +1,10 @@
 import React from 'react';
-import {firestore, apps, initializeApp} from 'firebase';
-import {FirebaseConfig} from './config/firebase-config.js'
+import { firestore, apps, initializeApp } from 'firebase';
+import { FirebaseConfig } from './config/firebase-config.js'
 import FrontCover from './components/FrontCover';
 import MainForm from './components/MainForm';
 import SideInfo from './components/SideInfo';
-import {StepConfig} from './config/app-config';
+import { StepConfig } from './config/app-config';
 import './App.scss';
 
 export default class App extends React.Component {
@@ -14,7 +14,7 @@ export default class App extends React.Component {
       initializeApp(FirebaseConfig);
     }
     this.state = {
-      Step: 4,
+      Step: 0,
       FormData: {
         Name: "Raju Rimal",
         Faculty: "KBM",
@@ -24,20 +24,18 @@ export default class App extends React.Component {
           Type: "Theoretical/ Conceptual work",
           Outreach: "Yes"
         },
-        Coauthors: {Faculty: ["KBM"]}
+        Coauthors: { Faculty: ["KBM"] }
       },
       CurrentRecord: {
         Goals: [],
         Targets: [],
-        Interaction: ""
-      },
-      Records: [
-        {
-          Goals: [15, 15],
-          Interaction: "Positive",
-          Targets: ["15.1", "15.3"]
+        Interaction: {
+          value: "",
+          type: "",
+          direction: ""
         }
-      ]
+      },
+      Records: []
     }
 
     this.UpdateRecords = this.UpdateRecords.bind(this);
@@ -53,11 +51,20 @@ export default class App extends React.Component {
   UpdateRecords = (event) => {
     event.preventDefault()
     const clicked_targets = [...document.getElementsByClassName("clicked-target-btn")]
-    clicked_targets.map(btn=>btn.classList.toggle("clicked-target-btn"))
-    clicked_targets.map(btn=>btn.classList.toggle("target-btn"))
+    clicked_targets.map(btn => btn.classList.toggle("clicked-target-btn"))
+    clicked_targets.map(btn => btn.classList.toggle("target-btn"))
+    var CurrentRecord = this.state.CurrentRecord
+    CurrentRecord = {
+      ...CurrentRecord,
+      Goals: CurrentRecord.Targets.map(x => parseInt(x.split(".")[0]))
+    }
     this.setState({
-      Records: [...this.state.Records, this.state.CurrentRecord],
-      CurrentRecord: {...this.state.CurrentRecord, Targets: [], Interaction: ""}
+      Records: [...this.state.Records, CurrentRecord],
+      CurrentRecord: {
+        ...this.state.CurrentRecord,
+        Targets: [],
+        Interaction: { value: "", type: "", direction: "" }
+      }
     })
   }
 
@@ -91,10 +98,10 @@ export default class App extends React.Component {
   WriteData = (data) => {
     var db = firestore();
     db.collection("records")
-      .add({...data, created: firestore.Timestamp.fromDate(new Date())})
-      .then(function(docRef) {
+      .add({ ...data, created: firestore.Timestamp.fromDate(new Date()) })
+      .then(function (docRef) {
         console.log("Document written with ID: ", docRef.id);
-      }).catch(function(error) {
+      }).catch(function (error) {
         console.error("Error adding document: ", error);
       });
     /* Firebase.database().ref('/').push(data); */
@@ -110,9 +117,6 @@ export default class App extends React.Component {
       SDGRecords: this.state.Records
     }
     this.WriteData(data)
-    this.setState({
-      Records: []
-    })
     this.NextStep(event)
   }
   NextStep = (event) => {
@@ -132,12 +136,13 @@ export default class App extends React.Component {
   GoHome = (event) => {
     event.preventDefault()
     this.setState({
-      Step: 0
+      Step: 0,
+      Records: []
     });
   }
 
   render() {
-    const {Step, CurrentRecord, FormData, Records} = this.state
+    const { Step, CurrentRecord, FormData, Records } = this.state
 
     return (
       <div className="App">
@@ -148,28 +153,28 @@ export default class App extends React.Component {
               Records={Records}
               RemoveCurrentRecord={this.RemoveCurrentRecord}
               Step={this.state.Step}
-              StepConfig={StepConfig}/>
+              StepConfig={StepConfig} />
           </div>
           <footer className="App-footer">
           </footer>
         </aside>
         <main className="App-main">
           {Step === 0
-          ? <FrontCover
-              NextStep={this.NextStep}/>
-          : <MainForm
+            ? <FrontCover
+              NextStep={this.NextStep} />
+            : <MainForm
               Step={Step}
               FormData={FormData}
               CurrentRecord={CurrentRecord}
               Records={Records}
               UpdateFormData={this.UpdateFormData}
-              UpdateCurrentRecord ={this.UpdateCurrentRecord}
+              UpdateCurrentRecord={this.UpdateCurrentRecord}
               UpdateRecords={this.UpdateRecords}
               NextStep={this.NextStep}
               PrevStep={this.PrevStep}
               GoHome={this.GoHome}
               Submit={this.Submit}
-          />
+            />
           }
         </main>
       </div>

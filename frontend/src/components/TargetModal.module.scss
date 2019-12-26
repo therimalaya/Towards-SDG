@@ -1,0 +1,48 @@
+$background-color: rgb(209, 232, 223);
+$primary-color: rgb(0, 154, 129);
+
+.container {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 15px;
+
+  .goalHeader {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 1fr 2fr;
+    grid-gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    box-shadow: 3px 3px 5px #777, -5px -5px 5px #eee;
+    border-radius: 10px;
+    padding: 10px;
+
+    img {
+      width: 100%;
+    }
+
+    div p {
+      margin: 0;
+      font-size: calc(8px + 0.7vmin);
+    }
+
+    div p:first-child {
+      font-weight: 600;
+      font-size: 120%;
+      padding-bottom: 12px;
+    }
+
+    .targetTitle {
+      span {
+        display: inline-block;
+        background-color: $primary-color;
+        color: $background-color;
+        padding: 2px 4px;
+        margin-right: 5px;
+        font-weight: 600;
+        font-size: 90%;
+      }
+    }
+  }
+}

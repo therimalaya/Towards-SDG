@@ -53,28 +53,38 @@ const RecordSummary = ({ Record }) => (
             <p className="record-coauthors"><span className="record-coauthors-label">Coauthors</span>{
               FacultyConfig.filter(fclty => Record.Coauthors.Faculty.includes(fclty.value)).flatMap(fclty => fclty.label).join("; ")
             }</p>
+            <p className="record-coauthors"><span className="record-coauthors-label"> Research Type</span> { Record.Research.Type } </p>
+            <p className="record-coauthors"><span className="record-coauthors-label"> Research Outreach</span> { Record.Research.Outreach } </p>
             {Record.SDGRecords.length > 0
-            ? <table className="sdg-records">
-              <thead>
-                <tr>
-                  <th>Goal1</th><th>Goal2</th>
-                  <th>Target1</th><th>Target2</th>
-                  <th>Interaction</th>
-                </tr>
-              </thead>
-              <tbody>
-                {
-                  Record.SDGRecords.map((sdg, idx) => <React.Fragment key={idx}>
-                    <tr>
-                      <td>{sdg.Goals[0]}</td><td>{sdg.Goals[1]}</td>
-                      <td>{sdg.Targets[0]}</td><td>{sdg.Targets[1]}</td>
-                      <td>{sdg.Interaction}</td>
-                    </tr>
-                  </React.Fragment>)
-                }
-              </tbody>
-            </table>
-            : null }
+              ? <table className="sdg-records">
+                <thead>
+                  <tr>
+                    <th>Target1</th>
+                    <th>Direction</th>
+                    <th>Target2</th>
+                    <th>Type</th>
+                    <th>Interaction</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    Record.SDGRecords.map((sdg, idx) => {
+                      return (
+                        <React.Fragment key={idx}>
+                          <tr>
+                            <td>{sdg.Targets[0]}</td>
+                            <td>{sdg.Interaction.direction === "ltr" ? "->" : sdg.Interaction.direction === "rtl" ? "<-" : ""}</td>
+                            <td>{sdg.Targets[1]}</td>
+                            <td>{sdg.Interaction.type}</td>
+                            <td>{sdg.Interaction.value}</td>
+                          </tr>
+                        </React.Fragment>
+                      )
+                    })
+                  }
+                </tbody>
+              </table>
+              : null}
           </details>
         </React.Fragment>
         : null}
@@ -106,22 +116,21 @@ const RecordPlotPanel = ({ Records }) => {
       color: target.color
     }));
 
-  console.log(Records)
   const chords = Records.map(item => {
-    return({
-    source: {
-      id: String(item.Goals[0]),
-      start: parseInt(item.Targets[0].split(".")[1]),
-      end: parseInt(item.Targets[0].split(".")[1])+1
-    },
-    target: {
-      id: String(item.Goals[1]),
-      start: parseInt(item.Targets[1].split(".")[1]),
-      end: parseInt(item.Targets[1].split(".")[1])+1
-    },
-    value: item.Interaction === "Positive" ? 1 : item.Interaction === "Negative" ? -1 : 0,
-    label: "Target: "+item.Targets[0]+" ↣ "+"Target: "+item.Targets[1]
-  });
+    return ({
+      source: {
+        id: String(item.Goals[0]),
+        start: parseInt(item.Targets[0].split(".")[1]) - 1,
+        end: parseInt(item.Targets[0].split(".")[1])
+      },
+      target: {
+        id: String(item.Goals[1]),
+        start: parseInt(item.Targets[1].split(".")[1]) - 1,
+        end: parseInt(item.Targets[1].split(".")[1])
+      },
+      value: item.Interaction.value === "Positive" ? 1 : item.Interaction.value === "Negative" ? -1 : 0,
+      label: "Target: " + item.Targets[0] + " ↣ " + "Target: " + item.Targets[1]
+    });
   });
 
   return (
@@ -178,13 +187,13 @@ const RecordPlotPanel = ({ Records }) => {
           {
             type: "CHORDS",
             data: chords,
-            // config: {
-            //   color: d => d.value > 0 ? "forestgreen" : (d.value < 0 ? "royalblue" : "grey"),
-            //   tooltipContent: function (d) {
-            //     const interaction = d.value > 0 ? "Interaction: Positive" : (d.value < 0 ? "Interaction: Negative" : "")
-            //     return `<h3>${d.label}<br/>${interaction}</h3>`;
-            //   },
-            // }
+            config: {
+              color: d => d.value > 0 ? "forestgreen" : (d.value < 0 ? "firebrick" : "grey"),
+              tooltipContent: function (d) {
+                const interaction = d.value > 0 ? "Interaction: Positive" : (d.value < 0 ? "Interaction: Negative" : "")
+                return `<h3>${d.label}<br/>${interaction}</h3>`;
+              },
+            }
           }
         ]}
       />
