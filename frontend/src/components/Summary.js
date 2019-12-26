@@ -128,8 +128,9 @@ const RecordPlotPanel = ({ Records }) => {
         start: parseInt(item.Targets[1].split(".")[1]) - 1,
         end: parseInt(item.Targets[1].split(".")[1])
       },
+      opacity: item.Interaction.type === "Direct" ? 1 : item.Interaction.type === "Indirect" ? 0.5 : 0.2,
       value: item.Interaction.value === "Positive" ? 1 : item.Interaction.value === "Negative" ? -1 : 0,
-      label: "Target: " + item.Targets[0] + " ↣ " + "Target: " + item.Targets[1]
+      label: `Target: ${item.Targets[0]} ↣ Target: ${item.Targets[1]}`
     });
   });
 
@@ -171,7 +172,6 @@ const RecordPlotPanel = ({ Records }) => {
             data: highlight.map(d => {
               d.position = (d.start + d.end) / 2 + 0.25
               d.value = d.id.split(".")[1]
-              d.block_id = d.block_id
               return d
             }),
             config: {
@@ -188,6 +188,7 @@ const RecordPlotPanel = ({ Records }) => {
             type: "CHORDS",
             data: chords,
             config: {
+              opacity: d => d.opacity,
               color: d => d.value > 0 ? "forestgreen" : (d.value < 0 ? "firebrick" : "grey"),
               tooltipContent: function (d) {
                 const interaction = d.value > 0 ? "Interaction: Positive" : (d.value < 0 ? "Interaction: Negative" : "")
