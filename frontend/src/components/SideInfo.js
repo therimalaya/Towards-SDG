@@ -56,7 +56,7 @@ class SideInfo extends React.Component {
           <React.Fragment>
             <p><span className="App-Step">Step {this.props.Step}</span></p><p><span className="App-Step-Label">{Label}</span></p>
             <p>Thank you for your contribution!</p>
-            <p>To add more publications, simply refresh this page in your browser.</p>
+            <p>To add more publications, simply press the home button.</p>
           </React.Fragment>
         );
       default:
