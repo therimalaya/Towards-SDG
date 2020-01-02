@@ -143,13 +143,13 @@ class Personal extends React.Component {
           Personal Details
         </h2>
         <form>
-          <label className="app-input-label" htmlFor="fullname">Full Name</label>
+          <label className="app-input-label" htmlFor="fullname">Full name of main author</label>
           <div className="App-form-field">
             <div className="App-Form-Error" id="Name-Error">{errors.Name}</div>
             <input
               name="Name"
               className={classList("App-Form-Inputs", errors.Name!=="" && "has-error")}
-              placeholder="Name (First and Last)"
+              placeholder="Full name of main author"
               type="text"
               value={FormData.Name}
               onChange={this.HandleChange("Name")} />

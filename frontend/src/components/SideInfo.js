@@ -9,28 +9,29 @@ class SideInfo extends React.Component {
         return (
           <React.Fragment>
             <p><span className="App-Step"></span></p><p><span className="App-Step-Label">{Label}</span></p>
-            <p>Welcome to NMBU towards SDG. Here you can help NMBU by providing information how you have contributed to Sustanable Developement Goals formulated by UN. You research can have direct or indirect connection to the 17 goals of SDG and they might interact positively or negatively with your research work. This will not only helps NMBU to plan better but also helps other researcher to find your research and collaborate with you.</p>
           </React.Fragment>
         );
       case 1:
         return (
           <React.Fragment>
             <p><span className="App-Step">Step {this.props.Step}</span></p><p><span className="App-Step-Label">{Label}</span></p>
-            <p>Information about this application. Include help per stages. This section might include login and logout afterwards.</p>
+            <p>Here you can provide personal information and details about your main author contribution. Co-authors may also register publications in case the lead author is not affiliated at NMBU. Potentially multiple NMBU co-authors must coordinate a single registration in the portal.</p>
           </React.Fragment>
         );
       case 2:
         return (
           <React.Fragment>
             <p><span className="App-Step">Step {this.props.Step}</span></p><p><span className="App-Step-Label">{Label}</span></p>
-            <p>Information about this application. Include help per stages. This section might include login and logout afterwards.</p>
+            <p>The portal focuses on mapping pairwise interactions. Select one or two main SDG goals addressed (directly or indirectly) in your publication. At most two goals can be selected simultaneously. You may to return to this page later to register other goals for the same publication.</p>
+            <p>On the next page you will have the opportunity to specify any pair-wise sub-goal interactions addressed in the publication, either between sub-goals within a main goal, or between sub-goals of two main goals.</p>
           </React.Fragment>
         );
       case 3:
         return (
           <React.Fragment>
             <p><span className="App-Step">Step {this.props.Step}</span></p><p><span className="App-Step-Label">{Label}</span></p>
-            <p>Information about this application. Include help per stages. This section might include login and logout afterwards.</p>
+            <p>Select and add two sub-goal interaction. Please define whether the interaction is positive (synergetic) or negative (trade-off). You may also indicate whether you in your publication address a direct cause-effect interaction or a mere correlated effect (non-causal) both depending on other factors.</p>
+            <p>You may add multiple pair-wise interactions. When you are done, you may also return to the previous page to select additional main goals.</p>
             {Records.length > 0 && <h4 className="sidebar-info-h4">Selected Records</h4>}
             {Records.length > 0 && <SideTable Records={Records} removeCurrent={RemoveCurrentRecord} />}
           </React.Fragment>
