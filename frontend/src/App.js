@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import { firestore, apps, initializeApp } from 'firebase';
 import { FirebaseConfig } from './config/firebase-config.js'
 import FrontCover from './components/FrontCover';
@@ -161,12 +161,12 @@ export default class App extends React.Component {
           <footer className="App-footer">
           </footer>
         </aside>
-        <Router>
+        <Router basename="/">
           <Switch>
-            <Route path="/records">
+            <Route path='/records'>
               <AllRecords />
             </Route>
-            <Route path="/">
+            <Route path='/'>
               <main className="App-main">
                 {Step === 0
                   ? <FrontCover
