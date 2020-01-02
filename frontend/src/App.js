@@ -7,8 +7,24 @@ import MainForm from './components/MainForm';
 import SideInfo from './components/SideInfo';
 import AllRecords from './components/Records';
 import { StepConfig } from './config/app-config';
+import { ThemeProvider } from 'styled-components';
+import { rgb } from 'color';
 import './App.scss';
 
+const sdgTheme = {
+  main: {
+    primary: rgb(0, 154, 129),
+    secondary: rgb(85, 102, 128),
+  },
+  background: {
+    primary: rgb(209, 232, 223),
+  },
+  text: {
+    primary: rgb(0, 0, 0),
+    secondary: rgb(230, 230, 230),
+    dim: rgb(50, 50, 50),
+  }
+}
 
 export default class App extends React.Component {
   constructor(props) {
@@ -148,48 +164,50 @@ export default class App extends React.Component {
     const { Step, CurrentRecord, FormData, Records } = this.state
 
     return (
-      <div className="App">
-        <aside className="App-sidebar">
-          <header className="App-header"></header>
-          <div className="App-info">
-            <SideInfo
-              Records={Records}
-              RemoveCurrentRecord={this.RemoveCurrentRecord}
-              Step={this.state.Step}
-              StepConfig={StepConfig} />
-          </div>
-          <footer className="App-footer">
-          </footer>
-        </aside>
-        <Router basename="/">
-          <Switch>
-            <Route path='/records'>
-              <AllRecords />
-            </Route>
-            <Route path='/'>
-              <main className="App-main">
-                {Step === 0
-                  ? <FrontCover
-                    NextStep={this.NextStep} />
-                  : <MainForm
-                    Step={Step}
-                    FormData={FormData}
-                    CurrentRecord={CurrentRecord}
-                    Records={Records}
-                    UpdateFormData={this.UpdateFormData}
-                    UpdateCurrentRecord={this.UpdateCurrentRecord}
-                    UpdateRecords={this.UpdateRecords}
-                    NextStep={this.NextStep}
-                    PrevStep={this.PrevStep}
-                    GoHome={this.GoHome}
-                    Submit={this.Submit}
-                  />
-                }
-              </main>
-            </Route>
-          </Switch>
-        </Router>
-      </div>
+      <ThemeProvider theme={sdgTheme}>
+        <div className="App">
+          <aside className="App-sidebar">
+            <header className="App-header"></header>
+            <div className="App-info">
+              <SideInfo
+                Records={Records}
+                RemoveCurrentRecord={this.RemoveCurrentRecord}
+                Step={this.state.Step}
+                StepConfig={StepConfig} />
+            </div>
+            <footer className="App-footer">
+            </footer>
+          </aside>
+          <Router basename="/">
+            <Switch>
+              <Route path='/records'>
+                <AllRecords />
+              </Route>
+              <Route path='/'>
+                <main className="App-main">
+                  {Step === 0
+                    ? <FrontCover
+                      NextStep={this.NextStep} />
+                    : <MainForm
+                      Step={Step}
+                      FormData={FormData}
+                      CurrentRecord={CurrentRecord}
+                      Records={Records}
+                      UpdateFormData={this.UpdateFormData}
+                      UpdateCurrentRecord={this.UpdateCurrentRecord}
+                      UpdateRecords={this.UpdateRecords}
+                      NextStep={this.NextStep}
+                      PrevStep={this.PrevStep}
+                      GoHome={this.GoHome}
+                      Submit={this.Submit}
+                    />
+                  }
+                </main>
+              </Route>
+            </Switch>
+          </Router>
+        </div>
+      </ThemeProvider>
     )
   }
 }

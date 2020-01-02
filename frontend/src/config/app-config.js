@@ -9,13 +9,12 @@ export const StepConfig = [
 ]
 
 export const FacultyConfig = [
-    {value: 'Biovit', label: 'Biosciences'},
-    {value: 'KBM', label: 'Chemistry, Biotechnology and Food Science'},
-    {value: 'MINA', label: 'Environmental Sciences and Natural Resource Management'},
-    {value: 'Landsam', label: 'Landscape and Society'},
-    {value: 'HH', label: 'School of Economics and Business'},
-    {value: 'Realtek', label: 'Science and Technology'},
-    {value: 'Vet', label: 'Veterinary Medicine'},
-    {value: 'Other', label: 'Other institution'}
+    { value: 'Biovit', label: 'Biosciences' },
+    { value: 'KBM', label: 'Chemistry, Biotechnology and Food Science' },
+    { value: 'MINA', label: 'Environmental Sciences and Natural Resource Management' },
+    { value: 'Landsam', label: 'Landscape and Society' },
+    { value: 'HH', label: 'School of Economics and Business' },
+    { value: 'Realtek', label: 'Science and Technology' },
+    { value: 'Vet', label: 'Veterinary Medicine' },
+    { value: 'Other', label: 'Other institution' }
 ]
-
