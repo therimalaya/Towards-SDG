@@ -92,7 +92,7 @@ const RecordSummary = ({ Record }) => (
   </Fragment>
 )
 
-const RecordPlotPanel = ({ Records }) => {
+export const RecordPlotPanel = ({ Records }) => {
   const size = 450;
   const layout = NestedGoals
     .map(goal => ({
@@ -115,7 +115,6 @@ const RecordPlotPanel = ({ Records }) => {
       value: parseInt(target.id.split(".")[1]),
       color: target.color
     }));
-
   const chords = Records.map(item => {
     return ({
       source: {

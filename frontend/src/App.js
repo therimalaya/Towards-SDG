@@ -1,11 +1,14 @@
 import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { firestore, apps, initializeApp } from 'firebase';
 import { FirebaseConfig } from './config/firebase-config.js'
 import FrontCover from './components/FrontCover';
 import MainForm from './components/MainForm';
 import SideInfo from './components/SideInfo';
+import AllRecords from './components/Records';
 import { StepConfig } from './config/app-config';
 import './App.scss';
+
 
 export default class App extends React.Component {
   constructor(props) {
@@ -158,25 +161,34 @@ export default class App extends React.Component {
           <footer className="App-footer">
           </footer>
         </aside>
-        <main className="App-main">
-          {Step === 0
-            ? <FrontCover
-              NextStep={this.NextStep} />
-            : <MainForm
-              Step={Step}
-              FormData={FormData}
-              CurrentRecord={CurrentRecord}
-              Records={Records}
-              UpdateFormData={this.UpdateFormData}
-              UpdateCurrentRecord={this.UpdateCurrentRecord}
-              UpdateRecords={this.UpdateRecords}
-              NextStep={this.NextStep}
-              PrevStep={this.PrevStep}
-              GoHome={this.GoHome}
-              Submit={this.Submit}
-            />
-          }
-        </main>
+        <Router>
+          <Switch>
+            <Route path="/records">
+              <AllRecords />
+            </Route>
+            <Route path="/">
+              <main className="App-main">
+                {Step === 0
+                  ? <FrontCover
+                    NextStep={this.NextStep} />
+                  : <MainForm
+                    Step={Step}
+                    FormData={FormData}
+                    CurrentRecord={CurrentRecord}
+                    Records={Records}
+                    UpdateFormData={this.UpdateFormData}
+                    UpdateCurrentRecord={this.UpdateCurrentRecord}
+                    UpdateRecords={this.UpdateRecords}
+                    NextStep={this.NextStep}
+                    PrevStep={this.PrevStep}
+                    GoHome={this.GoHome}
+                    Submit={this.Submit}
+                  />
+                }
+              </main>
+            </Route>
+          </Switch>
+        </Router>
       </div>
     )
   }

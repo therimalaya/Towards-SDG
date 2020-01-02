@@ -101,7 +101,7 @@ const InteractionButtons = (props) => {
   const { handleInteraction } = props;
   return (
     <div className="ButtonGroup">
-      <p className="ButtonLabel">Set Interaction</p>
+      <p className="ButtonLabel">Set Interaction (Optional)</p>
       <button onClick={handleInteraction}
         value="Positive"
         className="ButtonInGroup">Positive</button>
@@ -116,7 +116,7 @@ const InteractionType = (props) => {
   const { handleType } = props;
   return (
     <div className="ButtonGroup">
-      <p className="ButtonLabel">Type of Interaction</p>
+      <p className="ButtonLabel">Type of Interaction (Optional)</p>
       <button onClick={handleType}
         value="Direct"
         className="ButtonInGroup">Direct</button>
@@ -131,7 +131,7 @@ const InteractionDirection = (props) => {
   const { handleDirection, selectedTargets } = props;
   return (
     <div className="ButtonGroup">
-      <p className="ButtonLabel">Interaction Direction</p>
+      <p className="ButtonLabel">Interaction Direction (Optional)</p>
       <button onClick={handleDirection}
         value="ltr"
         className="ButtonInGroup">{selectedTargets[0].id+" → "+selectedTargets[1].id}</button>

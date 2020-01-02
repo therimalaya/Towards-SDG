@@ -23,6 +23,7 @@ class SideInfo extends React.Component {
           <React.Fragment>
             <p><span className="App-Step">Step {this.props.Step}</span></p><p><span className="App-Step-Label">{Label}</span></p>
             <p>The portal focuses on mapping pairwise interactions. Select one or two main SDG goals addressed (directly or indirectly) in your publication. At most two goals can be selected simultaneously. You may to return to this page later to register other goals for the same publication.</p>
+            <p>(You must deselect selected goals to choose new ones.)</p>
             <p>On the next page you will have the opportunity to specify any pair-wise sub-goal interactions addressed in the publication, either between sub-goals within a main goal, or between sub-goals of two main goals.</p>
           </React.Fragment>
         );
@@ -30,8 +31,14 @@ class SideInfo extends React.Component {
         return (
           <React.Fragment>
             <p><span className="App-Step">Step {this.props.Step}</span></p><p><span className="App-Step-Label">{Label}</span></p>
-            <p>Select and add two sub-goal interaction. Please define whether the interaction is positive (synergetic) or negative (trade-off). You may also indicate whether you in your publication address a direct cause-effect interaction or a mere correlated effect (non-causal) both depending on other factors.</p>
-            <p>You may add multiple pair-wise interactions. When you are done, you may also return to the previous page to select additional main goals.</p>
+            <p>Select two sub-goals which interactions is addressed. You will also be asked to indicate (optionally) whether:</p>
+            <ul>
+              <li>the interaction is positive (synergetic) or negative (trade-off)</li>
+              <li>the addressed interaction is a direct cause-effect interaction or a mere correlated effect (non-causal)</li>
+              <li>the direction of a potential direct causal effect</li>
+            </ul>
+            <p>You may add multiple pair-wise interactions. Selected interactions are listed here continuously and may be edited (deleted).</p>
+            <p>When you are done, you may return to the previous page to select additional main goals.</p>
             {Records.length > 0 && <h4 className="sidebar-info-h4">Selected Records</h4>}
             {Records.length > 0 && <SideTable Records={Records} removeCurrent={RemoveCurrentRecord} />}
           </React.Fragment>
@@ -40,14 +47,16 @@ class SideInfo extends React.Component {
         return (
           <React.Fragment>
             <p><span className="App-Step">Step {this.props.Step}</span></p><p><span className="App-Step-Label">{Label}</span></p>
-            <p>Information about this application. Include help per stages. This section might include login and logout afterwards.</p>
+            <p>Review the summary of you added interactions. A simple graphical representation is given in addition to a full list of provided information on each interaction.</p>
+            <p>To delete or add new, please return to the previous page. When the information is completed, press “Submit”</p>
           </React.Fragment>
         );
       case 5:
         return (
           <React.Fragment>
             <p><span className="App-Step">Step {this.props.Step}</span></p><p><span className="App-Step-Label">{Label}</span></p>
-            <p>Information about this application. Include help per stages. This section might include login and logout afterwards.</p>
+            <p>Thank you for your contribution!</p>
+            <p>To add more publications, simply refresh this page in your browser.</p>
           </React.Fragment>
         );
       default:
