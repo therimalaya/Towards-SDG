@@ -3,6 +3,7 @@ import TargetList from '../data/targets.json';
 import GoalList from '../data/goals.json';
 import InteractionModal from './TargetModal';
 import GoalCard from './GoalCard';
+import { Button, ButtonGroup } from '@material-ui/core';
 
 const numnum = num => num <= 9 ? "0" + num : num;
 const adjustLine = (from, to, line) => {
@@ -173,8 +174,10 @@ class Target extends React.Component {
           handleInteraction={this.handleInteraction}
           ResetAndUpdate={this.ResetAndUpdate} />
         <div className="nav-btn">
-          <button onClick={PrevStep} className="App-Nav-Btn">Previous</button>
-          <button onClick={NextStep} className="App-Nav-Btn">Next</button>
+          <ButtonGroup variant="contained" color="primary">
+            <Button onClick={PrevStep}>Previous</Button>
+            <Button onClick={NextStep}>Next</Button>
+          </ButtonGroup>
         </div>
       </React.Fragment>
     );

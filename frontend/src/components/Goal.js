@@ -1,5 +1,7 @@
 import React from 'react';
 import GoalList from '../data/goals.json';
+import { Button, ButtonGroup } from '@material-ui/core';
+
 const numnum = num => num <=9 ? "0"+num : num;
 
 GoalList.forEach(goal=>{
@@ -47,34 +49,32 @@ class Goal extends React.Component {
         <h2 className="AppStepTitle">Select Goals</h2>
         <div id="goal-image-grid" className="image-grid">
           {
-            AllGoals.map(goal=>{
-              return(
-                <ImageLink
-                  AllGoals={AllGoals}
-                  goal={goal}
-                  handleClick={this.handleClick.bind(this)}
-                  key={goal.goal}
-                  disabled={Goals.length >= 2 & !goal.isSelected}
-                />
-              )
-            })
+            AllGoals.map(goal =>
+              <ImageLink
+                AllGoals={AllGoals}
+                goal={goal}
+                handleClick={this.handleClick.bind(this)}
+                key={goal.goal}
+                disabled={Goals.length >= 2 & !goal.isSelected}
+              />
+            )
           }
         </div>
         <div className="goal-details">
           {
-            AllGoals.filter(goal=>Goals.includes(goal.goal)).map((goal, idx)=>{
-              return(
-                <React.Fragment key={idx}>
-                  <p className="goal-label" style={{background: goal.colorInfo.hex}}>Goal {goal.goal}</p>
-                  <p className="goal-title">{goal.title}</p>
-                </React.Fragment>
-              )
-            })
+            AllGoals.filter(goal=>Goals.includes(goal.goal)).map((goal, idx) =>
+              <React.Fragment key={idx}>
+                <p className="goal-label" style={{background: goal.colorInfo.hex}}>Goal {goal.goal}</p>
+                <p className="goal-title">{goal.title}</p>
+              </React.Fragment>
+            )
           }
         </div>
         <div className="nav-btn">
-          <button onClick={PrevStep} className="App-Nav-Btn">Previous</button>
-          <button onClick={NextStep} className="App-Nav-Btn">Next</button>
+          <ButtonGroup variant="contained" color="primary">
+            <Button onClick={PrevStep}>Previous</Button>
+            <Button onClick={NextStep}>Next</Button>
+          </ButtonGroup>
         </div>
       </React.Fragment>
     );

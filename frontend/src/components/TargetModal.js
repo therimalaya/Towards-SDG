@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactModal from 'react-modal';
 import styles from './TargetModal.module.scss';
+import { Button, ButtonGroup } from '@material-ui/core';
+/* import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab'; */
 
 const modalStyle = {
   overlay: {
@@ -65,29 +67,30 @@ const InteractionModal = (props) => {
         <div className="target-page-buttons">
           {
             CurrentRecord.Targets.length === 2
-              ? <InteractionButtons
+            ? <InteractionButtons
                 handleInteraction={handleInteraction("value")} />
-              : <div></div>
+            : <div></div>
           }
           {
             CurrentRecord.Interaction.value !== ""
-              ? <React.Fragment>
-                <InteractionType
-                  handleType={handleInteraction("type")} />
-                <InteractionDirection
-                  selectedTargets={selectedTargets}
-                  handleDirection={handleInteraction("direction")} />
-              </React.Fragment>
-              : null
+            ? <React.Fragment>
+              <InteractionType
+                handleType={handleInteraction("type")} />
+              <InteractionDirection
+                selectedTargets={selectedTargets}
+                handleDirection={handleInteraction("direction")} />
+            </React.Fragment>
+            : null
           }
           <div className="nav-btns">
             <div className="nav-btn add-btn">
-              <button
+              <Button
+                color="primary"
+                variant="contained"
                 disabled={CurrentRecord.Targets.length <= 0}
-                onClick={ResetAndUpdate}
-                className="App-Nav-Btn">
+                onClick={ResetAndUpdate}>
                 Add More Records
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -102,12 +105,14 @@ const InteractionButtons = (props) => {
   return (
     <div className="ButtonGroup">
       <p className="ButtonLabel">Set Interaction (Optional)</p>
-      <button onClick={handleInteraction}
-        value="Positive"
-        className="ButtonInGroup">Positive</button>
-      <button onClick={handleInteraction}
-        value="Negative"
-        className="ButtonInGroup">Negative</button>
+      <ButtonGroup color="primary" variant="contained">
+        <button onClick={handleInteraction}
+          value="Positive"
+          className="ButtonInGroup">Positive</button>
+        <button onClick={handleInteraction}
+          value="Negative"
+          className="ButtonInGroup">Negative</button>
+      </ButtonGroup>
     </div>
   )
 }
@@ -117,12 +122,14 @@ const InteractionType = (props) => {
   return (
     <div className="ButtonGroup">
       <p className="ButtonLabel">Type of Interaction (Optional)</p>
-      <button onClick={handleType}
-        value="Direct"
-        className="ButtonInGroup">Direct</button>
-      <button onClick={handleType}
-        value="Indirect"
-        className="ButtonInGroup">InDirect</button>
+      <ButtonGroup color="primary" variant="contained">
+        <button onClick={handleType}
+          value="Direct"
+          className="ButtonInGroup">Direct</button>
+        <button onClick={handleType}
+          value="Indirect"
+          className="ButtonInGroup">InDirect</button>
+      </ButtonGroup>
     </div>
   )
 }
@@ -132,12 +139,14 @@ const InteractionDirection = (props) => {
   return (
     <div className="ButtonGroup">
       <p className="ButtonLabel">Interaction Direction (Optional)</p>
-      <button onClick={handleDirection}
-        value="ltr"
-        className="ButtonInGroup">{selectedTargets[0].id+" → "+selectedTargets[1].id}</button>
-      <button onClick={handleDirection}
-        value="rtl"
-        className="ButtonInGroup">{selectedTargets[0].id+" ← "+selectedTargets[1].id}</button>
+      <ButtonGroup color="primary" variant="contained">
+        <button onClick={handleDirection}
+          value="ltr"
+          className="ButtonInGroup">{selectedTargets[0].id+" → "+selectedTargets[1].id}</button>
+        <button onClick={handleDirection}
+          value="rtl"
+          className="ButtonInGroup">{selectedTargets[0].id+" ← "+selectedTargets[1].id}</button>
+      </ButtonGroup>
     </div>
   )
 }

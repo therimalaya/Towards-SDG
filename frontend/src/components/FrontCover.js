@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Button } from '@material-ui/core';
+/* import Button from '../styles/Buttons'; */
 
 const FrontCover = (props) => {
   const { NextStep } = props
@@ -13,8 +15,9 @@ const FrontCover = (props) => {
       </div>
       <div><Link to='/records'></Link></div>
       <div className="nav-btn">
-        <button onClick={NextStep} className="App-Nav-Btn">Let's Get Started »</button>
+        <Button onClick={NextStep} variant="contained" color="primary">Let's Get Started »</Button>
       </div>
+      {/* <Button>Test Button</Button> */}
     </React.Fragment>
   )
 }

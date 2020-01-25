@@ -1,8 +1,9 @@
 import React from 'react';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
-import {SelectInput} from './Inputs';
-import {FacultyConfig} from '../config/app-config';
+import { Button } from '@material-ui/core';
+import { SelectInput } from './Inputs';
+import { FacultyConfig } from '../config/app-config';
 
 const OutreachOptions = [
   {value: 'Yes', label: 'Yes'},
@@ -234,7 +235,10 @@ class Personal extends React.Component {
           </div>
         </form>
         <div className="nav-btn">
-          <button onClick={this.CheckAndProceed} className="App-Nav-Btn">Next</button>
+          <Button
+            onClick={this.CheckAndProceed}
+            color="primary"
+            variant="contained">Next</Button>
         </div>
       </React.Fragment>
     );

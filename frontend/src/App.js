@@ -7,24 +7,28 @@ import MainForm from './components/MainForm';
 import SideInfo from './components/SideInfo';
 import AllRecords from './components/Records';
 import { StepConfig } from './config/app-config';
-import { ThemeProvider } from 'styled-components';
-import { rgb } from 'color';
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import './App.scss';
 
 const sdgTheme = {
-  main: {
-    primary: rgb(0, 154, 129),
-    secondary: rgb(85, 102, 128),
-  },
-  background: {
-    primary: rgb(209, 232, 223),
-  },
-  text: {
-    primary: rgb(0, 0, 0),
-    secondary: rgb(230, 230, 230),
-    dim: rgb(50, 50, 50),
-  }
+  primary: "#009a81",
+  secondary: "#556680",
+  background: "#d1e8df",
+  textPrimary: "#FFF",
+  textSecondary: "#e6e6e6",
+  textDim: "#323232",
 }
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#009a80',
+    },
+    secondary: {
+      main: '#556680',
+    }
+  }
+})
 
 export default class App extends React.Component {
   constructor(props) {
@@ -33,7 +37,7 @@ export default class App extends React.Component {
       initializeApp(FirebaseConfig);
     }
     this.state = {
-      Step: 0,
+      Step: 3,
       FormData: {
         Name: "",
         Faculty: "",
@@ -46,7 +50,7 @@ export default class App extends React.Component {
         Coauthors: { Faculty: [""] }
       },
       CurrentRecord: {
-        Goals: [],
+        Goals: [3, 13],
         Targets: [],
         Interaction: {
           value: "",
@@ -164,7 +168,7 @@ export default class App extends React.Component {
     const { Step, CurrentRecord, FormData, Records } = this.state
 
     return (
-      <ThemeProvider theme={sdgTheme}>
+      <ThemeProvider theme={theme}>
         <div className="App">
           <aside className="App-sidebar">
             <header className="App-header"></header>

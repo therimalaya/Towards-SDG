@@ -1,5 +1,6 @@
 import React from 'react';
 import { FacultyConfig } from '../config/app-config';
+import Button from '../styles/Buttons';
 
 class Confirmation extends React.Component {
   render() {
@@ -54,7 +55,7 @@ class Confirmation extends React.Component {
             : null}
         </div>
         <div className="nav-btn">
-          <button onClick={this.props.GoHome} className="App-Nav-Btn">Home</button>
+          <Button onClick={this.props.GoHome}>Home</Button>
         </div>
       </React.Fragment>
     );
