@@ -66,15 +66,15 @@ class Target extends React.Component {
     this.closeModal()
   }
   handleInteraction = (input) => (event) => {
-    const parent_node = event.target.parentNode;
-    const all_buttons = Array.from(parent_node.getElementsByTagName("button"));
-    const current_button_idx = all_buttons.indexOf(event.target);
+    const parent_node = event.currentTarget.parentNode;
+    const all_buttons = Array.from(parent_node.getElementsByTagName("Button"));
+    const current_button_idx = all_buttons.indexOf(event.currentTarget);
     all_buttons.filter((elem, idx) => idx === current_button_idx)
-      .map(elem => elem.classList.toggle('BtnClicked'))
+      .map(elem => elem.classList.toggle('active'))
     all_buttons.filter((elem, idx) => idx !== current_button_idx)
-      .map(elem => elem.classList.remove('BtnClicked'))
+      .map(elem => elem.classList.remove('active'))
 
-    if (this.props.CurrentRecord.Interaction.value === event.target.value) {
+    if (this.props.CurrentRecord.Interaction.value === event.currentTarget.value) {
       this.props.UpdateCurrentRecord(
         "Interaction",
         { ...this.props.CurrentRecord.Interaction, [input]: "" }
@@ -84,7 +84,7 @@ class Target extends React.Component {
         "Interaction",
         {
           ...this.props.CurrentRecord.Interaction,
-          [input]: event.target.value
+          [input]: event.currentTarget.value
         }
       )
     }

@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import ReactModal from 'react-modal';
 import styles from './TargetModal.module.scss';
 import { Button, ButtonGroup } from '@material-ui/core';
-/* import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab'; */
-
+import { makeStyles } from '@material-ui/core/styles';
 const modalStyle = {
   overlay: {
     position: 'fixed',
@@ -29,6 +28,12 @@ const modalStyle = {
     padding: '25px'
   }
 }
+
+const useStyles = makeStyles(theme => ({
+  active: {
+    backgroundColor: theme.palette.primary.dark,
+  },
+}))
 
 const InteractionModal = (props) => {
   const { SelectedGoals, CurrentRecord, showModal, closeModal } = props;
@@ -68,17 +73,20 @@ const InteractionModal = (props) => {
           {
             CurrentRecord.Targets.length === 2
             ? <InteractionButtons
-                handleInteraction={handleInteraction("value")} />
+                handleInteraction={handleInteraction("value")}
+                activeInteraction={CurrentRecord.Interaction.value}/>
             : <div></div>
           }
           {
             CurrentRecord.Interaction.value !== ""
             ? <React.Fragment>
               <InteractionType
-                handleType={handleInteraction("type")} />
+                handleType={handleInteraction("type")}
+                activeInteraction={CurrentRecord.Interaction.type}/>
               <InteractionDirection
                 selectedTargets={selectedTargets}
-                handleDirection={handleInteraction("direction")} />
+                handleDirection={handleInteraction("direction")}
+                activeInteraction={CurrentRecord.Interaction.direction}/>
             </React.Fragment>
             : null
           }
@@ -101,53 +109,75 @@ const InteractionModal = (props) => {
 }
 
 const InteractionButtons = (props) => {
-  const { handleInteraction } = props;
+  const classes = useStyles();
+  const { handleInteraction, activeInteraction } = props;
   return (
-    <div className="ButtonGroup">
+    <Fragment>
       <p className="ButtonLabel">Set Interaction (Optional)</p>
       <ButtonGroup color="primary" variant="contained">
-        <button onClick={handleInteraction}
+        <Button
+          onClick={handleInteraction}
           value="Positive"
-          className="ButtonInGroup">Positive</button>
-        <button onClick={handleInteraction}
+          classes={{root: activeInteraction==="Positive" ? classes.active : null}}>
+          Positive
+        </Button>
+        <Button
+          onClick={handleInteraction}
           value="Negative"
-          className="ButtonInGroup">Negative</button>
+          classes={{root: activeInteraction==="Negative" ? classes.active : null}}>
+          Negative
+        </Button>
       </ButtonGroup>
-    </div>
+    </Fragment>
   )
 }
 
 const InteractionType = (props) => {
-  const { handleType } = props;
+  const classes = useStyles();
+  const { handleType, activeInteraction } = props;
   return (
-    <div className="ButtonGroup">
+    <Fragment>
       <p className="ButtonLabel">Type of Interaction (Optional)</p>
       <ButtonGroup color="primary" variant="contained">
-        <button onClick={handleType}
+        <Button
+          onClick={handleType}
           value="Direct"
-          className="ButtonInGroup">Direct</button>
-        <button onClick={handleType}
+          classes={{root: activeInteraction==="Direct" ? classes.active : null}}>
+          Direct
+        </Button>
+        <Button
+          onClick={handleType}
           value="Indirect"
-          className="ButtonInGroup">InDirect</button>
+          classes={{root: activeInteraction==="Indirect" ? classes.active : null}}>
+          InDirect
+        </Button>
       </ButtonGroup>
-    </div>
+    </Fragment>
   )
 }
 
 const InteractionDirection = (props) => {
-  const { handleDirection, selectedTargets } = props;
+  const classes = useStyles();
+  const { handleDirection, selectedTargets, activeInteraction } = props;
+  const IntDirStr = str => selectedTargets[0].id+str+selectedTargets[1].id;
   return (
-    <div className="ButtonGroup">
+    <Fragment>
       <p className="ButtonLabel">Interaction Direction (Optional)</p>
       <ButtonGroup color="primary" variant="contained">
-        <button onClick={handleDirection}
+        <Button
+          onClick={handleDirection}
           value="ltr"
-          className="ButtonInGroup">{selectedTargets[0].id+" → "+selectedTargets[1].id}</button>
-        <button onClick={handleDirection}
+          classes={{root: activeInteraction === "ltr" ? classes.active : null}}>
+          {IntDirStr(" → ")}
+        </Button>
+        <Button
+          onClick={handleDirection}
           value="rtl"
-          className="ButtonInGroup">{selectedTargets[0].id+" ← "+selectedTargets[1].id}</button>
+          classes={{root: activeInteraction === "rtl" ? classes.active : null}}>
+          {IntDirStr(" ← ")}
+        </Button>
       </ButtonGroup>
-    </div>
+    </Fragment>
   )
 }
 

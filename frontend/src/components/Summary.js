@@ -4,7 +4,7 @@ import GoalList from '../data/goals.json';
 import { FacultyConfig } from '../config/app-config.js';
 import Circos from 'react-circos';
 import _ from 'lodash';
-import Button from '../styles/Buttons.js';
+import { Button, ButtonGroup } from '@material-ui/core';
 
 const targetFilter = target => target.id.match("[0-9]$")
 const NestedGoals = _.mergeWith(
@@ -24,8 +24,10 @@ export default class Summary extends React.Component {
           <RecordPlotPanel Records={Records} />
         </div>
         <div className="nav-btn">
-          <Button onClick={PrevStep}>Previous</Button>
-          <Button onClick={Submit}>Submit</Button>
+          <ButtonGroup variant="contained" color="primary">
+            <Button onClick={PrevStep}>Previous</Button>
+            <Button onClick={Submit}>Submit</Button>
+          </ButtonGroup>
         </div>
       </React.Fragment>
     );

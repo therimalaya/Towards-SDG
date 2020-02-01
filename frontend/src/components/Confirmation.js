@@ -1,6 +1,6 @@
 import React from 'react';
 import { FacultyConfig } from '../config/app-config';
-import Button from '../styles/Buttons';
+import { Button } from '@material-ui/core';
 
 class Confirmation extends React.Component {
   render() {
@@ -55,7 +55,7 @@ class Confirmation extends React.Component {
             : null}
         </div>
         <div className="nav-btn">
-          <Button onClick={this.props.GoHome}>Home</Button>
+          <Button variant="contained" color="primary" onClick={this.props.GoHome}>Home</Button>
         </div>
       </React.Fragment>
     );
