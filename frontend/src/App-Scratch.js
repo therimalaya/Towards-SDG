@@ -13,7 +13,9 @@ import SideInfo from './components/SideInfo';
 import AllRecords from './components/Records';
 
 import { StepConfig } from './config/app-config';
-import { FirebaseConfig } from './config/firebase-config.js'
+import { FirebaseConfig } from './config/firebase-config.js';
+
+import { LOGO } from './images/NMBUwhite.svg';
 
 const theme = createMuiTheme({
   palette: {
@@ -38,15 +40,11 @@ const theme = createMuiTheme({
 const useStyles = makeStyles(theme => ({
   root: {
     height: '100vh',
+    flexWrap: 'wrap',
   },
-  container: {
-    height: '100%',
+  sidebar: {
     display: 'flex',
-    flexGrow: 1,
     flexDirection: 'column',
-  },
-  box: {
-    width: '100%',
   },
   header: {
     background: 'url("./images/header.jpg")',
@@ -55,14 +53,27 @@ const useStyles = makeStyles(theme => ({
     height: '150px',
     borderBottom: `5px solid ${theme.palette.primary.main}`,
   },
+  sideinfo: {
+    backgroundColor: "#efefef",
+    padding: '1rem',
+  },
   sidefooter: {
     backgroundColor: theme.palette.primary.main,
-    backgroundImage: 'url("./images/NMBUwhite.svg")',
-    backgroundPosition: 'left',
-    backgroundSize: 'contain',
-    backgroundRepeat: 'no-repeat',
-    height: '50px',
+    backgroundImage: `url(./images/NMBUwhite.svg)`,
+    backgroundPosition: 'center',
+    backgroundSize: 'cover',
+    height: "50px",
   },
+  mainpanel: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
+  mainpanelBox: {
+    height: "90%",
+    width: "90%",
+  }
+
 }));
 
 function InnerApp(props) {
@@ -70,55 +81,50 @@ function InnerApp(props) {
   const { Step, NextStep, PrevStep, Submit, GoHome } = props;
   const { Records, CurrentRecord, FormData } = props;
   const { RemoveCurrentRecord, UpdateFormData, UpdateRecords, UpdateCurrentRecord } = props;
-  const {StepConfig } = props;
+  const { StepConfig } = props;
 
   return(
-    <Grid container spacing={1} className={classes.root}>
-      <Grid item className={classes.container} xs={4}>
+    <Grid container className={classes.root}>
+      <Grid item className={classes.sidebar} xs={4}>
         <Box className={classes.header}></Box>
-        <Box
-  bgcolor="background.default"
-  className={classes.box}
-  flexGrow={1}>
-        <SideInfo
-  Records={Records}
-  RemoveCurrentRecord={RemoveCurrentRecord}
-  Step={Step}
-  StepConfig={StepConfig} />
+        <Box className={classes.sideinfo} flexGrow={1}>
+          <SideInfo
+            Records={Records}
+            RemoveCurrentRecord={RemoveCurrentRecord}
+            Step={Step}
+            StepConfig={StepConfig} />
         </Box>
         <Box className={classes.sidefooter}></Box>
       </Grid>
-      <Grid item className={classes.container} xs={8}>
-        <Box bgcolor="background.default" className={classes.box}>
-          <Router basename="/">
-            <Switch>
-              <Route path='/records'>
-                <AllRecords />
-              </Route>
-              <Route path='/'>
-                <main className="App-main">
-                  {Step === 0
-                  ? <FrontCover
-                      NextStep={NextStep} />
-                  : <MainForm
-                      Step={Step}
-                      FormData={FormData}
-                      CurrentRecord={CurrentRecord}
-                      Records={Records}
-                      UpdateFormData={UpdateFormData}
-                      UpdateCurrentRecord={UpdateCurrentRecord}
-                      UpdateRecords={UpdateRecords}
-                      NextStep={NextStep}
-                      PrevStep={PrevStep}
-                      GoHome={GoHome}
-                      Submit={Submit}
-                  />
-                  }
-                </main>
-              </Route>
-            </Switch>
-          </Router>
-        </Box>
+      <Grid item container className={classes.mainpanel} xs={8}>
+        <Router basename="/">
+          <Switch>
+            <Route path='/records'>
+              <AllRecords />
+            </Route>
+            <Route path='/'>
+              <Box className={classes.mainpanelBox}>
+                {Step === 0
+                ? <FrontCover
+                    NextStep={NextStep} />
+                : <MainForm
+                    Step={Step}
+                    FormData={FormData}
+                    CurrentRecord={CurrentRecord}
+                    Records={Records}
+                    UpdateFormData={UpdateFormData}
+                    UpdateCurrentRecord={UpdateCurrentRecord}
+                    UpdateRecords={UpdateRecords}
+                    NextStep={NextStep}
+                    PrevStep={PrevStep}
+                    GoHome={GoHome}
+                    Submit={Submit}
+                />
+                }
+              </Box>
+            </Route>
+          </Switch>
+        </Router>
       </Grid>
     </Grid>
   )
@@ -130,7 +136,7 @@ export default function App() {
   }
 
   // STATES
-  const [Step, setStep] = useState(5);
+  const [Step, setStep] = useState(3);
   const [FormData, setFormData] = useState({
     Name: "",
     Faculty: "",
@@ -233,7 +239,6 @@ export default function App() {
 
   return(
     <ThemeProvider theme={theme}>
-
       <InnerApp
         Records={Records}
         RemoveCurrentRecord={RemoveCurrentRecord}

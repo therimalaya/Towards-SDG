@@ -8,7 +8,7 @@ export default class GoalCard extends Component {
     return (
       <React.Fragment>
         <div id={"goal-" + goal.goal + "-header"} className="goal-header">
-          <img src={goal.image_src} alt={goal.goal} />
+          <img src={goal.image_src} alt={goal.goal} width="100%" />
           <div>
             <p>{goal.short}</p>
             <p>{goal.title}</p>

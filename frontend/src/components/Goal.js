@@ -1,15 +1,113 @@
-import React from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import GoalList from '../data/goals.json';
 import { Button, ButtonGroup } from '@material-ui/core';
+import { Box, Grid, GridList, GridListTile, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 const numnum = num => num <=9 ? "0"+num : num;
+
+const useStyles = makeStyles(theme => ({
+  selected: {
+
+  }
+}));
 
 GoalList.forEach(goal=>{
   goal.image_src = "images/Goals/Goal-"+numnum(goal.goal)+".png"
   goal.isSelected = false
 });
 
-class Goal extends React.Component {
+const Goal = (props) => {
+  const classes = useStyles();
+  const [AllGoals, setAllGoals] = useState(GoalList);
+  const { NextStep, PrevStep } = props;
+  const { Goals } = props.CurrentRecord
+  const { UpdateCurrentRecord } = props;
+
+  useEffect(() => {
+    if (props.CurrentRecord.Targets.length) {
+      props.UpdateCurrentRecord("Targets", [])
+    }
+  });
+
+  GoalList.forEach(goal=>goal.isSelected = props.CurrentRecord.Goals.includes(goal.goal))
+
+  const handleClick = (event) => {
+    const newGoals = AllGoals
+    newGoals.forEach(goal=>{
+      if(goal.goal === Number(event.target.name)) {
+        goal.isSelected = !goal.isSelected
+      }
+    })
+    event.target.classList.toggle("selected")
+    UpdateCurrentRecord(
+      "Goals",
+      newGoals.filter(goal=>goal.isSelected).map(goal=>goal.goal)
+    )
+    setAllGoals(newGoals)
+  }
+
+  return(
+    <Fragment>
+      <Grid container direction="column">
+        <Typography variant="h4" component="h2">Select Goals</Typography>
+        <Box className={classes.root}>
+          <GridList cols={6} component="div" cellHeight="auto">
+            {AllGoals.map(goal => (
+              <GridListTile key={goal.goal}>
+                <ImageLink
+                  goal={goal}
+                  handleClick={handleClick}
+                  key={goal.goal}
+                  disabled={Goals.length >= 2 & !goal.isSelected}
+                />
+              </GridListTile>
+            ))}
+          </GridList>
+          <Box className={classes.selected}>
+            {
+              AllGoals.filter(goal=>Goals.includes(goal.goal)).map((goal, idx) =>
+                <Fragment key={idx}>
+                  <Grid container>
+                    <Typography color={goal.colorInfo.hex}>Goal {goal.goal}</Typography>
+                    <Typography color={goal.colorInfo.hex}>{goal.title}</Typography>
+                  </Grid>
+                </Fragment>
+              )
+            }
+          </Box>
+        </Box>
+        <Box>
+          <ButtonGroup variant="contained" color="primary">
+            <Button onClick={PrevStep}>Previous</Button>
+            <Button onClick={NextStep}>Next</Button>
+          </ButtonGroup>
+        </Box>
+      </Grid>
+    </Fragment>
+  )
+}
+
+export default Goal;
+
+const ImageLink = (props) => {
+  const {goal, handleClick, disabled} = props
+	return(
+    <input
+      width="100%"
+      id={"Goal-"+numnum(goal.goal)}
+      type="image"
+      src={goal.image_src}
+      name={goal.goal}
+      alt={goal.short}
+      onClick={handleClick}
+      className={goal.isSelected ? "selected" : ""}
+      disabled={disabled}
+    />
+  )
+};
+
+class Goal1 extends React.Component {
   constructor(props){
     super(props);
     GoalList.forEach(goal=>goal.isSelected = props.CurrentRecord.Goals.includes(goal.goal))
@@ -79,22 +177,4 @@ class Goal extends React.Component {
       </React.Fragment>
     );
   }
-};
-
-export default Goal;
-
-const ImageLink = (props) => {
-  const {goal, handleClick, disabled} = props
-	return(
-    <input
-      id={"Goal-"+numnum(goal.goal)}
-      type="image"
-      src={goal.image_src}
-      name={goal.goal}
-      alt={goal.short}
-      onClick={handleClick}
-      className={goal.isSelected ? "selected" : ""}
-      disabled={disabled}
-    />
-  )
 };

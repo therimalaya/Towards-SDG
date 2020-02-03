@@ -12,27 +12,46 @@ const NestedGoals = _.mergeWith(
   _.flatMapDepth(_.groupBy(TargetList.filter(targetFilter), "goal"), x => ({ targets: x }), 0))
 const Targets = _.flatMap(NestedGoals, x => _.flatMap(x.targets, y => ({ ...y, color: x.colorInfo.hex })))
 
-export default class Summary extends React.Component {
-  render() {
-    const { FormData, Records, Submit, PrevStep } = this.props
+export default function Summary(props) {
+  const { FormData, Records, Submit, PrevStep } = props
 
-    return (
-      <React.Fragment>
-        <h2 className="AppStepTitle">Summary</h2>
-        <div className="summary-panel">
-          <RecordSummary Record={{ ...FormData, SDGRecords: Records }} />
-          <RecordPlotPanel Records={Records} />
-        </div>
-        <div className="nav-btn">
-          <ButtonGroup variant="contained" color="primary">
-            <Button onClick={PrevStep}>Previous</Button>
-            <Button onClick={Submit}>Submit</Button>
-          </ButtonGroup>
-        </div>
-      </React.Fragment>
-    );
-  }
-};
+  return (
+    <React.Fragment>
+      <h2 className="AppStepTitle">Summary</h2>
+      <div className="summary-panel">
+        <RecordSummary Record={{ ...FormData, SDGRecords: Records }} />
+        <RecordPlotPanel Records={Records} />
+      </div>
+      <div className="nav-btn">
+        <ButtonGroup variant="contained" color="primary">
+          <Button onClick={PrevStep}>Previous</Button>
+          <Button onClick={Submit}>Submit</Button>
+        </ButtonGroup>
+      </div>
+    </React.Fragment>
+  );
+}
+/* export default class Summary extends React.Component {
+ *   render() {
+ *     const { FormData, Records, Submit, PrevStep } = this.props
+ * 
+ *     return (
+ *       <React.Fragment>
+ *         <h2 className="AppStepTitle">Summary</h2>
+ *         <div className="summary-panel">
+ *           <RecordSummary Record={{ ...FormData, SDGRecords: Records }} />
+ *           <RecordPlotPanel Records={Records} />
+ *         </div>
+ *         <div className="nav-btn">
+ *           <ButtonGroup variant="contained" color="primary">
+ *             <Button onClick={PrevStep}>Previous</Button>
+ *             <Button onClick={Submit}>Submit</Button>
+ *           </ButtonGroup>
+ *         </div>
+ *       </React.Fragment>
+ *     );
+ *   }
+ * }; */
 
 const RecordSummary = ({ Record }) => (
   <Fragment>

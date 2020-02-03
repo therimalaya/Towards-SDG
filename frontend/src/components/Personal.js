@@ -130,9 +130,10 @@ class Personal extends React.Component {
     // This will update all the state
     // If noError is false, Error should automatically displayed
     // If noError is true, proceed to next step
-    if (isValid) {
-      this.props.NextStep(event)
-    }
+    this.props.NextStep(event)
+    /* if (isValid) {
+     *   this.props.NextStep(event)
+     * } */
   }
 
   render() {
