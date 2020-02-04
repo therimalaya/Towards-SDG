@@ -50,7 +50,7 @@ const Goal = (props) => {
   return(
     <Fragment>
       <Grid container direction="column">
-        <Typography variant="h4" component="h2">Select Goals</Typography>
+        {/* <Typography variant="h4" component="h2">Select Goals</Typography> */}
         <Box className={classes.root}>
           <GridList cols={6} component="div" cellHeight="auto">
             {AllGoals.map(goal => (
@@ -76,12 +76,6 @@ const Goal = (props) => {
               )
             }
           </Box>
-        </Box>
-        <Box>
-          <ButtonGroup variant="contained" color="primary">
-            <Button onClick={PrevStep}>Previous</Button>
-            <Button onClick={NextStep}>Next</Button>
-          </ButtonGroup>
         </Box>
       </Grid>
     </Fragment>

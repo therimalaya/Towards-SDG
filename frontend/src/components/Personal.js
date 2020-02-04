@@ -1,9 +1,20 @@
-import React from 'react';
+import React, { useState, Fragment } from 'react';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
-import { Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Box, TextField } from '@material-ui/core';
 import { SelectInput } from './Inputs';
 import { FacultyConfig } from '../config/app-config';
+
+const validateURL  = (str) => {
+  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+  return !!pattern.test(str);
+}
 
 const OutreachOptions = [
   {value: 'Yes', label: 'Yes'},
@@ -20,15 +31,9 @@ const ResearchOptions = [
   {value: 'Reviews/ Synthesis', label: 'Reviews/ Synthesis'},
 ]
 
-const validateURL  = (str) => {
-  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
-    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
-    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
-  return !!pattern.test(str);
-}
+const useStyles = makeStyles(theme=>({
+  root: {},
+}))
 
 function classList(...classes) {
   return classes
@@ -36,7 +41,31 @@ function classList(...classes) {
     .join(' ');
 }
 
-class Personal extends React.Component {
+function Personal(props) {
+  const classes = useStyles();
+  const {FormData, UpdateFormData, NextStep} = props;
+  const {Errors, setErrors, NoError, setNoError} = props;
+  const {checkValidFields, HandleChange, CheckAndProceed} = props;
+
+  return (
+    <Fragment>
+      <form className={classes.root}>
+        <TextField
+          error={Errors.Name!==""}
+          id="name"
+          label="FullName"
+          helperText={Errors.Name!=="" ? Errors.Name : "Full name of main author"}
+          variant="outlined"
+          autoFocus={true}
+          fullWidth={true}
+        />
+
+      </form>
+    </Fragment>
+  );
+}
+
+class Personal1 extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -140,7 +169,7 @@ class Personal extends React.Component {
     const {FormData} = this.props
     const {errors} = this.state
     return (
-      <React.Fragment>
+      <Fragment>
         <h2 className="AppStepTitle">
           Personal Details
         </h2>
@@ -235,13 +264,7 @@ class Personal extends React.Component {
             />
           </div>
         </form>
-        <div className="nav-btn">
-          <Button
-            onClick={this.CheckAndProceed}
-            color="primary"
-            variant="contained">Next</Button>
-        </div>
-      </React.Fragment>
+      </Fragment>
     );
   }
 };

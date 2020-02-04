@@ -54,9 +54,6 @@ function Confirmation(props) {
         </React.Fragment>)
         : null}
       </div>
-      <div className="nav-btn">
-        <Button variant="contained" color="primary" onClick={GoHome}>Home</Button>
-      </div>
     </React.Fragment>
   );
 }

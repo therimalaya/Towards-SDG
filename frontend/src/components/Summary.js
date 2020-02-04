@@ -22,12 +22,6 @@ export default function Summary(props) {
         <RecordSummary Record={{ ...FormData, SDGRecords: Records }} />
         <RecordPlotPanel Records={Records} />
       </div>
-      <div className="nav-btn">
-        <ButtonGroup variant="contained" color="primary">
-          <Button onClick={PrevStep}>Previous</Button>
-          <Button onClick={Submit}>Submit</Button>
-        </ButtonGroup>
-      </div>
     </React.Fragment>
   );
 }

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import { firestore, apps, initializeApp } from 'firebase';
 
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles';
-import { Grid, Box, Card, Container } from '@material-ui/core';
+import { Grid, Box, Button, ButtonGroup } from '@material-ui/core';
 
 import FrontCover from './components/FrontCover';
 import MainForm from './components/MainForm';
@@ -14,8 +14,6 @@ import AllRecords from './components/Records';
 
 import { StepConfig } from './config/app-config';
 import { FirebaseConfig } from './config/firebase-config.js';
-
-import { LOGO } from './images/NMBUwhite.svg';
 
 const theme = createMuiTheme({
   palette: {
@@ -34,17 +32,24 @@ const theme = createMuiTheme({
     }
   }
 })
-
 // May be create responseive font sizes
 
 const useStyles = makeStyles(theme => ({
   root: {
     height: '100vh',
-    flexWrap: 'wrap',
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    overflow: 'hidden',
+    margin: '0px',
+    boxSizing: 'border-box',
   },
   sidebar: {
     display: 'flex',
     flexDirection: 'column',
+    height: '100%',
+    flexShrink: 0,
+    width: 'min(450px, 30%)',
   },
   header: {
     background: 'url("./images/header.jpg")',
@@ -66,15 +71,34 @@ const useStyles = makeStyles(theme => ({
   },
   mainpanel: {
     display: 'flex',
+    height: '100%',
     justifyContent: 'center',
-    alignContent: 'center',
+    alignContent: 'flex-start',
+    padding: '20px',
+    paddingBottom: 0,
   },
   mainpanelBox: {
-    height: "90%",
-    width: "90%",
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    width: '100%',
+  },
+  mainContent: {
+    padding: '12px',
+    flexGrow: 1,
+    overflowY: 'auto',
   }
-
 }));
+
+const validateURL  = (str) => {
+  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+  return !!pattern.test(str);
+}
 
 function InnerApp(props) {
   const classes = useStyles();
@@ -85,7 +109,7 @@ function InnerApp(props) {
 
   return(
     <Grid container className={classes.root}>
-      <Grid item className={classes.sidebar} xs={4}>
+      <Grid item className={classes.sidebar}>
         <Box className={classes.header}></Box>
         <Box className={classes.sideinfo} flexGrow={1}>
           <SideInfo
@@ -96,7 +120,7 @@ function InnerApp(props) {
         </Box>
         <Box className={classes.sidefooter}></Box>
       </Grid>
-      <Grid item container className={classes.mainpanel} xs={8}>
+      <Grid item container className={classes.mainpanel}>
         <Router basename="/">
           <Switch>
             <Route path='/records'>
@@ -107,19 +131,31 @@ function InnerApp(props) {
                 {Step === 0
                 ? <FrontCover
                     NextStep={NextStep} />
-                : <MainForm
-                    Step={Step}
-                    FormData={FormData}
-                    CurrentRecord={CurrentRecord}
-                    Records={Records}
-                    UpdateFormData={UpdateFormData}
-                    UpdateCurrentRecord={UpdateCurrentRecord}
-                    UpdateRecords={UpdateRecords}
-                    NextStep={NextStep}
-                    PrevStep={PrevStep}
-                    GoHome={GoHome}
-                    Submit={Submit}
-                />
+                : <Fragment>
+                  <Box className={classes.mainContent}>
+                    <MainForm
+                      Step={Step}
+                      FormData={FormData}
+                      CurrentRecord={CurrentRecord}
+                      Records={Records}
+                      UpdateFormData={UpdateFormData}
+                      UpdateCurrentRecord={UpdateCurrentRecord}
+                      UpdateRecords={UpdateRecords}
+                      NextStep={NextStep}
+                      PrevStep={PrevStep}
+                      GoHome={GoHome}
+                      Submit={Submit}
+                    />
+                  </Box>
+                  <Box py="15px">
+                    <ButtonGroup variant="contained" color="primary">
+                      {Step!==1 & Step!==5 ? <Button onClick={PrevStep}>Previous</Button> : null}
+                      {Step===4 ? <Button onClick={Submit}>Submit</Button> : null}
+                      {Step!==5 & Step!==4 ? <Button onClick={NextStep}>Next</Button> : null}
+                      {Step===5 ? <Button onClick={GoHome}>Start</Button> : null}
+                    </ButtonGroup>
+                  </Box>
+                </Fragment>
                 }
               </Box>
             </Route>
@@ -136,7 +172,7 @@ export default function App() {
   }
 
   // STATES
-  const [Step, setStep] = useState(3);
+  const [Step, setStep] = useState(1);
   const [FormData, setFormData] = useState({
     Name: "",
     Faculty: "",
@@ -158,6 +194,18 @@ export default function App() {
     }
   });
   const [Records, setRecords] = useState([]);
+  const [NoError, setNoError] = useState(false);
+  const [Errors, setErrors] = useState({
+    Name: "",
+    Faculty: "",
+    Research: {
+      Title: "",
+      URL: "",
+      Type: "",
+      Outreach: ""
+    },
+    CoauthorFaculty: ""
+  })
 
   // METHODS -> FUNCTIONS
   const UpdateRecords = (event) => {
@@ -235,6 +283,72 @@ export default function App() {
     event.preventDefault()
     setStep(0)
   }
+  const checkValidFields = (event) => {
+    let isValid = true;
+    let errors = {}
+
+    // Update error state based on the
+    // fetching values from Form state
+    // All the checking goes here
+    // Update the error state
+    if (!FormData.Name) {
+      errors.Name = "Name can not be empty";
+      isValid = false;
+    } else if (FormData.Name.length <= 5) {
+      errors.Name = "Name must be at least 5 character long.";
+      isValid = false;
+    }
+
+    if (!FormData.Faculty) {
+      errors.Faculty = "Must select a faculty";
+      isValid = false;
+    }
+
+    if (!FormData.Research.Title) {
+      errors.Research = {...errors.Research, Title: "Research title must not be empty."};
+      isValid = false;
+    } else if (FormData.Research.Title.length <= 5) {
+      errors.Research = {...errors.Research, Title: "Research title must be at least 5 character long."};
+      isValid = false;
+    }
+
+    if (!FormData.Research.URL) {
+      errors.Research = {...errors.Research, URL: "Research URL must not be empty."};
+      isValid = false;
+    } else if (!validateURL(FormData.Research.URL)) {
+      errors.Research = {...errors.Research, URL: "Research URL is not valid."};
+      isValid = false;
+    }
+
+    setNoError(isValid)
+    setErrors({...Errors, ...errors})
+    return isValid
+  }
+  const HandleFormChange = input => event => {
+    let errors = {}
+    errors[input] = "";
+    setNoError("")
+    setErrors({...Errors, ...errors})
+    if (event.target) {
+      UpdateFormData(input, event.target.value)
+    } else if (event.value) {
+      UpdateFormData(input, event.value)
+    } else {
+      UpdateFormData(input, event)
+    }
+  }
+  const CheckAndProceed = (event) => {
+    event.preventDefault()
+    const isValid = checkValidFields(event)
+    // Call checkValidFields function
+    // This will update all the state
+    // If noError is false, Error should automatically displayed
+    // If noError is true, proceed to next step
+    /* NextStep(event) */
+    if (isValid) {
+      NextStep(event)
+    }
+  }
 
 
   return(
@@ -253,6 +367,13 @@ export default function App() {
         PrevStep={PrevStep}
         GoHome={GoHome}
         Submit={Submit}
+        Errors={Errors}
+        setErrors={setErrors}
+        NoError={NoError}
+        setNoError={setNoError}
+        checkValidFields={checkValidFields}
+        HandleChange={HandleFormChange}
+        CheckAndProceed={CheckAndProceed}
       />
     </ThemeProvider>
   )

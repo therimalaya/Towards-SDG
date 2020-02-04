@@ -26,11 +26,6 @@ const FrontCover = (props) => {
           <Typography paragraph={true}>On the next few pages you are asked to provide some basic information on the SDG-relevance of your own research. The SDG-map of NMBU, which will be an output from this portal, depends on your input and your contribution. You may register as many main author contributions as you like which were published or accepted for publication in the period 2010-2019.</Typography>
         </Box>
         <Box><Link to='/records'></Link></Box>
-        <Box className={classes.root}>
-          <Button onClick={NextStep} variant="contained" color="primary">
-            Let's Get Started »
-          </Button>
-        </Box>
       </Box>
     </React.Fragment>
   )

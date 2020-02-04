@@ -9,6 +9,8 @@ function MainForm(props) {
   const {Step, FormData, CurrentRecord, Records} = props;
   const {UpdateFormData, UpdateCurrentRecord, UpdateRecords} = props;
   const {NextStep, PrevStep, GoHome, Submit} = props;
+  const {Errors, setErrors, NoError, setNoError} = props;
+  const {checkValidFields, HandleChange, CheckAndProceed} = props;
 
   switch(Step) {
     case 1:
@@ -16,7 +18,15 @@ function MainForm(props) {
         <Personal
           FormData={FormData}
           UpdateFormData={UpdateFormData}
-          NextStep={NextStep} />
+          NextStep={NextStep}
+          Errors={Errors}
+          setErrors={setErrors}
+          NoError={NoError}
+          setNoError={setNoError}
+          checkValidFields={checkValidFields}
+          HandleChange={HandleChange}
+          CheckAndProceed={CheckAndProceed}
+        />
       );
     case 2:
       return(

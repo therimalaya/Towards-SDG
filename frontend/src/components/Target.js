@@ -2,8 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react';
 import TargetList from '../data/targets.json';
 import GoalList from '../data/goals.json';
 import InteractionModal from './TargetModal';
-import GoalCard from './GoalCard';
-import { Grid, Typography, Box, Button, ButtonGroup } from '@material-ui/core';
+import { Card, CardContent, CardMedia, Grid, Typography, Box, Button, ButtonGroup } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const numnum = num => num <= 9 ? "0" + num : num;
@@ -38,9 +37,54 @@ const adjustLine = (from, to, line) => {
 }
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    
-  }
+  targetBtns: {
+    alignContent: 'flex-start',
+  },
+  targetBtn: {
+    margin: "4px 0px",
+    textTransform: 'unset',
+    textAlign: 'left',
+    justifyContent: 'start',
+    '& p': {
+      margin: 0,
+      '& span': {
+        fontWeight: 'bold',
+        color: theme.palette.primary.main,
+      }
+    },
+    '&:hover': {
+      color: theme.palette.primary.main,
+      '& p': {
+        '& span': {
+          backgroundColor: theme.palette.primary.main,
+          color: theme.palette.primary.contrastText,
+          display: 'inline-block',
+          paddingRight: '5px',
+          paddingLeft: '3px',
+          borderRadius: '5px',
+          marginRight: '5px'
+        }
+      }
+    }
+  },
+  goalcard: {
+    display: 'flex',
+    height: '150px',
+    marginBottom: '10px',
+  },
+  goaldetails: {
+    display: 'flex',
+    flexDirection: 'column',
+    overflowY: 'scroll',
+  },
+  goalcontent: {
+    flex: '1 0 auto',
+  },
+  goalcover: {
+    width: '150px',
+    height: '150px',
+    flexShrink: 0,
+  },
 }))
 
 function Target(props) {
@@ -150,19 +194,63 @@ function Target(props) {
   return(
     <Fragment>
       <Grid container direction="column">
-        <Typography variant="h4" component="h2">Select Targets</Typography>
+        {/* <Typography variant="h4" component="h2">Select Targets</Typography> */}
         <Grid container>
-          {
-            SelectedGoals.map((goal, idx) =>
-              <Grid item xs={6}>
-                <GoalCard
-                  key={idx}
-                  goal={goal}
-                  CurrentRecord={CurrentRecord}
-                  handleClick={handleClick} />
-              </Grid>
-            )
-          }
+          <Grid item container spacing={1}>
+            {
+              SelectedGoals.map((goal, idx) =>
+                <Grid item xs={6} key={goal.goal}>
+                  <Card className={classes.goalcard}>
+                    <div className={classes.goaldetails}>
+                      <CardContent className={classes.goalcontent}>
+                        <Typography component="h5" variant="h5">
+                          {goal.short}
+                        </Typography>
+                        <Typography variant="subtitle1" color="textSecondary">
+                          {goal.title}
+                        </Typography>
+                      </CardContent>
+                    </div>
+                    <CardMedia
+                      className={classes.goalcover}
+                      image={goal.image_src}
+                      title="goal.short"
+                    />
+                  </Card>
+                </Grid>
+              )
+            }
+          </Grid>
+          <Grid item container spacing={1}>
+            {
+              SelectedGoals.map((goal, idx) =>
+                <Grid item xs={6} container className={classes.targetBtns} key={goal.goal}>
+                  {
+                    goal.targets.map((target, idx) => {
+                      return (
+                        <Button
+                          fullWidth={true}
+                          key={target.id}
+                          variant="outlined"
+                          size="small"
+                          color="secondary"
+                          id={"Target-" + target.id}
+                          value={target.id}
+                          name={target.id}
+                          onClick={handleClick}
+                          className={classes.targetBtn}>
+                          <p className="target-text">
+                            <span className="target-id">{target.id} </span>
+                            {target.title}
+                          </p>
+                        </Button>
+                      )
+                    })
+                  }
+                </Grid>
+              )
+            }
+          </Grid>
         </Grid>
         <InteractionModal
           SelectedGoals={SelectedGoals}
@@ -171,12 +259,6 @@ function Target(props) {
           closeModal={closeModal}
           handleInteraction={handleInteraction}
           ResetAndUpdate={ResetAndUpdate} />
-        <Box className={classes.root}>
-          <ButtonGroup variant="contained" color="primary">
-            <Button onClick={PrevStep}>Previous</Button>
-            <Button onClick={NextStep}>Next</Button>
-          </ButtonGroup>
-        </Box>
       </Grid>
     </Fragment>
   )
