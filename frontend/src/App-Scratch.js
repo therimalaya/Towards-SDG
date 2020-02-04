@@ -49,7 +49,6 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     height: '100%',
     flexShrink: 0,
-    width: 'min(450px, 30%)',
   },
   header: {
     background: 'url("./images/header.jpg")',
@@ -104,23 +103,26 @@ function InnerApp(props) {
   const classes = useStyles();
   const { Step, NextStep, PrevStep, Submit, GoHome } = props;
   const { Records, CurrentRecord, FormData } = props;
-  const { RemoveCurrentRecord, UpdateFormData, UpdateRecords, UpdateCurrentRecord } = props;
+  const { RemoveCurrentRecord, UpdateCurrentRecord } = props;
+  const { UpdateFormData, UpdateRecords } = props;
+  const { Errors, setErrors, NoError, setNoError } = props;
+  const { checkValidFields, HandleChange, CheckAndProceed } = props;
   const { StepConfig } = props;
 
   return(
     <Grid container className={classes.root}>
-      <Grid item className={classes.sidebar}>
+      <Grid item className={classes.sidebar} xs={3}>
         <Box className={classes.header}></Box>
         <Box className={classes.sideinfo} flexGrow={1}>
-          <SideInfo
-            Records={Records}
-            RemoveCurrentRecord={RemoveCurrentRecord}
-            Step={Step}
-            StepConfig={StepConfig} />
+        <SideInfo
+  Records={Records}
+  RemoveCurrentRecord={RemoveCurrentRecord}
+  Step={Step}
+  StepConfig={StepConfig} />
         </Box>
         <Box className={classes.sidefooter}></Box>
       </Grid>
-      <Grid item container className={classes.mainpanel}>
+      <Grid item container className={classes.mainpanel} xs={9}>
         <Router basename="/">
           <Switch>
             <Route path='/records'>
@@ -145,13 +147,21 @@ function InnerApp(props) {
                       PrevStep={PrevStep}
                       GoHome={GoHome}
                       Submit={Submit}
+                      Errors={Errors}
+                      setErrors={setErrors}
+                      NoError={NoError}
+                      setNoError={setNoError}
+                      checkValidFields={checkValidFields}
+                      HandleChange={HandleChange}
+                      CheckAndProceed={CheckAndProceed}
                     />
                   </Box>
                   <Box py="15px">
                     <ButtonGroup variant="contained" color="primary">
-                      {Step!==1 & Step!==5 ? <Button onClick={PrevStep}>Previous</Button> : null}
+                      {[2,3,4].includes(Step) ? <Button onClick={PrevStep}>Previous</Button> : null}
                       {Step===4 ? <Button onClick={Submit}>Submit</Button> : null}
-                      {Step!==5 & Step!==4 ? <Button onClick={NextStep}>Next</Button> : null}
+                      {[2,3].includes(Step) ? <Button onClick={NextStep}>Next</Button> : null}
+                      {Step===1 ? <Button onClick={CheckAndProceed}>Next</Button> : null}
                       {Step===5 ? <Button onClick={GoHome}>Start</Button> : null}
                     </ButtonGroup>
                   </Box>
@@ -174,15 +184,15 @@ export default function App() {
   // STATES
   const [Step, setStep] = useState(1);
   const [FormData, setFormData] = useState({
-    Name: "",
-    Faculty: "",
+    Name: "Raju Rimal",
+    Faculty: "KBM",
     Research: {
-      Title: "",
-      URL: "",
-      Type: "",
-      Outreach: ""
+      Title: "Simulation of Linear Model Data",
+      URL: "https://simulatr.github.io/Simrel",
+      Type: "Experiments",
+      Outreach: "Yes"
     },
-    Coauthors: { Faculty: [""] }
+    Coauthors: { Faculty: ["KBM", "Realtek"] }
   });
   const [CurrentRecord, setCurrentRecord] = useState({
     Goals: [3, 13],

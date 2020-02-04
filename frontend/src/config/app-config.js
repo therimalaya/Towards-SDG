@@ -18,3 +18,40 @@ export const FacultyConfig = [
     { value: 'Vet', label: 'Veterinary Medicine' },
     { value: 'Other', label: 'Other institution' }
 ]
+
+export const OutreachOptions = [
+    {value: 'Yes', label: 'Yes'},
+    {value: 'Planned', label: 'No, but I do have concrete plans for do so'},
+    {value: 'No', label: 'No'},
+]
+
+export const ResearchOptions = [
+    {
+        value: 'Theoretical/ Conceptual work',
+        label: 'Theoretical/ Conceptual work'
+    },
+    {
+        value: 'Experiments',
+        label: 'Experiments'
+    },
+    {
+        value: 'Statistical analysis of primary observational data',
+        label: 'Statistical analysis of primary observational data'
+    },
+    {
+        value: 'Statistical analysis of secondary data',
+        label: 'Statistical analysis of secondary data'
+    },
+    {
+        value: 'Simulations',
+        label: 'Simulations'
+    },
+    {
+        value: 'Case studies (Qualitative analysis)',
+        label: 'Case studies (Qualitative analysis)'
+    },
+    {
+        value: 'Reviews/ Synthesis',
+        label: 'Reviews/ Synthesis'
+    },
+]
