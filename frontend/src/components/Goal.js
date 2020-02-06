@@ -1,15 +1,29 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import GoalList from '../data/goals.json';
 import { Button, ButtonGroup } from '@material-ui/core';
-import { Box, Grid, GridList, GridListTile, Typography } from '@material-ui/core';
+import { Box, Grid, GridList, GridListTile, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { Table, TableBody, TableCell, TableContainer, TableRow } from '@material-ui/core';
 
 const numnum = num => num <=9 ? "0"+num : num;
 
 const useStyles = makeStyles(theme => ({
   selected: {
-
-  }
+    marginTop: '10px',
+  },
+  selectedTiles: {
+    boxShadow: "0 0 10px 0px red",
+    transform: "scale(0.94)",
+    borderRadius: "10px",
+    "&:focus": {
+      outline: "none",
+    }
+  },
+  regularTiles: {
+    "&:focus": {
+      outline: "none",
+    }
+  },
 }));
 
 GoalList.forEach(goal=>{
@@ -20,7 +34,6 @@ GoalList.forEach(goal=>{
 const Goal = (props) => {
   const classes = useStyles();
   const [AllGoals, setAllGoals] = useState(GoalList);
-  const { NextStep, PrevStep } = props;
   const { Goals } = props.CurrentRecord
   const { UpdateCurrentRecord } = props;
 
@@ -54,7 +67,7 @@ const Goal = (props) => {
         <Box className={classes.root}>
           <GridList cols={6} component="div" cellHeight="auto">
             {AllGoals.map(goal => (
-              <GridListTile key={goal.goal}>
+              <GridListTile key={goal.goal} component="div">
                 <ImageLink
                   goal={goal}
                   handleClick={handleClick}
@@ -64,18 +77,30 @@ const Goal = (props) => {
               </GridListTile>
             ))}
           </GridList>
-          <Box className={classes.selected}>
-            {
-              AllGoals.filter(goal=>Goals.includes(goal.goal)).map((goal, idx) =>
-                <Fragment key={idx}>
-                  <Grid container>
-                    <Typography color={goal.colorInfo.hex}>Goal {goal.goal}</Typography>
-                    <Typography color={goal.colorInfo.hex}>{goal.title}</Typography>
-                  </Grid>
-                </Fragment>
-              )
-            }
-          </Box>
+          <TableContainer component={Paper} className={classes.selected}>
+            <Table className={classes.table} size="small">
+              <TableBody>
+                {
+                  AllGoals.filter(goal=>Goals.includes(goal.goal)).map((goal, idx) =>
+                    <Fragment key={idx}>
+                      <TableRow key={goal.goal}>
+                        <TableCell
+                          variant="head"
+                          align="right"
+                          style={{
+                            color: goal.colorInfo.hex,
+                            fontWeight: 'bolder'
+                          }}>
+                          Goal {goal.goal}
+                        </TableCell>
+                        <TableCell align="left">{goal.title}</TableCell>
+                      </TableRow>
+                    </Fragment>
+                  )
+                }
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Box>
       </Grid>
     </Fragment>
@@ -85,6 +110,7 @@ const Goal = (props) => {
 export default Goal;
 
 const ImageLink = (props) => {
+  const classes = useStyles();
   const {goal, handleClick, disabled} = props
 	return(
     <input
@@ -95,7 +121,7 @@ const ImageLink = (props) => {
       name={goal.goal}
       alt={goal.short}
       onClick={handleClick}
-      className={goal.isSelected ? "selected" : ""}
+      className={goal.isSelected ? classes.selectedTiles : classes.regularTiles}
       disabled={disabled}
     />
   )

@@ -25,10 +25,12 @@ const theme = createMuiTheme({
     },
     secondary: {
       main: '#556680',
+      contrastText: "#fff",
     },
     background: {
       paper: '#fff',
       default: '#fafafa',
+      light: "#F0F8FF",
     }
   }
 })
@@ -114,11 +116,11 @@ function InnerApp(props) {
       <Grid item className={classes.sidebar} xs={3}>
         <Box className={classes.header}></Box>
         <Box className={classes.sideinfo} flexGrow={1}>
-        <SideInfo
-  Records={Records}
-  RemoveCurrentRecord={RemoveCurrentRecord}
-  Step={Step}
-  StepConfig={StepConfig} />
+          <SideInfo
+            Records={Records}
+            RemoveCurrentRecord={RemoveCurrentRecord}
+            Step={Step}
+            StepConfig={StepConfig} />
         </Box>
         <Box className={classes.sidefooter}></Box>
       </Grid>
@@ -131,8 +133,17 @@ function InnerApp(props) {
             <Route path='/'>
               <Box className={classes.mainpanelBox}>
                 {Step === 0
-                ? <FrontCover
-                    NextStep={NextStep} />
+                ? <Fragment>
+                  <Box className={classes.mainContent}>
+                    <FrontCover
+                      NextStep={NextStep} />
+                  </Box>
+                  <Box py="15px">
+                    <ButtonGroup variant="contained" color="primary">
+                      <Button onClick={NextStep}>Get Started</Button>
+                    </ButtonGroup>
+                  </Box>
+                </Fragment>
                 : <Fragment>
                   <Box className={classes.mainContent}>
                     <MainForm
@@ -182,7 +193,7 @@ export default function App() {
   }
 
   // STATES
-  const [Step, setStep] = useState(1);
+  const [Step, setStep] = useState(2);
   const [FormData, setFormData] = useState({
     Name: "Raju Rimal",
     Faculty: "KBM",

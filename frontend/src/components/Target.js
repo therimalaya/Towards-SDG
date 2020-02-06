@@ -67,29 +67,35 @@ const useStyles = makeStyles(theme => ({
       }
     }
   },
-  goalcard: {
-    display: 'flex',
-    height: '150px',
-    marginBottom: '10px',
-  },
-  goaldetails: {
-    display: 'flex',
-    flexDirection: 'column',
-    overflowY: 'scroll',
-  },
-  goalcontent: {
-    flex: '1 0 auto',
+  clickedTargetBtn: {
+    color: theme.palette.primary.main,
+    backgroundColor: theme.palette.background.light,
+    '&:hover': {
+      backgroundColor: theme.palette.background.light,
+    },
+    '& p': {
+      '& span': {
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
+        display: 'inline-block',
+        paddingRight: '5px',
+        paddingLeft: '3px',
+        borderRadius: '5px',
+        marginRight: '5px'
+      }
+    }
   },
   goalcover: {
-    width: '150px',
-    height: '150px',
+    width: '100%',
+    height: '175px',
     flexShrink: 0,
+    backgroundPosition: "top left",
   },
 }))
 
 function Target(props) {
   const classes = useStyles();
-  const { PrevStep, NextStep, CurrentRecord } = props;
+  const { CurrentRecord } = props;
   const { UpdateCurrentRecord, UpdateRecords } = props;
   let newTargets = TargetList
     .filter(target => props.CurrentRecord.Goals.includes(target.goal))
@@ -160,8 +166,8 @@ function Target(props) {
     newTargets.forEach(target => {
       if (target.id === event.currentTarget.name) {
         target.isSelected = !target.isSelected
-        event.currentTarget.classList.toggle("clicked-target-btn")
-        event.currentTarget.classList.toggle("target-btn")
+        event.currentTarget.classList.toggle(classes.clickedTargetBtn)
+        /* event.currentTarget.classList.toggle(classes.targetBtn) */
       }
     })
     UpdateCurrentRecord(
@@ -200,23 +206,11 @@ function Target(props) {
             {
               SelectedGoals.map((goal, idx) =>
                 <Grid item xs={6} key={goal.goal}>
-                  <Card className={classes.goalcard}>
-                    <div className={classes.goaldetails}>
-                      <CardContent className={classes.goalcontent}>
-                        <Typography component="h5" variant="h5">
-                          {goal.short}
-                        </Typography>
-                        <Typography variant="subtitle1" color="textSecondary">
-                          {goal.title}
-                        </Typography>
-                      </CardContent>
-                    </div>
-                    <CardMedia
-                      className={classes.goalcover}
-                      image={goal.image_src}
-                      title="goal.short"
-                    />
-                  </Card>
+                  <CardMedia
+                    className={classes.goalcover}
+                    image={goal.image_src}
+                    title="goal.short"
+                  />
                 </Grid>
               )
             }
