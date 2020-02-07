@@ -24,3 +24,5 @@ yarn-error.log*
 
 # archives
 archives
+*-lock*
+*.lock

@@ -1,9 +1,14 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Box } from '@material-ui/core';
+import { Typography, Box, Paper } from '@material-ui/core';
+import { TableContainer, Table, TableRow, TableCell, TableBody, TableHead } from '@material-ui/core';
+
 
 const useStyles = makeStyles(theme => ({
-
+  table: {
+    maxWidth: '100%',
+    overflowX: 'auto',
+  }
 }));
 
 function SideInfo(props) {
@@ -70,13 +75,12 @@ function SideInfo(props) {
 
             {
               Records.length > 0 &&
-              <h4 className="sidebar-info-h4">
-                Selected Records
-              </h4>
-            }
-            {
-              Records.length > 0 &&
-              <SideTable Records={Records} removeCurrent={RemoveCurrentRecord} />
+              <React.Fragment>
+                <h4 className="sidebar-info-h4">
+                  Selected Records
+                </h4>
+                <SideTable Records={Records} removeCurrent={RemoveCurrentRecord} />
+              </React.Fragment>
             }
           </Box>
         </React.Fragment>
@@ -116,25 +120,54 @@ function SideInfo(props) {
 export default SideInfo;
 
 const SideTable = props => {
-  const { Records } = props
+  const classes = useStyles();
+  const { Records, removeCurrent } = props;
   return (
-    <table className="sidebar-record-table">
-      <tbody>
-        {
-          Records.map((record, key) => {
-            return (
-              <tr className="sidebar-table-row sidebar-table-record" key={key}>
-                <td>{record.Targets[0]}</td>
-                <td>{record.Interaction.direction === "ltr" ? " → " : record.Interaction.direction === "rtl" ? " ← " : ""}</td>
-                <td>{record.Targets[1]}</td>
-                <td>{record.Interaction.type}</td>
-                <td>{record.Interaction.value}</td>
-                <td><button onClick={props.removeCurrent} value={key}>x</button></td>
-              </tr>
-            )
-          })
-        }
-      </tbody>
-    </table>
+    <TableContainer component={Paper} className={classes.table}>
+      <Table size="small" aria-label="Selected Records Table">
+        <TableHead>
+          <TableRow>
+            <TableCell></TableCell>
+            <TableCell>Target1</TableCell>
+            <TableCell>Direction</TableCell>
+            <TableCell>Target2</TableCell>
+            <TableCell>Interaction</TableCell>
+            <TableCell>Type</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {Records.map((row, key) => (
+            <TableRow key={key}>
+              <TableCell><button onClick={removeCurrent} value={key}>x</button></TableCell>
+              <TableCell>{row.Targets[0]}</TableCell>
+              <TableCell>{row.Interaction.direction}</TableCell>
+              <TableCell>{row.Targets[1]}</TableCell>
+              <TableCell>{row.Interaction.value}</TableCell>
+              <TableCell>{row.Interaction.type}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   )
 }
+
+/* 
+ * <table className="sidebar-record-table">
+ * <tbody>
+ * {
+ *   Records.map((record, key) => {
+ *     return (
+ *       <tr className="sidebar-table-row sidebar-table-record" key={key}>
+ *         <td>{record.Targets[0]}</td>
+ *         <td>{record.Interaction.direction === "ltr" ? " → " : record.Interaction.direction === "rtl" ? " ← " : ""}</td>
+ *         <td>{record.Targets[1]}</td>
+ *         <td>{record.Interaction.type}</td>
+ *         <td>{record.Interaction.value}</td>
+ *         <td><button onClick={props.removeCurrent} value={key}>x</button></td>
+ *       </tr>
+ *     )
+ *   })
+ * }
+ * </tbody>
+ * </table> */

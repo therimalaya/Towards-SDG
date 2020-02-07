@@ -105,7 +105,7 @@ function InnerApp(props) {
   const classes = useStyles();
   const { Step, NextStep, PrevStep, Submit, GoHome } = props;
   const { Records, CurrentRecord, FormData } = props;
-  const { RemoveCurrentRecord, UpdateCurrentRecord } = props;
+  const { UpdateCurrent, RemoveCurrentRecord, UpdateCurrentRecord } = props;
   const { UpdateFormData, UpdateRecords } = props;
   const { Errors, setErrors, NoError, setNoError } = props;
   const { checkValidFields, HandleChange, CheckAndProceed } = props;
@@ -154,6 +154,8 @@ function InnerApp(props) {
                       UpdateFormData={UpdateFormData}
                       UpdateCurrentRecord={UpdateCurrentRecord}
                       UpdateRecords={UpdateRecords}
+                      UpdateCurrent={UpdateCurrent}
+                      RemoveCurrentRecord={RemoveCurrentRecord}
                       NextStep={NextStep}
                       PrevStep={PrevStep}
                       GoHome={GoHome}
@@ -174,6 +176,7 @@ function InnerApp(props) {
                       {[2,3].includes(Step) ? <Button onClick={NextStep}>Next</Button> : null}
                       {Step===1 ? <Button onClick={CheckAndProceed}>Next</Button> : null}
                       {Step===5 ? <Button onClick={GoHome}>Start</Button> : null}
+                      {Step===3 ? <Button onClick={UpdateRecords}>Add Records</Button> : null}
                     </ButtonGroup>
                   </Box>
                 </Fragment>
@@ -193,7 +196,7 @@ export default function App() {
   }
 
   // STATES
-  const [Step, setStep] = useState(2);
+  const [Step, setStep] = useState(3);
   const [FormData, setFormData] = useState({
     Name: "Raju Rimal",
     Faculty: "KBM",
@@ -231,9 +234,9 @@ export default function App() {
   // METHODS -> FUNCTIONS
   const UpdateRecords = (event) => {
     event.preventDefault()
-    const clicked_targets = [...document.getElementsByClassName("clicked-target-btn")]
-    clicked_targets.map(btn => btn.classList.toggle("clicked-target-btn"))
-    clicked_targets.map(btn => btn.classList.toggle("target-btn"))
+    /* const clicked_targets = [...document.getElementsByClassName("clicked-target-btn")]
+     * clicked_targets.map(btn => btn.classList.toggle("clicked-target-btn"))
+     * clicked_targets.map(btn => btn.classList.toggle("target-btn")) */
     var _CurrentRecord = CurrentRecord
     _CurrentRecord = {
       ..._CurrentRecord,
@@ -247,9 +250,10 @@ export default function App() {
     })
   }
   const RemoveCurrentRecord = (event) => {
-    this.setState({
-      Records: this.state.Records.filter((value, idx) => idx !== Number(event.target.value))
-    })
+    setRecords(Records.filter((value, idx) => idx !== Number(event.target.value)))
+  }
+  const UpdateCurrent = (event) => {
+    debugger
   }
   const UpdateFormData = (field, data) => {
     field = field.split(".")
@@ -377,6 +381,7 @@ export default function App() {
       <InnerApp
         Records={Records}
         RemoveCurrentRecord={RemoveCurrentRecord}
+        UpdateCurrent={UpdateCurrent}
         Step={Step}
         StepConfig={StepConfig}
         NextStep={NextStep}

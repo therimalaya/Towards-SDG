@@ -48,27 +48,27 @@ const InteractionModal = (props) => {
       isOpen={showModal}
       contentLabel="Minimal Modal Example">
       <div className={styles.container}>
-        <div className={styles.goalHeaderContainer}>
-          {
+        {/* <div className={styles.goalHeaderContainer}>
+            {
             SelectedGoals.map((goal, idx) => {
-              const selectedTarget = goal.targets.filter(target => target.isSelected)
-              return (
-                <React.Fragment key={idx}>
-                  <div id={"goal-" + goal.goal + "-header"} className={styles.goalHeader}>
-                    <img src={goal.image_src} alt={goal.goal} />
-                    <div>
-                      <p>{goal.short}</p>
-                      <p className={styles.targetTitle}>
-                        <span>{selectedTarget.flatMap(target => target.id)}</span>
-                        {selectedTarget.flatMap(target => target.title)}
-                      </p>
-                    </div>
-                  </div>
-                </React.Fragment>
-              )
+            const selectedTarget = goal.targets.filter(target => target.isSelected)
+            return (
+            <React.Fragment key={idx}>
+            <div id={"goal-" + goal.goal + "-header"} className={styles.goalHeader}>
+            <img src={goal.image_src} alt={goal.goal} />
+            <div>
+            <p>{goal.short}</p>
+            <p className={styles.targetTitle}>
+            <span>{selectedTarget.flatMap(target => target.id)}</span>
+            {selectedTarget.flatMap(target => target.title)}
+            </p>
+            </div>
+            </div>
+            </React.Fragment>
+            )
             })
-          }
-        </div>
+            }
+            </div> */}
         <div className="target-page-buttons">
           {
             CurrentRecord.Targets.length === 2

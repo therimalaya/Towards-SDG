@@ -7,7 +7,8 @@ import Confirmation from './Confirmation';
 
 function MainForm(props) {
   const {Step, FormData, CurrentRecord, Records} = props;
-  const {UpdateFormData, UpdateCurrentRecord, UpdateRecords} = props;
+  const {UpdateFormData, UpdateCurrentRecord, UpdateRecords } = props;
+  const {RemoveCurrentRecord, UpdateCurrent} = props;
   const {NextStep, PrevStep, GoHome, Submit} = props;
   const {Errors, setErrors, NoError, setNoError} = props;
   const {checkValidFields, HandleChange, CheckAndProceed} = props;
@@ -41,7 +42,11 @@ function MainForm(props) {
         <Target
           CurrentRecord={CurrentRecord}
           UpdateCurrentRecord={UpdateCurrentRecord}
+          UpdateFormData={UpdateFormData}
           UpdateRecords={UpdateRecords}
+          Records={Records}
+          RemoveCurrentRecord={RemoveCurrentRecord}
+          UpdateCurrent={UpdateCurrent}
           NextStep={NextStep}
           PrevStep={PrevStep} />
       );

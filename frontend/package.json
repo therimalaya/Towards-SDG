@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.9.0",
     "@material-ui/lab": "^4.0.0-alpha.40",
+    "classname": "0.0.0",
     "color": "^3.1.2",
     "firebase": "^7.5.0",
     "lodash": "^4.17.15",
