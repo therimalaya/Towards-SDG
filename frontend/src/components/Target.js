@@ -2,11 +2,12 @@ import React, { Fragment, useState, useEffect } from 'react';
 import className from 'classname';
 import TargetList from '../data/targets.json';
 import GoalList from '../data/goals.json';
-import { Card, CardContent, CardMedia, Grid, Typography } from '@material-ui/core';
-import { Box, Button, ButtonGroup, Paper } from '@material-ui/core';
+import { IconButton , CardMedia, Grid, Typography } from '@material-ui/core';
+import { Button, Paper } from '@material-ui/core';
 import { TableContainer, Table, TableRow, TableCell, TableBody, TableHead } from '@material-ui/core';
 import { TextField, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const numnum = num => num <= 9 ? "0" + num : num;
 
@@ -75,8 +76,15 @@ const useStyles = makeStyles(theme => ({
   },
   table: {
     width: '100%',
-    maxHeight: '200px',
+    maxHeight: '150px',
     overflowY: 'scroll',
+    marginBottom: "15px",
+    "& tbody": {
+      "& *": {
+        fontFamily: "monospace",
+        padding: "2px 5px",
+      }
+    }
   }
 }))
 
@@ -114,7 +122,6 @@ function Target(props) {
   useEffect(() => {
     [...document.getElementsByClassName("clicked-target-btn")]
       .map(btn => btn.scrollIntoView())
-    console.log(CurrentRecord)
   })
 
   const handleClick = (event) => {
@@ -184,9 +191,7 @@ function Target(props) {
                           value={target.id}
                           name={target.id}
                           onClick={handleClick}
-                          disabled={
-                          CurrentRecord.Targets.length>=2 & !CurrentRecord.Targets.includes(target.id)
-                          }
+                          disabled={CurrentRecord.Targets.length>=2 && !CurrentRecord.Targets.includes(String(target.id))}
                           className={
                           className(classes.targetBtn, CurrentRecord.Targets.includes(target.id)
                                   ? classes.clickedTargetBtn
@@ -232,16 +237,21 @@ const SideTable = props => {
           {Records.map((row, key) => (
             <TableRow key={key}>
               <TableCell>
-                <button onClick={removeCurrent} value={key} name={String(key)}>x</button>
+                <IconButton aria-label="delete" onClick={removeCurrent} name={String(key)} size="small">
+                  <DeleteIcon fontSize="small"/>
+                </IconButton>
               </TableCell>
-              <TableCell>{row.Targets[0]}</TableCell>
+              <TableCell>{row.Targets[0] ? row.Targets[0] : row.Goals[0]}</TableCell>
               <TableCell>
                 <TextField
                   name={String(key)}
+                  id="select-interaction-direction"
+                  variant="outlined"
+                  size="small"
                   select
                   fullWidth
-                  default="lrt"
-                  value={row.Interaction.direction}
+                  onChange={UpdateCurrent("direction")}
+                  value={Records[key].Interaction.direction}
                 >
                   {direction.map(option => (
                     <MenuItem key={option.value} value={option.value}>
@@ -250,16 +260,17 @@ const SideTable = props => {
                   ))}
                 </TextField>
               </TableCell>
-              {/* <TableCell>{row.Interaction.direction}</TableCell> */}
-              <TableCell>{row.Targets[1]}</TableCell>
+              <TableCell>{row.Targets[1] ? row.Targets[1] : row.Goals[1]}</TableCell>
               <TableCell>
                 <TextField
+                  name={String(key)}
                   id="select-interaction"
+                  variant="outlined"
+                  size="small"
                   select
                   fullWidth
-                  default="Positive"
-                  value={row.Interaction.value}
-                  onChange={UpdateCurrent}
+                  value={Records[key].Interaction.value}
+                  onChange={UpdateCurrent("value")}
                 >
                   {interaction.map(option => (
                     <MenuItem key={option.value} value={option.value}>
@@ -268,14 +279,16 @@ const SideTable = props => {
                   ))}
                 </TextField>
               </TableCell>
-              {/* <TableCell>{row.Interaction.value}</TableCell> */}
               <TableCell>
                 <TextField
                   id="select-interaction-type"
+                  variant="outlined"
+                  size="small"
                   select
                   fullWidth
-                  default="Direct"
-                  value={row.Interaction.type}
+                  name={String(key)}
+                  onChange={UpdateCurrent("type")}
+                  value={Records[key].Interaction.type}
                 >
                   {type.map(option => (
                     <MenuItem key={option.value} value={option.value}>
@@ -284,7 +297,6 @@ const SideTable = props => {
                   ))}
                 </TextField>
               </TableCell>
-              {/* <TableCell>{row.Interaction.type}</TableCell> */}
             </TableRow>
           ))}
         </TableBody>
@@ -294,8 +306,8 @@ const SideTable = props => {
 }
 
 const direction = [
-  {value: 'lrt', label: "->"},
-  {value: 'rlt', label: "<-"},
+  {value: 'ltr', label: "->"},
+  {value: 'rtl', label: "<-"},
 ]
 
 const interaction = [

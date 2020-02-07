@@ -4,7 +4,6 @@ import GoalList from '../data/goals.json';
 import { FacultyConfig } from '../config/app-config.js';
 import Circos from 'react-circos';
 import _ from 'lodash';
-import { Button, ButtonGroup } from '@material-ui/core';
 
 const targetFilter = target => target.id.match("[0-9]$")
 const NestedGoals = _.mergeWith(
@@ -13,7 +12,7 @@ const NestedGoals = _.mergeWith(
 const Targets = _.flatMap(NestedGoals, x => _.flatMap(x.targets, y => ({ ...y, color: x.colorInfo.hex })))
 
 export default function Summary(props) {
-  const { FormData, Records, Submit, PrevStep } = props
+  const { FormData, Records } = props
 
   return (
     <React.Fragment>

@@ -1,17 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Box, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    alignSelf: 'flex-end',
-  },
-}))
+import { Box, Typography } from '@material-ui/core';
 
 const FrontCover = (props) => {
-  const { NextStep } = props;
-  const classes = useStyles();
   return (
     <React.Fragment>
       <Box display="flex" flexDirection="column" height="100%">

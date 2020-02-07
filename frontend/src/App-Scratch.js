@@ -196,7 +196,7 @@ export default function App() {
   }
 
   // STATES
-  const [Step, setStep] = useState(3);
+  const [Step, setStep] = useState(2);
   const [FormData, setFormData] = useState({
     Name: "Raju Rimal",
     Faculty: "KBM",
@@ -210,7 +210,7 @@ export default function App() {
   });
   const [CurrentRecord, setCurrentRecord] = useState({
     Goals: [3, 13],
-    Targets: [3.1, 13.1],
+    Targets: [],
     Interaction: {
       value: "Positive",
       type: "Direct",
@@ -238,10 +238,22 @@ export default function App() {
      * clicked_targets.map(btn => btn.classList.toggle("clicked-target-btn"))
      * clicked_targets.map(btn => btn.classList.toggle("target-btn")) */
     var _CurrentRecord = CurrentRecord
-    _CurrentRecord = {
-      ..._CurrentRecord,
-      Goals: _CurrentRecord.Targets.map(x => parseInt(x.split(".")[0]))
+    if (CurrentRecord.Targets.length <=2 ) {
+      var _CurrentRecord = {
+        ..._CurrentRecord, Goals: _CurrentRecord.Goals
+      }
+    } else {
+      var _CurrentRecord = {
+        ..._CurrentRecord,
+        Goals: _CurrentRecord.Targets.map(x => parseInt(x.split(".")[0]))
+      }
     }
+    /* var _CurrentRecord = CurrentRecord
+     * _CurrentRecord = {
+     *   ..._CurrentRecord,
+     *   Goals: _CurrentRecord.Targets.map(x => parseInt(x.split(".")[0]))
+     * } */
+    /* debugger */
     setRecords([...Records, _CurrentRecord])
     setCurrentRecord({
       ...CurrentRecord,
@@ -250,10 +262,18 @@ export default function App() {
     })
   }
   const RemoveCurrentRecord = (event) => {
-    setRecords(Records.filter((value, idx) => idx !== Number(event.target.value)))
+    setRecords(Records.filter((value, idx) => String(idx) !== event.currentTarget.name))
   }
-  const UpdateCurrent = (event) => {
-    debugger
+  const UpdateCurrent = input => event => {
+    const newRecord = Records.map((record, idx)=>{
+      if (String(idx) === event.target.name) {
+        record.Interaction[input] = event.target.value
+        return record
+      } else {
+        return record
+      }
+    })
+    setRecords(newRecord)
   }
   const UpdateFormData = (field, data) => {
     field = field.split(".")

@@ -1,8 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import TargetList from '../data/targets.json';
 import GoalList from '../data/goals.json';
-import InteractionButtons from './InteractionButtons';
-import { Card, CardContent, CardMedia, Grid, Typography, Box, Button, ButtonGroup } from '@material-ui/core';
+import { CardMedia, Grid, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const numnum = num => num <= 9 ? "0" + num : num;

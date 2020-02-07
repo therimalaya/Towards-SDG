@@ -1,8 +1,8 @@
-import React, { useState, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, TextField, MenuItem } from '@material-ui/core';
+import { TextField, MenuItem } from '@material-ui/core';
 import { SelectInput } from './Inputs';
 import { FacultyConfig, OutreachOptions, ResearchOptions } from '../config/app-config';
 
@@ -34,9 +34,7 @@ function classList(...classes) {
 
 function Personal(props) {
   const classes = useStyles();
-  const {FormData, UpdateFormData, NextStep} = props;
-  const {Errors, setErrors, NoError, setNoError} = props;
-  const {checkValidFields, HandleChange, CheckAndProceed} = props;
+  const {FormData, HandleChange, Errors} = props;
 
   return (
     <Fragment>
@@ -250,10 +248,9 @@ class Personal1 extends React.Component {
     // This will update all the state
     // If noError is false, Error should automatically displayed
     // If noError is true, proceed to next step
-    this.props.NextStep(event)
-    /* if (isValid) {
-     *   this.props.NextStep(event)
-     * } */
+    if (isValid) {
+      this.props.NextStep(event)
+    }
   }
 
   render() {

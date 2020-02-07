@@ -1,8 +1,5 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import TargetList from '../data/targets.json';
-import GoalList from '../data/goals.json';
-import InteractionModal from './TargetModal';
-import { Card, CardContent, CardMedia, Grid, Typography, Box, Button, ButtonGroup } from '@material-ui/core';
+import React from 'react';
+import { Grid, Button, ButtonGroup } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({

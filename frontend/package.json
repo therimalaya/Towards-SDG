@@ -4,6 +4,7 @@
   "homepage": "https://therimalaya.github.io/Towards-SDG",
   "dependencies": {
     "@material-ui/core": "^4.9.0",
+    "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.40",
     "classname": "0.0.0",
     "color": "^3.1.2",
