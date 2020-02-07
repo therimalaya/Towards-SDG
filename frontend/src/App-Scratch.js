@@ -217,7 +217,84 @@ export default function App() {
       direction: "rtl"
     }
   });
-  const [Records, setRecords] = useState([]);
+  const [Records, setRecords] = useState(
+    [
+      {
+        "Goals": [
+          3,
+          17
+        ],
+        "Targets": [
+          "3.1",
+          "17.2"
+        ],
+        "Interaction": {
+          "value": "",
+          "type": "",
+          "direction": ""
+        }
+      },
+      {
+        "Goals": [
+          3,
+          17
+        ],
+        "Targets": [
+          "3.2",
+          "3.3"
+        ],
+        "Interaction": {
+          "value": "Positive",
+          "type": "Direct",
+          "direction": "rtl"
+        }
+      },
+      {
+        "Goals": [
+          3,
+          17
+        ],
+        "Targets": [
+          "3.2",
+          "3.6"
+        ],
+        "Interaction": {
+          "value": "Negative",
+          "type": "Indirect",
+          "direction": "rtl"
+        }
+      },
+      {
+        "Goals": [
+          3,
+          17
+        ],
+        "Targets": [
+          "3.1",
+          "17.4"
+        ],
+        "Interaction": {
+          "value": "Negative",
+          "type": "Direct",
+          "direction": "rtl"
+        }
+      },
+      {
+        "Goals": [
+          3,
+          13
+        ],
+        "Targets": [
+          "3.2",
+          "13.3"
+        ],
+        "Interaction": {
+          "value": "Positive",
+          "type": "Direct",
+          "direction": "rtl"
+        }
+      }
+  ]);
   const [NoError, setNoError] = useState(false);
   const [Errors, setErrors] = useState({
     Name: "",
@@ -239,22 +316,16 @@ export default function App() {
      * clicked_targets.map(btn => btn.classList.toggle("target-btn")) */
     var _CurrentRecord = CurrentRecord
     if (CurrentRecord.Targets.length <=2 ) {
-      var _CurrentRecord = {
+      _CurrentRecord = {
         ..._CurrentRecord, Goals: _CurrentRecord.Goals
       }
     } else {
-      var _CurrentRecord = {
+      _CurrentRecord = {
         ..._CurrentRecord,
         Goals: _CurrentRecord.Targets.map(x => parseInt(x.split(".")[0]))
       }
     }
-    /* var _CurrentRecord = CurrentRecord
-     * _CurrentRecord = {
-     *   ..._CurrentRecord,
-     *   Goals: _CurrentRecord.Targets.map(x => parseInt(x.split(".")[0]))
-     * } */
-    /* debugger */
-    setRecords([...Records, _CurrentRecord])
+    setRecords([_CurrentRecord, ...Records])
     setCurrentRecord({
       ...CurrentRecord,
       Targets: [],

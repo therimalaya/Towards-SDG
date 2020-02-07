@@ -1,18 +1,25 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Box, Paper } from '@material-ui/core';
-import { TableContainer, Table, TableRow, TableCell, TableBody, TableHead } from '@material-ui/core';
-
+import { TableContainer, Table, TableRow, TableCell, TableBody } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   table: {
-    maxWidth: '100%',
-    overflowX: 'auto',
+    width: '100%',
+    maxHeight: '150px',
+    overflowY: 'scroll',
+    marginBottom: "15px",
+    "& tbody": {
+      "& *": {
+        fontFamily: "monospace",
+        padding: "2px 5px",
+      }
+    }
   }
 }));
 
 function SideInfo(props) {
-  const { Step, StepConfig, Records, RemoveCurrentRecord } = props
+  const { Step, StepConfig, Records } = props
   const Label = StepConfig.filter(x => x.key === Step)[0].label
   switch (Step) {
     case 0:
@@ -79,7 +86,7 @@ function SideInfo(props) {
                 <h4 className="sidebar-info-h4">
                   Selected Records
                 </h4>
-                <SideTable Records={Records} removeCurrent={RemoveCurrentRecord} />
+                <SideTable Records={Records} />
               </React.Fragment>
             }
           </Box>
@@ -101,10 +108,18 @@ function SideInfo(props) {
       case 5:
         return (
           <React.Fragment>
-            <Typography variant="body2" variant="body2"
-              component="span" color="primary">Step {props.Step}</Typography>
-            <Typography variant="body2" variant="body2"
-              component="span" color="primary">{Label}</Typography>
+            <Typography
+              variant="body2"
+              component="span"
+              color="primary">
+              Step {props.Step}
+            </Typography>
+            <Typography
+              variant="body2"
+              component="span"
+              color="primary">
+              {Label}
+            </Typography>
 
             <Box>
               <Typography variant="body2">Thank you for your contribution!</Typography>
@@ -121,27 +136,20 @@ export default SideInfo;
 
 const SideTable = props => {
   const classes = useStyles();
-  const { Records, removeCurrent } = props;
+  const { Records } = props;
   return (
     <TableContainer component={Paper} className={classes.table}>
       <Table size="small" aria-label="Selected Records Table">
-        <TableHead>
-          <TableRow>
-            <TableCell></TableCell>
-            <TableCell>Target1</TableCell>
-            <TableCell>Direction</TableCell>
-            <TableCell>Target2</TableCell>
-            <TableCell>Interaction</TableCell>
-            <TableCell>Type</TableCell>
-          </TableRow>
-        </TableHead>
         <TableBody>
           {Records.map((row, key) => (
             <TableRow key={key}>
-              <TableCell><button onClick={removeCurrent} value={key}>x</button></TableCell>
-              <TableCell>{row.Targets[0]}</TableCell>
+              <TableCell>
+                {row.Targets[0] ? row.Targets[0] : row.Goals[0]}
+              </TableCell>
               <TableCell>{row.Interaction.direction}</TableCell>
-              <TableCell>{row.Targets[1]}</TableCell>
+              <TableCell>
+                {row.Targets[1] ? row.Targets[1] : row.Goals[1]}
+              </TableCell>
               <TableCell>{row.Interaction.value}</TableCell>
               <TableCell>{row.Interaction.type}</TableCell>
             </TableRow>
@@ -151,23 +159,3 @@ const SideTable = props => {
     </TableContainer>
   )
 }
-
-/* 
- * <table className="sidebar-record-table">
- * <tbody>
- * {
- *   Records.map((record, key) => {
- *     return (
- *       <tr className="sidebar-table-row sidebar-table-record" key={key}>
- *         <td>{record.Targets[0]}</td>
- *         <td>{record.Interaction.direction === "ltr" ? " → " : record.Interaction.direction === "rtl" ? " ← " : ""}</td>
- *         <td>{record.Targets[1]}</td>
- *         <td>{record.Interaction.type}</td>
- *         <td>{record.Interaction.value}</td>
- *         <td><button onClick={props.removeCurrent} value={key}>x</button></td>
- *       </tr>
- *     )
- *   })
- * }
- * </tbody>
- * </table> */

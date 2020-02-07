@@ -1,8 +1,15 @@
 import React, { Fragment } from 'react';
+import Circos from 'react-circos';
+import { Grid } from '@material-ui/core';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Typography from '@material-ui/core/Typography';
+
 import TargetList from '../data/targets.json';
 import GoalList from '../data/goals.json';
 import { FacultyConfig } from '../config/app-config.js';
-import Circos from 'react-circos';
+
 import _ from 'lodash';
 
 const targetFilter = target => target.id.match("[0-9]$")
@@ -16,93 +23,72 @@ export default function Summary(props) {
 
   return (
     <React.Fragment>
-      <h2 className="AppStepTitle">Summary</h2>
-      <div className="summary-panel">
-        <RecordSummary Record={{ ...FormData, SDGRecords: Records }} />
-        <RecordPlotPanel Records={Records} />
-      </div>
+      <Grid container>
+        <Grid item xs={6}>
+          <RecordSummary Record={{ ...FormData, SDGRecords: Records }} />
+        </Grid>
+        <Grid item xs={6}>
+          <RecordPlotPanel Records={Records} />
+        </Grid>
+      </Grid>
     </React.Fragment>
   );
 }
-/* export default class Summary extends React.Component {
- *   render() {
- *     const { FormData, Records, Submit, PrevStep } = this.props
- * 
- *     return (
- *       <React.Fragment>
- *         <h2 className="AppStepTitle">Summary</h2>
- *         <div className="summary-panel">
- *           <RecordSummary Record={{ ...FormData, SDGRecords: Records }} />
- *           <RecordPlotPanel Records={Records} />
- *         </div>
- *         <div className="nav-btn">
- *           <ButtonGroup variant="contained" color="primary">
- *             <Button onClick={PrevStep}>Previous</Button>
- *             <Button onClick={Submit}>Submit</Button>
- *           </ButtonGroup>
- *         </div>
- *       </React.Fragment>
- *     );
- *   }
- * }; */
 
 const RecordSummary = ({ Record }) => (
   <Fragment>
     <div className="records">
       {Record
-        ? <React.Fragment>
-          <details className="records-details" open>
-            <summary className="records-summary">
-              <p>
-                <span className="record-title">{Record.Research.Title}</span>
-                <span className="record-research-url"><a href={Record.Research.URL}>Link</a></span>
-              </p>
-              <p className="record-research-author">
-                <span className="author-name-label">Main Author</span>
-                <span className="author-name">{Record.Name}</span>
-                <span className="author-faculty">{
-                  FacultyConfig.filter(fclty => fclty.value === Record.Faculty).flatMap(fclty => fclty.label)
-                }</span>
-              </p>
-            </summary>
-            <p className="record-coauthors"><span className="record-coauthors-label">Coauthors</span>{
-              FacultyConfig.filter(fclty => Record.Coauthors.Faculty.includes(fclty.value)).flatMap(fclty => fclty.label).join("; ")
-            }</p>
-            <p className="record-coauthors"><span className="record-coauthors-label"> Research Type</span> { Record.Research.Type } </p>
-            <p className="record-coauthors"><span className="record-coauthors-label"> Research Outreach</span> { Record.Research.Outreach } </p>
+      ? <React.Fragment>
+        <ExpansionPanel>
+          <ExpansionPanelSummary>
+            <Typography>{Record.Research.Title}</Typography>
+            <Typography>{Record.Research.URL}</Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <Typography variant="span">Main Author:</Typography>
+            <Typography>{Record.Name}</Typography>
+            <Typography>{FacultyConfig.filter(fclty => fclty.value === Record.Faculty).flatMap(fclty => fclty.label)}</Typography>
+            <Typography variant="span">Coaurhots: </Typography>
+            <Typography>{FacultyConfig.filter(fclty => Record.Coauthors.Faculty.includes(fclty.value)).flatMap(fclty => fclty.label).join("; ")}</Typography>
+            <Typography>Research Type</Typography>
+            <Typography>{Record.Research.Type}</Typography>
+            <Typography>Research Outreach</Typography>
+            <Typography>{Record.Research.Outreach}</Typography>
             {Record.SDGRecords.length > 0
-              ? <table className="sdg-records">
-                <thead>
-                  <tr>
-                    <th>Target1</th>
-                    <th>Direction</th>
-                    <th>Target2</th>
-                    <th>Type</th>
-                    <th>Interaction</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {
-                    Record.SDGRecords.map((sdg, idx) => {
-                      return (
-                        <React.Fragment key={idx}>
-                          <tr>
-                            <td>{sdg.Targets[0]}</td>
-                            <td>{sdg.Interaction.direction === "ltr" ? "->" : sdg.Interaction.direction === "rtl" ? "<-" : ""}</td>
-                            <td>{sdg.Targets[1]}</td>
-                            <td>{sdg.Interaction.type}</td>
-                            <td>{sdg.Interaction.value}</td>
-                          </tr>
-                        </React.Fragment>
-                      )
-                    })
-                  }
-                </tbody>
-              </table>
-              : null}
-          </details>
-        </React.Fragment>
-        : null}
+                                      ? <table className="sdg-records">
+                                        <thead>
+                                          <tr>
+                                            <th>Target1</th>
+                                            <th>Direction</th>
+                                            <th>Target2</th>
+                                            <th>Type</th>
+                                            <th>Interaction</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {
+                                            Record.SDGRecords.map((sdg, idx) => {
+                                              return (
+                                                <React.Fragment key={idx}>
+                                                  <tr>
+                                                    <td>{sdg.Targets[0]}</td>
+                                                    <td>{sdg.Interaction.direction === "ltr" ? "->" : sdg.Interaction.direction === "rtl" ? "<-" : ""}</td>
+                                                    <td>{sdg.Targets[1]}</td>
+                                                    <td>{sdg.Interaction.type}</td>
+                                                    <td>{sdg.Interaction.value}</td>
+                                                  </tr>
+                                                </React.Fragment>
+                                              )
+                                            })
+                                          }
+                                        </tbody>
+                                      </table>
+                                      : null}
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+      </React.Fragment>
+      : null}
     </div>
   </Fragment>
 )

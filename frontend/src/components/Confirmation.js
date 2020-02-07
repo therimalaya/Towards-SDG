@@ -1,10 +1,8 @@
 import React from 'react';
 import { FacultyConfig } from '../config/app-config';
-import { Button } from '@material-ui/core';
 
 function Confirmation(props) {
   const records = [{ ...props.FormData, SDGRecords: props.Records }];
-  const { GoHome } = props;
   return (
     <React.Fragment>
       <p className="center">Your Records have been saved.</p>
