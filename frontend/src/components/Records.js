@@ -24,6 +24,7 @@ const useStyle = makeStyles(theme => ({
     width: '100%',
     overflowY: 'auto',
     flexWrap: 'nowrap',
+    align-items: 'flex-start',
   },
   recordTitle: {
     paddingBottom: '20px',
