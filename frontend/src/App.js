@@ -199,7 +199,7 @@ export default function App() {
   }
 
   // STATES
-  const [Step, setStep] = useState(2);
+  const [Step, setStep] = useState(0);
   const [FormData, setFormData] = useState({
     Name: "",
     Faculty: "",
