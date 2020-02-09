@@ -53,14 +53,15 @@ const useStyles = makeStyles(theme => ({
   ltrIcon: {}
 }))
 
-const RecordSummary = ({ Record }) => {
+export const RecordSummary = (props) => {
   const classes = useStyles();
+  const {Record, expanded} = props;
   return(
     <Fragment>
       <div className="records">
         {Record
         ? <React.Fragment>
-          <ExpansionPanel defaultExpanded>
+          <ExpansionPanel defaultExpanded = {expanded ? true : false}>
             <ExpansionPanelSummary className={classes.expansionTitle}>
               <div><Typography>{Record.Research.Title}</Typography></div>
               <div>
