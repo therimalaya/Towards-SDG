@@ -53,22 +53,6 @@ const useStyles = makeStyles(theme => ({
   ltrIcon: {}
 }))
 
-export default function Summary(props) {
-  const { FormData, Records } = props
-  return (
-    <React.Fragment>
-      <Grid container>
-        <Grid item xs={6}>
-          <RecordSummary Record={{ ...FormData, SDGRecords: Records }} />
-        </Grid>
-        <Grid item xs={6}>
-          <RecordPlotPanel Records={Records} />
-        </Grid>
-      </Grid>
-    </React.Fragment>
-  );
-}
-
 const RecordSummary = ({ Record }) => {
   const classes = useStyles();
   return(
@@ -97,7 +81,6 @@ const RecordSummary = ({ Record }) => {
     </Fragment>
   )
 }
-
 const ResearchDetails = (props) => {
   const classes = useStyles();
   const { Record } = props;
@@ -132,7 +115,6 @@ const ResearchDetails = (props) => {
     </Box>
   )
 }
-
 export const SDGTable = (props) => {
   const {Record} = props;
   const classes = useStyles();
@@ -151,7 +133,7 @@ export const SDGTable = (props) => {
         <TableBody>
           {Record.SDGRecords.length>0 ? Record.SDGRecords.map((sdg, key) => (
             <TableRow key={key}>
-              <TableCell> {sdg.Targets[0]} </TableCell>
+              <TableCell> {sdg.Targets[0] ? sdg.Targets[0] : sdg.Goals[0]} </TableCell>
               <TableCell>
                 {
                   sdg.Interaction.direction === "ltr"
@@ -163,7 +145,7 @@ export const SDGTable = (props) => {
                   )
                 }
               </TableCell>
-              <TableCell>{sdg.Targets[1]}</TableCell>
+              <TableCell>{sdg.Targets[1] ? sdg.Targets[1] : sdg.Goals[1]}</TableCell>
               <TableCell>{sdg.Interaction.type}</TableCell>
               <TableCell>{sdg.Interaction.value}</TableCell>
             </TableRow>
@@ -173,8 +155,6 @@ export const SDGTable = (props) => {
     </TableContainer>
   )
 }
-
-
 export const RecordPlotPanel = ({ Records }) => {
   const size = 450;
   const layout = NestedGoals
@@ -198,7 +178,8 @@ export const RecordPlotPanel = ({ Records }) => {
       value: parseInt(target.id.split(".")[1]),
       color: target.color
     }));
-  const chords = Records.map(item => {
+  const chords = Records.filter(item => item.Targets.length > 0)
+    .map(item => {
     return ({
       source: {
         id: String(item.Goals[0]),
@@ -282,4 +263,19 @@ export const RecordPlotPanel = ({ Records }) => {
       />
     </div>
   )
+}
+export default function Summary(props) {
+  const { FormData, Records } = props
+  return (
+    <React.Fragment>
+      <Grid container>
+        <Grid item xs={6}>
+          <RecordSummary Record={{ ...FormData, SDGRecords: Records }} />
+        </Grid>
+        <Grid item xs={6}>
+          <RecordPlotPanel Records={Records} />
+        </Grid>
+      </Grid>
+    </React.Fragment>
+  );
 }

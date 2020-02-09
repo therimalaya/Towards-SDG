@@ -197,106 +197,29 @@ export default function App() {
   }
 
   // STATES
-  const [Step, setStep] = useState(3);
+  const [Step, setStep] = useState(0);
   const [FormData, setFormData] = useState({
-    Name: "Raju Rimal",
-    Faculty: "KBM",
+    Name: "",
+    Faculty: "",
     Research: {
-      Title: "Simulation of Linear Model Data",
-      URL: "https://simulatr.github.io/Simrel",
-      Type: "Experiments",
-      Outreach: "Yes"
+      Title: "",
+      URL: "",
+      Type: "",
+      Outreach: ""
     },
-    Coauthors: { Faculty: ["KBM", "Realtek"] }
+    Coauthors: { Faculty: [] }
   });
   const [CurrentRecord, setCurrentRecord] = useState({
-    Goals: [3, 13],
+    Goals: [],
     Targets: [],
     Interaction: {
-      value: "Positive",
-      type: "Direct",
-      direction: "rtl"
+      value: "",
+      type: "",
+      direction: ""
     }
   });
-  const [Records, setRecords] = useState(
-    [
-      {
-        "Goals": [
-          3,
-          17
-        ],
-        "Targets": [
-          "3.1",
-          "17.2"
-        ],
-        "Interaction": {
-          "value": "",
-          "type": "",
-          "direction": ""
-        }
-      },
-      {
-        "Goals": [
-          3,
-          17
-        ],
-        "Targets": [
-          "3.2",
-          "3.3"
-        ],
-        "Interaction": {
-          "value": "Positive",
-          "type": "Direct",
-          "direction": "ltr"
-        }
-      },
-      {
-        "Goals": [
-          3,
-          17
-        ],
-        "Targets": [
-          "3.2",
-          "3.6"
-        ],
-        "Interaction": {
-          "value": "Negative",
-          "type": "Indirect",
-          "direction": "ltr"
-        }
-      },
-      {
-        "Goals": [
-          3,
-          17
-        ],
-        "Targets": [
-          "3.1",
-          "17.4"
-        ],
-        "Interaction": {
-          "value": "Negative",
-          "type": "Direct",
-          "direction": "rtl"
-        }
-      },
-      {
-        "Goals": [
-          3,
-          13
-        ],
-        "Targets": [
-          "3.2",
-          "13.3"
-        ],
-        "Interaction": {
-          "value": "Positive",
-          "type": "Direct",
-          "direction": "rtl"
-        }
-      }
-  ]);
-  const [NoError, setNoError] = useState(false);
+  const [Records, setRecords] = useState([]);
+  const [NoError, setNoError] = useState();
   const [Errors, setErrors] = useState({
     Name: "",
     Faculty: "",

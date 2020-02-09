@@ -11,7 +11,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
 
 const numnum = num => num <= 9 ? "0" + num : num;
-
 const useStyles = makeStyles(theme => ({
   targetBtns: {
     alignContent: 'flex-start',
@@ -102,6 +101,122 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
+export const InteractionArrow = props => {
+  const {direction} = props;
+  if (direction === 'rtl') {
+    return <DoubleArrowIcon style={{fontSize: 'inherit', transform: 'rotate(180deg)'}}/>;
+  } else {
+    return <DoubleArrowIcon style={{fontSize: 'inherit'}}/>;
+  }
+}
+const direction = [
+  {value: '', label: 'None'},
+  {value: 'ltr', label: <InteractionArrow direction="ltr" />},
+  {value: 'rtl', label: <InteractionArrow direction="rtl" />},
+]
+const interaction = [
+  {value: '', label: 'None'},
+  {value: 'Positive', label: "Positive"},
+  {value: 'Negative', label: "Negative"},
+]
+const type = [
+  {value: '', label: 'None'},
+  {value: 'Direct', label: "Direct"},
+  {value: 'Indirect', label: "Indirect"},
+]
+
+const SideTable = props => {
+  const classes = useStyles();
+  const { Records, removeCurrent, UpdateCurrent } = props;
+  return (
+    <TableContainer component={Paper} className={classes.table}>
+      <Table stickyHeader size="small" aria-label="Selected Records Table">
+        <TableHead>
+          <TableRow>
+            <TableCell></TableCell>
+            <TableCell>Target1</TableCell>
+            <TableCell>Direction</TableCell>
+            <TableCell>Target2</TableCell>
+            <TableCell>Interaction</TableCell>
+            <TableCell>Type</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {Records.map((row, key) => (
+            <TableRow key={key}>
+              <TableCell>
+                <IconButton aria-label="delete" onClick={removeCurrent} name={String(key)} size="small">
+                  <DeleteIcon fontSize="small"/>
+                </IconButton>
+              </TableCell>
+              <TableCell>
+                {row.Targets[0] ? row.Targets[0] : row.Goals[0]}
+              </TableCell>
+              <TableCell>
+                <TextField
+                  defaultValue=""
+                  name={String(key)}
+                  id="select-interaction-direction"
+                  variant="outlined"
+                  size="small"
+                  select
+                  fullWidth
+                  onChange={UpdateCurrent("direction")}
+                  value={Records[key].Interaction.direction}
+                >
+                  {direction.map(option => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </TableCell>
+              <TableCell>
+                {row.Targets[1] ? row.Targets[1] : row.Goals[1]}
+              </TableCell>
+              <TableCell>
+                <TextField
+                  name={String(key)}
+                  id="select-interaction"
+                  variant="outlined"
+                  size="small"
+                  select
+                  fullWidth
+                  value={Records[key].Interaction.value}
+                  onChange={UpdateCurrent("value")}
+                >
+                  {interaction.map(option => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </TableCell>
+              <TableCell>
+                <TextField
+                  id="select-interaction-type"
+                  variant="outlined"
+                  size="small"
+                  select
+                  fullWidth
+                  name={String(key)}
+                  onChange={UpdateCurrent("type")}
+                  value={Records[key].Interaction.type}
+                >
+                  {type.map(option => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  )
+}
 function Target(props) {
   const classes = useStyles();
   const { CurrentRecord, Records } = props;
@@ -117,13 +232,11 @@ function Target(props) {
   });
 
   const [PossibleTargets, setPossibleTargets] = useState(newTargets);
-
   const NestedTargets = [...new Set(PossibleTargets.map(target => target.goal))]
     .reduce((acc, curr) => {
       acc[curr] = PossibleTargets.filter(target => target.goal === curr)
       return acc;
     }, {});
-
   var SelectedGoals = GoalList
     .filter(goal => Object.keys(NestedTargets)
       .includes(goal.goal.toString()))
@@ -136,7 +249,6 @@ function Target(props) {
     [...document.getElementsByClassName("clicked-target-btn")]
       .map(btn => btn.scrollIntoView())
   })
-
   const handleClick = (event) => {
     event.preventDefault()
     const newTargets = PossibleTargets;
@@ -152,7 +264,6 @@ function Target(props) {
     )
     setPossibleTargets(newTargets)
   }
-
   return(
     <Fragment>
       <Grid container direction="column">
@@ -226,122 +337,5 @@ function Target(props) {
     </Fragment>
   )
 }
-
 export default Target;
-
-const SideTable = props => {
-  const classes = useStyles();
-  const { Records, removeCurrent, UpdateCurrent } = props;
-  return (
-    <TableContainer component={Paper} className={classes.table}>
-      <Table stickyHeader size="small" aria-label="Selected Records Table">
-        <TableHead>
-          <TableRow>
-            <TableCell></TableCell>
-            <TableCell>Target1</TableCell>
-            <TableCell>Direction</TableCell>
-            <TableCell>Target2</TableCell>
-            <TableCell>Interaction</TableCell>
-            <TableCell>Type</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {Records.map((row, key) => (
-            <TableRow key={key}>
-              <TableCell>
-                <IconButton aria-label="delete" onClick={removeCurrent} name={String(key)} size="small">
-                <DeleteIcon fontSize="small"/>
-                </IconButton>
-              </TableCell>
-              <TableCell>
-                {row.Targets[0] ? row.Targets[0] : row.Goals[0]}
-              </TableCell>
-              <TableCell>
-                <TextField
-                  name={String(key)}
-                  id="select-interaction-direction"
-                  variant="outlined"
-                  size="small"
-                  select
-                  fullWidth
-                  onChange={UpdateCurrent("direction")}
-                  value={Records[key].Interaction.direction}
-                >
-                  {direction.map(option => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </TableCell>
-              <TableCell>
-                {row.Targets[1] ? row.Targets[1] : row.Goals[1]}
-              </TableCell>
-              <TableCell>
-                <TextField
-            name={String(key)}
-            id="select-interaction"
-            variant="outlined"
-            size="small"
-            select
-            fullWidth
-            value={Records[key].Interaction.value}
-            onChange={UpdateCurrent("value")}
-            >
-                {interaction.map(option => (
-  <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </TableCell>
-              <TableCell>
-                <TextField
-                  id="select-interaction-type"
-                  variant="outlined"
-                  size="small"
-                  select
-                  fullWidth
-                  name={String(key)}
-                  onChange={UpdateCurrent("type")}
-                  value={Records[key].Interaction.type}
-                >
-                  {type.map(option => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  )
-}
-
-export const InteractionArrow = props => {
-  const {direction} = props;
-  if (direction === 'rtl') {
-    return <DoubleArrowIcon style={{fontSize: 'inherit', transform: 'rotate(180deg)'}}/>;
-  } else {
-    return <DoubleArrowIcon style={{fontSize: 'inherit'}}/>;
-  }
-}
-
-const direction = [
-  {value: 'ltr', label: <InteractionArrow direction="ltr" />},
-  {value: 'rtl', label: <InteractionArrow direction="rtl" />},
-]
-
-const interaction = [
-  {value: 'Positive', label: "Positive"},
-  {value: 'Negative', label: "Negative"},
-]
-
-const type = [
-  {value: 'Direct', label: "Direct"},
-  {value: 'Indirect', label: "Indirect"},
-]
 

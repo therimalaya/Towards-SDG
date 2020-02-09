@@ -20,6 +20,7 @@ const useStyles = makeStyles(theme => ({
   sideinfoHeader: {
     display: 'flex',
     alignItems: 'center',
+    paddingBottom: '10px',
     "& > span:first-child": {
       backgroundColor: theme.palette.primary.main,
       color: theme.palette.primary.contrastText,
@@ -32,7 +33,31 @@ const useStyles = makeStyles(theme => ({
     }
   }
 }));
-
+export const SideTable = props => {
+  const classes = useStyles();
+  const { Records } = props;
+  return (
+    <TableContainer component={Paper} className={classes.table}>
+      <Table size="small" aria-label="Selected Records Table">
+        <TableBody>
+          {Records.map((row, key) => (
+            <TableRow key={key}>
+              <TableCell>
+                {row.Targets[0] ? row.Targets[0] : row.Goals[0]}
+              </TableCell>
+              <TableCell><InteractionArrow direction={row.Interaction.direction}/></TableCell>
+              <TableCell>
+                {row.Targets[1] ? row.Targets[1] : row.Goals[1]}
+              </TableCell>
+              <TableCell>{row.Interaction.value}</TableCell>
+              <TableCell>{row.Interaction.type}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  )
+}
 function SideInfo(props) {
   const classes = useStyles();
   const { Step, StepConfig, Records } = props
@@ -153,31 +178,4 @@ function SideInfo(props) {
         throw new Error('Opss!');
     }
   }
-
 export default SideInfo;
-
-export const SideTable = props => {
-  const classes = useStyles();
-  const { Records } = props;
-  return (
-    <TableContainer component={Paper} className={classes.table}>
-      <Table size="small" aria-label="Selected Records Table">
-        <TableBody>
-          {Records.map((row, key) => (
-            <TableRow key={key}>
-              <TableCell>
-                {row.Targets[0] ? row.Targets[0] : row.Goals[0]}
-              </TableCell>
-              <TableCell><InteractionArrow direction={row.Interaction.direction}/></TableCell>
-              <TableCell>
-                {row.Targets[1] ? row.Targets[1] : row.Goals[1]}
-              </TableCell>
-              <TableCell>{row.Interaction.value}</TableCell>
-              <TableCell>{row.Interaction.type}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  )
-}
