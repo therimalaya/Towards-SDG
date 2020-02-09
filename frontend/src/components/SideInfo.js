@@ -2,12 +2,13 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Box, Paper } from '@material-ui/core';
 import { TableContainer, Table, TableRow, TableCell, TableBody } from '@material-ui/core';
+import { InteractionArrow } from './Target.js';
 
 const useStyles = makeStyles(theme => ({
   table: {
     width: '100%',
     maxHeight: '150px',
-    overflowY: 'scroll',
+    overflowY: 'auto',
     marginBottom: "15px",
     "& tbody": {
       "& *": {
@@ -15,10 +16,25 @@ const useStyles = makeStyles(theme => ({
         padding: "2px 5px",
       }
     }
+  },
+  sideinfoHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    "& > span:first-child": {
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.primary.contrastText,
+      paddingRight: '10px',
+      paddingLeft: '4px',
+      marginRight: '4px',
+    },
+    "& > span:nth-child(2)": {
+      fontSize: '1.2em'
+    }
   }
 }));
 
 function SideInfo(props) {
+  const classes = useStyles();
   const { Step, StepConfig, Records } = props
   const Label = StepConfig.filter(x => x.key === Step)[0].label
   switch (Step) {
@@ -31,8 +47,10 @@ function SideInfo(props) {
     case 1:
       return (
         <React.Fragment>
-          <Typography variant="subtitle1">Step {props.Step}</Typography>
-          <Typography variant="subtitle2">{Label}</Typography>
+          <Box className={classes.sideinfoHeader}>
+            <Typography component="span" variant="subtitle1" color="primary">Step {props.Step}</Typography>
+            <Typography component="span" variant="subtitle1" color="primary">{Label}</Typography>
+          </Box>
           <Box>
             <Typography>
               Here you can provide personal information and details about your main author contribution. Co-authors may also register publications in case the lead author is not affiliated at NMBU. Potentially multiple NMBU co-authors must coordinate a single registration in the portal.
@@ -43,9 +61,10 @@ function SideInfo(props) {
     case 2:
       return (
         <React.Fragment>
-          <Typography component="span" variant="subtitle1" color="primary"> Step {props.Step}</Typography>
-          <Typography component="span" variant="subtitle1" color="primary"> {Label}</Typography>
-
+          <Box className={classes.sideinfoHeader}>
+            <Typography component="span" variant="subtitle1" color="primary"> Step {props.Step}</Typography>
+            <Typography component="span" variant="subtitle1" color="primary"> {Label}</Typography>
+          </Box>
             <Box>
               <Typography paragraph={true} variant="body2">
                 The portal focuses on mapping pairwise interactions. Select one or two main SDG goals addressed (directly or indirectly) in your publication. At most two goals can be selected simultaneously. You may to return to this page later to register other goals for the same publication.
@@ -64,9 +83,10 @@ function SideInfo(props) {
     case 3:
       return (
         <React.Fragment>
-          <Typography variant="subtitle1" component="span" color="primary">Step {props.Step}</Typography>
-          <Typography variant="subtitle2" component="span" color="primary">{Label}</Typography>
-
+          <Box className={classes.sideinfoHeader}>
+            <Typography variant="subtitle1" component="span" color="primary">Step {props.Step}</Typography>
+            <Typography variant="subtitle2" component="span" color="primary">{Label}</Typography>
+          </Box>
           <Box>
             <Typography variant="body2">Select two sub-goals which interactions is addressed. You will also be asked to indicate (optionally) whether:</Typography>
 
@@ -95,9 +115,10 @@ function SideInfo(props) {
     case 4:
       return (
         <React.Fragment>
-          <Typography variant="subtitle1" component="span" color="primary">Step {props.Step}</Typography>
-          <Typography variant="subtitle2" component="span" color="primary">{Label}</Typography>
-
+          <Box className={classes.sideinfoHeader}>
+            <Typography variant="subtitle1" component="span" color="primary">Step {props.Step}</Typography>
+            <Typography variant="subtitle2" component="span" color="primary">{Label}</Typography>
+          </Box>
           <Box>
             <Typography variant="body2">Review the summary of you added interactions. A simple graphical representation is given in addition to a full list of provided information on each interaction.</Typography>
 
@@ -108,19 +129,20 @@ function SideInfo(props) {
       case 5:
         return (
           <React.Fragment>
-            <Typography
-              variant="body2"
-              component="span"
-              color="primary">
-              Step {props.Step}
-            </Typography>
-            <Typography
-              variant="body2"
-              component="span"
-              color="primary">
-              {Label}
-            </Typography>
-
+            <Box className={classes.sideinfoHeader}>
+              <Typography
+                variant="body2"
+                component="span"
+                color="primary">
+                Step {props.Step}
+              </Typography>
+              <Typography
+                variant="body2"
+                component="span"
+                color="primary">
+                {Label}
+              </Typography>
+            </Box>
             <Box>
               <Typography variant="body2">Thank you for your contribution!</Typography>
               <Typography variant="body2">To add more publications, simply press the home button.</Typography>
@@ -134,7 +156,7 @@ function SideInfo(props) {
 
 export default SideInfo;
 
-const SideTable = props => {
+export const SideTable = props => {
   const classes = useStyles();
   const { Records } = props;
   return (
@@ -146,7 +168,7 @@ const SideTable = props => {
               <TableCell>
                 {row.Targets[0] ? row.Targets[0] : row.Goals[0]}
               </TableCell>
-              <TableCell>{row.Interaction.direction}</TableCell>
+              <TableCell><InteractionArrow direction={row.Interaction.direction}/></TableCell>
               <TableCell>
                 {row.Targets[1] ? row.Targets[1] : row.Goals[1]}
               </TableCell>

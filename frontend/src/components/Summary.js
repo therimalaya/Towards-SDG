@@ -1,10 +1,13 @@
 import React, { Fragment } from 'react';
 import Circos from 'react-circos';
-import { Grid } from '@material-ui/core';
+import { Paper, Box, Link, Grid, Divider } from '@material-ui/core';
+import {TableContainer, Table, TableHead, TableRow, TableCell, TableBody} from '@material-ui/core';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
+import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import TargetList from '../data/targets.json';
 import GoalList from '../data/goals.json';
@@ -18,9 +21,40 @@ const NestedGoals = _.mergeWith(
   _.flatMapDepth(_.groupBy(TargetList.filter(targetFilter), "goal"), x => ({ targets: x }), 0))
 const Targets = _.flatMap(NestedGoals, x => _.flatMap(x.targets, y => ({ ...y, color: x.colorInfo.hex })))
 
+const useStyles = makeStyles(theme => ({
+  recordsDetails: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  expansionTitle: {
+    '& > div': {
+      display: 'flex',
+      flexDirection: 'column',
+      '& > div:first-child': {
+        '& p': {
+          fontWeight: 800,
+        }
+      }
+    }
+  },
+  expansionDetail: {
+    flexDirection: 'column'
+  },
+  gridRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  table: {
+    maxWidth: '100%',
+  },
+  rtlIcon: {
+    transform: 'rotate(180deg)',
+  },
+  ltrIcon: {}
+}))
+
 export default function Summary(props) {
   const { FormData, Records } = props
-
   return (
     <React.Fragment>
       <Grid container>
@@ -35,63 +69,111 @@ export default function Summary(props) {
   );
 }
 
-const RecordSummary = ({ Record }) => (
-  <Fragment>
-    <div className="records">
-      {Record
-      ? <React.Fragment>
-        <ExpansionPanel>
-          <ExpansionPanelSummary>
-            <Typography>{Record.Research.Title}</Typography>
-            <Typography>{Record.Research.URL}</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Typography variant="span">Main Author:</Typography>
-            <Typography>{Record.Name}</Typography>
-            <Typography>{FacultyConfig.filter(fclty => fclty.value === Record.Faculty).flatMap(fclty => fclty.label)}</Typography>
-            <Typography variant="span">Coaurhots: </Typography>
-            <Typography>{FacultyConfig.filter(fclty => Record.Coauthors.Faculty.includes(fclty.value)).flatMap(fclty => fclty.label).join("; ")}</Typography>
-            <Typography>Research Type</Typography>
-            <Typography>{Record.Research.Type}</Typography>
-            <Typography>Research Outreach</Typography>
-            <Typography>{Record.Research.Outreach}</Typography>
-            {Record.SDGRecords.length > 0
-                                      ? <table className="sdg-records">
-                                        <thead>
-                                          <tr>
-                                            <th>Target1</th>
-                                            <th>Direction</th>
-                                            <th>Target2</th>
-                                            <th>Type</th>
-                                            <th>Interaction</th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                          {
-                                            Record.SDGRecords.map((sdg, idx) => {
-                                              return (
-                                                <React.Fragment key={idx}>
-                                                  <tr>
-                                                    <td>{sdg.Targets[0]}</td>
-                                                    <td>{sdg.Interaction.direction === "ltr" ? "->" : sdg.Interaction.direction === "rtl" ? "<-" : ""}</td>
-                                                    <td>{sdg.Targets[1]}</td>
-                                                    <td>{sdg.Interaction.type}</td>
-                                                    <td>{sdg.Interaction.value}</td>
-                                                  </tr>
-                                                </React.Fragment>
-                                              )
-                                            })
-                                          }
-                                        </tbody>
-                                      </table>
-                                      : null}
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-      </React.Fragment>
-      : null}
-    </div>
-  </Fragment>
-)
+const RecordSummary = ({ Record }) => {
+  const classes = useStyles();
+  return(
+    <Fragment>
+      <div className="records">
+        {Record
+        ? <React.Fragment>
+          <ExpansionPanel defaultExpanded>
+            <ExpansionPanelSummary className={classes.expansionTitle}>
+              <div><Typography>{Record.Research.Title}</Typography></div>
+              <div>
+              <Link href="#" onClick={e => e.preventDefault()}>
+              <Typography>{Record.Research.URL}</Typography>
+              </Link>
+            </div>
+              <div></div>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails className={classes.expansionDetail}>
+              <ResearchDetails Record = {Record} />
+              {Record.SDGRecords.length > 0 ? <SDGTable Record = {Record}/> : null}
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+        </React.Fragment>
+        : null}
+      </div>
+    </Fragment>
+  )
+}
+
+const ResearchDetails = (props) => {
+  const classes = useStyles();
+  const { Record } = props;
+  return(
+    <Box width="100%" className={classes.recordsDetails}>
+      <Typography variant="overline">Main Author: {Record.Name}</Typography>
+      <Box>
+        <Typography variant="subtitle2">
+          {
+            FacultyConfig
+            .filter(fclty => fclty.value === Record.Faculty)
+            .flatMap(fclty => fclty.label)
+          }
+        </Typography>
+      </Box>
+      <Divider/>
+      <Box>
+        <Typography variant="overline">Coauthors:</Typography>
+        <Typography variant="subtitle2">
+          {
+            FacultyConfig
+            .filter(fclty => Record.Coauthors.Faculty.includes(fclty.value))
+            .flatMap(fclty => fclty.label)
+            .join("; ")
+          }
+        </Typography>
+      </Box>
+      <Divider/>
+      <Typography variant="overline">Research Type: {Record.Research.Type}</Typography>
+      <Divider/>
+      <Typography variant="overline">Research Outreach: {Record.Research.Outreach}</Typography>
+    </Box>
+  )
+}
+
+export const SDGTable = (props) => {
+  const {Record} = props;
+  const classes = useStyles();
+  return(
+    <TableContainer component={Paper}>
+      <Table className={classes.table} aria-label="records table" size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell>Target1</TableCell>
+            <TableCell>Direction</TableCell>
+            <TableCell>Target2</TableCell>
+            <TableCell>Type</TableCell>
+            <TableCell>Interaction</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {Record.SDGRecords.length>0 ? Record.SDGRecords.map((sdg, key) => (
+            <TableRow key={key}>
+              <TableCell> {sdg.Targets[0]} </TableCell>
+              <TableCell>
+                {
+                  sdg.Interaction.direction === "ltr"
+                  ? <DoubleArrowIcon className={classes.ltrIcon}/>
+                  : (
+                    sdg.Interaction.direction === "rtl"
+                    ? <DoubleArrowIcon className={classes.rtlIcon}/>
+                    : ""
+                  )
+                }
+              </TableCell>
+              <TableCell>{sdg.Targets[1]}</TableCell>
+              <TableCell>{sdg.Interaction.type}</TableCell>
+              <TableCell>{sdg.Interaction.value}</TableCell>
+            </TableRow>
+          )) : null}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  )
+}
+
 
 export const RecordPlotPanel = ({ Records }) => {
   const size = 450;

@@ -8,6 +8,7 @@ import { TableContainer, Table, TableRow, TableCell, TableBody, TableHead } from
 import { Box, TextField, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
+import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
 
 const numnum = num => num <= 9 ? "0" + num : num;
 
@@ -81,7 +82,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: "15px",
     "& tbody": {
       "& *": {
-        fontFamily: "monospace",
+        fontSize: 'inherit',
         padding: "2px 5px",
       }
     }
@@ -96,6 +97,7 @@ const useStyles = makeStyles(theme => ({
     "& h3": {
       color: theme.palette.primary.contrastText,
       paddingRight: "10px",
+      paddingLeft: "5px",
     }
   }
 }))
@@ -319,9 +321,18 @@ const SideTable = props => {
   )
 }
 
+export const InteractionArrow = props => {
+  const {direction} = props;
+  if (direction === 'rtl') {
+    return <DoubleArrowIcon style={{fontSize: 'inherit', transform: 'rotate(180deg)'}}/>;
+  } else {
+    return <DoubleArrowIcon style={{fontSize: 'inherit'}}/>;
+  }
+}
+
 const direction = [
-  {value: 'ltr', label: "->"},
-  {value: 'rtl', label: "<-"},
+  {value: 'ltr', label: <InteractionArrow direction="ltr" />},
+  {value: 'rtl', label: <InteractionArrow direction="rtl" />},
 ]
 
 const interaction = [
@@ -333,3 +344,4 @@ const type = [
   {value: 'Direct', label: "Direct"},
   {value: 'Indirect', label: "Indirect"},
 ]
+
