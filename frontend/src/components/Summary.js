@@ -1,8 +1,18 @@
 import React, { Fragment } from 'react';
+import Circos from 'react-circos';
+import { Paper, Box, Link, Grid, Divider } from '@material-ui/core';
+import {TableContainer, Table, TableHead, TableRow, TableCell, TableBody} from '@material-ui/core';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Typography from '@material-ui/core/Typography';
+import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+
 import TargetList from '../data/targets.json';
 import GoalList from '../data/goals.json';
 import { FacultyConfig } from '../config/app-config.js';
-import Circos from 'react-circos';
+
 import _ from 'lodash';
 
 const targetFilter = target => target.id.match("[0-9]$")
@@ -11,87 +21,140 @@ const NestedGoals = _.mergeWith(
   _.flatMapDepth(_.groupBy(TargetList.filter(targetFilter), "goal"), x => ({ targets: x }), 0))
 const Targets = _.flatMap(NestedGoals, x => _.flatMap(x.targets, y => ({ ...y, color: x.colorInfo.hex })))
 
-export default class Summary extends React.Component {
-  render() {
-    const { FormData, Records, Submit, PrevStep } = this.props
+const useStyles = makeStyles(theme => ({
+  recordsDetails: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  expansionTitle: {
+    '& > div': {
+      display: 'flex',
+      flexDirection: 'column',
+      '& > div:first-child': {
+        '& p': {
+          fontWeight: 800,
+        }
+      }
+    }
+  },
+  expansionDetail: {
+    flexDirection: 'column'
+  },
+  gridRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  table: {
+    maxWidth: '100%',
+  },
+  rtlIcon: {
+    transform: 'rotate(180deg)',
+  },
+  ltrIcon: {}
+}))
 
-    return (
-      <React.Fragment>
-        <h2 className="AppStepTitle">Summary</h2>
-        <div className="summary-panel">
-          <RecordSummary Record={{ ...FormData, SDGRecords: Records }} />
-          <RecordPlotPanel Records={Records} />
-        </div>
-        <div className="nav-btn">
-          <button onClick={PrevStep} className="App-Nav-Btn">Previous</button>
-          <button onClick={Submit} className="App-Nav-Btn">Submit</button>
-        </div>
-      </React.Fragment>
-    );
-  }
-};
-
-const RecordSummary = ({ Record }) => (
-  <Fragment>
-    <div className="records">
-      {Record
+const RecordSummary = ({ Record }) => {
+  const classes = useStyles();
+  return(
+    <Fragment>
+      <div className="records">
+        {Record
         ? <React.Fragment>
-          <details className="records-details" open>
-            <summary className="records-summary">
-              <p>
-                <span className="record-title">{Record.Research.Title}</span>
-                <span className="record-research-url"><a href={Record.Research.URL}>Link</a></span>
-              </p>
-              <p className="record-research-author">
-                <span className="author-name-label">Main Author</span>
-                <span className="author-name">{Record.Name}</span>
-                <span className="author-faculty">{
-                  FacultyConfig.filter(fclty => fclty.value === Record.Faculty).flatMap(fclty => fclty.label)
-                }</span>
-              </p>
-            </summary>
-            <p className="record-coauthors"><span className="record-coauthors-label">Coauthors</span>{
-              FacultyConfig.filter(fclty => Record.Coauthors.Faculty.includes(fclty.value)).flatMap(fclty => fclty.label).join("; ")
-            }</p>
-            <p className="record-coauthors"><span className="record-coauthors-label"> Research Type</span> { Record.Research.Type } </p>
-            <p className="record-coauthors"><span className="record-coauthors-label"> Research Outreach</span> { Record.Research.Outreach } </p>
-            {Record.SDGRecords.length > 0
-              ? <table className="sdg-records">
-                <thead>
-                  <tr>
-                    <th>Target1</th>
-                    <th>Direction</th>
-                    <th>Target2</th>
-                    <th>Type</th>
-                    <th>Interaction</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {
-                    Record.SDGRecords.map((sdg, idx) => {
-                      return (
-                        <React.Fragment key={idx}>
-                          <tr>
-                            <td>{sdg.Targets[0]}</td>
-                            <td>{sdg.Interaction.direction === "ltr" ? "->" : sdg.Interaction.direction === "rtl" ? "<-" : ""}</td>
-                            <td>{sdg.Targets[1]}</td>
-                            <td>{sdg.Interaction.type}</td>
-                            <td>{sdg.Interaction.value}</td>
-                          </tr>
-                        </React.Fragment>
-                      )
-                    })
-                  }
-                </tbody>
-              </table>
-              : null}
-          </details>
+          <ExpansionPanel defaultExpanded>
+            <ExpansionPanelSummary className={classes.expansionTitle}>
+              <div><Typography>{Record.Research.Title}</Typography></div>
+              <div>
+              <Link href="#" onClick={e => e.preventDefault()}>
+              <Typography>{Record.Research.URL}</Typography>
+              </Link>
+            </div>
+              <div></div>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails className={classes.expansionDetail}>
+              <ResearchDetails Record = {Record} />
+              {Record.SDGRecords.length > 0 ? <SDGTable Record = {Record}/> : null}
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
         </React.Fragment>
         : null}
-    </div>
-  </Fragment>
-)
-
+      </div>
+    </Fragment>
+  )
+}
+const ResearchDetails = (props) => {
+  const classes = useStyles();
+  const { Record } = props;
+  return(
+    <Box width="100%" className={classes.recordsDetails}>
+      <Typography variant="overline">Main Author: {Record.Name}</Typography>
+      <Box>
+        <Typography variant="subtitle2">
+          {
+            FacultyConfig
+            .filter(fclty => fclty.value === Record.Faculty)
+            .flatMap(fclty => fclty.label)
+          }
+        </Typography>
+      </Box>
+      <Divider/>
+      <Box>
+        <Typography variant="overline">Coauthors:</Typography>
+        <Typography variant="subtitle2">
+          {
+            FacultyConfig
+            .filter(fclty => Record.Coauthors.Faculty.includes(fclty.value))
+            .flatMap(fclty => fclty.label)
+            .join("; ")
+          }
+        </Typography>
+      </Box>
+      <Divider/>
+      <Typography variant="overline">Research Type: {Record.Research.Type}</Typography>
+      <Divider/>
+      <Typography variant="overline">Research Outreach: {Record.Research.Outreach}</Typography>
+    </Box>
+  )
+}
+export const SDGTable = (props) => {
+  const {Record} = props;
+  const classes = useStyles();
+  return(
+    <TableContainer component={Paper}>
+      <Table className={classes.table} aria-label="records table" size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell>Target1</TableCell>
+            <TableCell>Direction</TableCell>
+            <TableCell>Target2</TableCell>
+            <TableCell>Type</TableCell>
+            <TableCell>Interaction</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {Record.SDGRecords.length>0 ? Record.SDGRecords.map((sdg, key) => (
+            <TableRow key={key}>
+              <TableCell> {sdg.Targets[0] ? sdg.Targets[0] : sdg.Goals[0]} </TableCell>
+              <TableCell>
+                {
+                  sdg.Interaction.direction === "ltr"
+                  ? <DoubleArrowIcon className={classes.ltrIcon}/>
+                  : (
+                    sdg.Interaction.direction === "rtl"
+                    ? <DoubleArrowIcon className={classes.rtlIcon}/>
+                    : ""
+                  )
+                }
+              </TableCell>
+              <TableCell>{sdg.Targets[1] ? sdg.Targets[1] : sdg.Goals[1]}</TableCell>
+              <TableCell>{sdg.Interaction.type}</TableCell>
+              <TableCell>{sdg.Interaction.value}</TableCell>
+            </TableRow>
+          )) : null}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  )
+}
 export const RecordPlotPanel = ({ Records }) => {
   const size = 450;
   const layout = NestedGoals
@@ -115,7 +178,8 @@ export const RecordPlotPanel = ({ Records }) => {
       value: parseInt(target.id.split(".")[1]),
       color: target.color
     }));
-  const chords = Records.map(item => {
+  const chords = Records.filter(item => item.Targets.length > 0)
+    .map(item => {
     return ({
       source: {
         id: String(item.Goals[0]),
@@ -199,4 +263,19 @@ export const RecordPlotPanel = ({ Records }) => {
       />
     </div>
   )
+}
+export default function Summary(props) {
+  const { FormData, Records } = props
+  return (
+    <React.Fragment>
+      <Grid container>
+        <Grid item xs={6}>
+          <RecordSummary Record={{ ...FormData, SDGRecords: Records }} />
+        </Grid>
+        <Grid item xs={6}>
+          <RecordPlotPanel Records={Records} />
+        </Grid>
+      </Grid>
+    </React.Fragment>
+  );
 }

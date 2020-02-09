@@ -3,6 +3,11 @@
   "private": true,
   "homepage": "https://therimalaya.github.io/Towards-SDG",
   "dependencies": {
+    "@material-ui/core": "^4.9.0",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.40",
+    "classname": "0.0.0",
+    "color": "^3.1.2",
     "firebase": "^7.5.0",
     "lodash": "^4.17.15",
     "node-pre-gyp": "^0.14.0",
@@ -13,7 +18,8 @@
     "react-modal": "^3.11.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.0",
-    "react-select": "^3.0.8"
+    "react-select": "^3.0.8",
+    "styled-components": "^4.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
