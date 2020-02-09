@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import Circos from 'react-circos';
 import { Paper, Box, Link, Grid, Divider } from '@material-ui/core';
-import {TableContainer, Table, TableHead, TableRow, TableCell, TableBody} from '@material-ui/core';
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -29,7 +29,8 @@ const useStyles = makeStyles(theme => ({
   expansionTitle: {
     '& > div': {
       display: 'flex',
-      flexDirection: 'column',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
       '& > div:first-child': {
         '& p': {
           fontWeight: 800,
@@ -55,71 +56,68 @@ const useStyles = makeStyles(theme => ({
 
 export const RecordSummary = (props) => {
   const classes = useStyles();
-  const {Record, expanded} = props;
-  return(
+  const { Record, expanded } = props;
+  return (
     <Fragment>
-      <div className="records">
+      <Box width="100%">
         {Record
-        ? <React.Fragment>
-          <ExpansionPanel defaultExpanded = {expanded ? true : false}>
-            <ExpansionPanelSummary className={classes.expansionTitle}>
-              <div><Typography>{Record.Research.Title}</Typography></div>
-              <div>
-              <Link href="#" onClick={e => e.preventDefault()}>
-              <Typography>{Record.Research.URL}</Typography>
-              </Link>
-            </div>
-              <div></div>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails className={classes.expansionDetail}>
-              <ResearchDetails Record = {Record} />
-              {Record.SDGRecords.length > 0 ? <SDGTable Record = {Record}/> : null}
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-        </React.Fragment>
-        : null}
-      </div>
+          ? <React.Fragment>
+            <ExpansionPanel defaultExpanded={expanded ? true : false}>
+              <ExpansionPanelSummary className={classes.expansionTitle}>
+                <Typography style={{fontWeight: 800}}>{Record.Research.Title}</Typography>
+                <Link href={Record.Research.URL} onClick={e => e.preventDefault()}>
+                  <Typography style={{ textTransform: 'uppercase' }}>link</Typography>
+                </Link>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails className={classes.expansionDetail}>
+                <ResearchDetails Record={Record} />
+                {Record.SDGRecords.length > 0 ? <SDGTable Record={Record} /> : null}
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+          </React.Fragment>
+          : null}
+      </Box>
     </Fragment>
   )
 }
 const ResearchDetails = (props) => {
   const classes = useStyles();
   const { Record } = props;
-  return(
+  return (
     <Box width="100%" className={classes.recordsDetails}>
       <Typography variant="overline">Main Author: {Record.Name}</Typography>
       <Box>
         <Typography variant="subtitle2">
           {
             FacultyConfig
-            .filter(fclty => fclty.value === Record.Faculty)
-            .flatMap(fclty => fclty.label)
+              .filter(fclty => fclty.value === Record.Faculty)
+              .flatMap(fclty => fclty.label)
           }
         </Typography>
       </Box>
-      <Divider/>
+      <Divider />
       <Box>
         <Typography variant="overline">Coauthors:</Typography>
         <Typography variant="subtitle2">
           {
             FacultyConfig
-            .filter(fclty => Record.Coauthors.Faculty.includes(fclty.value))
-            .flatMap(fclty => fclty.label)
-            .join("; ")
+              .filter(fclty => Record.Coauthors.Faculty.includes(fclty.value))
+              .flatMap(fclty => fclty.label)
+              .join("; ")
           }
         </Typography>
       </Box>
-      <Divider/>
+      <Divider />
       <Typography variant="overline">Research Type: {Record.Research.Type}</Typography>
-      <Divider/>
+      <Divider />
       <Typography variant="overline">Research Outreach: {Record.Research.Outreach}</Typography>
     </Box>
   )
 }
 export const SDGTable = (props) => {
-  const {Record} = props;
+  const { Record } = props;
   const classes = useStyles();
-  return(
+  return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="records table" size="small">
         <TableHead>
@@ -132,18 +130,18 @@ export const SDGTable = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {Record.SDGRecords.length>0 ? Record.SDGRecords.map((sdg, key) => (
+          {Record.SDGRecords.length > 0 ? Record.SDGRecords.map((sdg, key) => (
             <TableRow key={key}>
               <TableCell> {sdg.Targets[0] ? sdg.Targets[0] : sdg.Goals[0]} </TableCell>
               <TableCell>
                 {
                   sdg.Interaction.direction === "ltr"
-                  ? <DoubleArrowIcon className={classes.ltrIcon}/>
-                  : (
-                    sdg.Interaction.direction === "rtl"
-                    ? <DoubleArrowIcon className={classes.rtlIcon}/>
-                    : ""
-                  )
+                    ? <DoubleArrowIcon className={classes.ltrIcon} />
+                    : (
+                      sdg.Interaction.direction === "rtl"
+                        ? <DoubleArrowIcon className={classes.rtlIcon} />
+                        : ""
+                    )
                 }
               </TableCell>
               <TableCell>{sdg.Targets[1] ? sdg.Targets[1] : sdg.Goals[1]}</TableCell>
@@ -181,22 +179,22 @@ export const RecordPlotPanel = ({ Records }) => {
     }));
   const chords = Records.filter(item => item.Targets.length > 0)
     .map(item => {
-    return ({
-      source: {
-        id: String(item.Goals[0]),
-        start: parseInt(item.Targets[0].split(".")[1]) - 1,
-        end: parseInt(item.Targets[0].split(".")[1])
-      },
-      target: {
-        id: String(item.Goals[1]),
-        start: parseInt(item.Targets[1].split(".")[1]) - 1,
-        end: parseInt(item.Targets[1].split(".")[1])
-      },
-      opacity: item.Interaction.type === "Direct" ? 1 : item.Interaction.type === "Indirect" ? 0.5 : 0.2,
-      value: item.Interaction.value === "Positive" ? 1 : item.Interaction.value === "Negative" ? -1 : 0,
-      label: `Target: ${item.Targets[0]} ↣ Target: ${item.Targets[1]}`
+      return ({
+        source: {
+          id: String(item.Goals[0]),
+          start: parseInt(item.Targets[0].split(".")[1]) - 1,
+          end: parseInt(item.Targets[0].split(".")[1])
+        },
+        target: {
+          id: String(item.Goals[1]),
+          start: parseInt(item.Targets[1].split(".")[1]) - 1,
+          end: parseInt(item.Targets[1].split(".")[1])
+        },
+        opacity: item.Interaction.type === "Direct" ? 1 : item.Interaction.type === "Indirect" ? 0.5 : 0.2,
+        value: item.Interaction.value === "Positive" ? 1 : item.Interaction.value === "Negative" ? -1 : 0,
+        label: `Target: ${item.Targets[0]} ↣ Target: ${item.Targets[1]}`
+      });
     });
-  });
 
   return (
     <div className="sdg-data-panel">

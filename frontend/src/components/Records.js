@@ -8,26 +8,11 @@ import {makeStyles} from '@material-ui/core/styles';
 var unsubscribe;
 
 const useStyle = makeStyles(theme => ({
-  wrapperBox: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    overflowY: 'auto',
-    [theme.breakpoints.down('lg')]: {
-      justifyContent: 'flex-start',
-    }
+  wrapper: {
+    overflowY: 'auto'
   },
-  recordsBox: {
-    maxHeight: '95%',
+  recordsWrapper: {
     width: '100%',
-    overflowY: 'auto',
-    flexWrap: 'nowrap',
-    alignItems: 'flex-start',
-  },
-  recordTitle: {
-    paddingBottom: '20px',
   }
 }))
 
@@ -49,25 +34,23 @@ const AllRecords = (props) =>  {
   }, [])
 
   return(
-    <Box className={classes.wrapperBox} height="100%" width="100%">
-      <Typography variant="h2" className={classes.recordTitle}>Recent Records</Typography>
-      <Grid container direction='row'>
-        <Grid item lg={6}>
-          <Grid container spacing={1} direction="column" className={classes.recordsBox}>
+    <Box height="100%" width="100%" className={classes.wrapper}>
+      <Typography variant="h2">Recent Records</Typography>
+      <Grid container>
+        <Grid item container md={6} className={classes.recordsWrapper}>
             {
               records.length
               ? records.map((record, idx) => {
                 return(
-                  <Grid item key={idx}>
+                  <Box py={1} width="100%">
                     <RecordSummary Record={record} expanded={false} />
-                  </Grid>
+                  </Box>
                 )
               })
               : null
             }
-          </Grid>
         </Grid>
-        <Grid item lg={6}>
+        <Grid item md={6}>
           {
             records.length
             ? <RecordPlotPanel Records={flatMap(records, "SDGRecords")} />

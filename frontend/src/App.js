@@ -129,7 +129,9 @@ function InnerApp(props) {
         <Router basename="/">
           <Switch>
             <Route path='/records'>
-              <AllRecords />
+              <Box className={classes.mainpanelBox}>
+                <AllRecords />
+              </Box>
             </Route>
             <Route path='/'>
               <Box className={classes.mainpanelBox}>
@@ -197,7 +199,7 @@ export default function App() {
   }
 
   // STATES
-  const [Step, setStep] = useState(0);
+  const [Step, setStep] = useState(2);
   const [FormData, setFormData] = useState({
     Name: "",
     Faculty: "",
