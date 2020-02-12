@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import GoalList from '../data/goals.json';
-import { Box, Grid, GridList, GridListTile, Paper } from '@material-ui/core';
+import { Box, Grid, GridList, GridListTile, Paper, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Table, TableBody, TableCell, TableContainer, TableRow } from '@material-ui/core';
 
@@ -76,6 +76,14 @@ const Goal = (props) => {
               </GridListTile>
             ))}
           </GridList>
+          {
+            AllGoals.filter(goal=>Goals.includes(goal.goal)).length
+            ? <Typography variant="overline">Selected Goals</Typography>
+            : <Fragment>
+              <Typography variant="overline">No goals are selected</Typography>
+              <Typography variant="body2">Please select at least one goal.</Typography>
+            </Fragment>
+          }
           <TableContainer component={Paper} className={classes.selected}>
             <Table className={classes.table} size="small">
               <TableBody>

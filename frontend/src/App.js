@@ -176,7 +176,8 @@ function InnerApp(props) {
                     <ButtonGroup variant="contained" color="primary">
                       {[2,3,4].includes(Step) ? <Button onClick={PrevStep}>Previous</Button> : null}
                       {Step===4 ? <Button onClick={Submit}>Submit</Button> : null}
-                      {[2,3].includes(Step) ? <Button onClick={NextStep}>Next</Button> : null}
+                      {Step===3 ? <Button onClick={NextStep}>Next</Button> : null}
+                      {Step===2 ? <Button onClick={NextStep} disabled={!CurrentRecord.Goals.length}>Next</Button> : null}
                       {Step===1 ? <Button onClick={CheckAndProceed}>Next</Button> : null}
                       {Step===5 ? <Button onClick={GoHome}>Start</Button> : null}
                       {Step===3 ? <Button onClick={UpdateRecords}>Add Records</Button> : null}
