@@ -269,7 +269,7 @@ export default function Summary(props) {
     <React.Fragment>
       <Grid container>
         <Grid item xs={6}>
-          <RecordSummary Record={{ ...FormData, SDGRecords: Records }} />
+          <RecordSummary Record={{ ...FormData, SDGRecords: Records }} expanded />
         </Grid>
         <Grid item xs={6}>
           <RecordPlotPanel Records={Records} />
