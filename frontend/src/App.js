@@ -11,6 +11,7 @@ import FrontCover from './components/FrontCover';
 import MainForm from './components/MainForm';
 import SideInfo from './components/SideInfo';
 import AllRecords from './components/Records';
+import Network from './components/Network';
 
 import { StepConfig } from './config/app-config';
 import { FirebaseConfig } from './config/firebase-config.js';
@@ -131,6 +132,11 @@ function InnerApp(props) {
             <Route path='/records'>
               <Box className={classes.mainpanelBox}>
                 <AllRecords />
+              </Box>
+            </Route>
+            <Route path='/network'>
+              <Box className={classes.mainpanelBox}>
+                <Network/>
               </Box>
             </Route>
             <Route path='/'>
@@ -421,5 +427,6 @@ export default function App() {
       />
     </ThemeProvider>
   )
+
 }
 
