@@ -6,6 +6,7 @@ import { firestore, apps, initializeApp } from 'firebase';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles';
 import { Grid, Box, Button, ButtonGroup } from '@material-ui/core';
+import SaveIcon from '@material-ui/icons/Save';
 
 import FrontCover from './components/FrontCover';
 import MainForm from './components/MainForm';
@@ -72,6 +73,11 @@ const useStyles = makeStyles(theme => ({
     backgroundSize: 'cover',
     height: "50px",
   },
+  sidefooterRecords: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    padding: 10,
+  },
   mainpanel: {
     display: 'flex',
     height: '100%',
@@ -113,33 +119,63 @@ function InnerApp(props) {
   const { checkValidFields, HandleChange, CheckAndProceed } = props;
   const { StepConfig } = props;
 
+  const [numRecord, setNumRecord] = useState(10);
+
   return(
     <Grid container className={classes.root}>
-      <Grid item className={classes.sidebar} xs={3}>
-        <Box className={classes.header}></Box>
-        <Box className={classes.sideinfo} flexGrow={1}>
-          <SideInfo
-            Records={Records}
-            RemoveCurrentRecord={RemoveCurrentRecord}
-            Step={Step}
-            StepConfig={StepConfig} />
-        </Box>
-        <Box className={classes.sidefooter}></Box>
-      </Grid>
-      <Grid item container className={classes.mainpanel} xs={9}>
-        <Router basename="/">
-          <Switch>
-            <Route path='/records'>
+      <Router basename="/">
+        <Switch>
+          <Route path='/records'>
+            <Grid item className={classes.sidebar} xs={3}>
+              <Box className={classes.header}></Box>
+              <Box className={classes.sideinfo} flexGrow={1}>
+                <Box height="100%">
+
+                </Box>
+              </Box>
+              <Box className={classes.sidefooterRecords}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  className={classes.button}
+                  startIcon={<SaveIcon />}>
+                  Download CSV
+                </Button>
+              </Box>
+            </Grid>
+            <Grid item container className={classes.mainpanel} xs={9}>
               <Box className={classes.mainpanelBox}>
                 <AllRecords />
               </Box>
-            </Route>
-            <Route path='/network'>
+            </Grid>
+          </Route>
+          <Route path='/network'>
+            <Grid item className={classes.sidebar} xs={3}>
+              <Box className={classes.header}></Box>
+              <Box className={classes.sideinfo} flexGrow={1}>
+              </Box>
+              <Box className={classes.sidefooter}></Box>
+            </Grid>
+            <Grid item container className={classes.mainpanel} xs={9}>
               <Box className={classes.mainpanelBox}>
                 <Network/>
               </Box>
-            </Route>
-            <Route path='/'>
+            </Grid>
+          </Route>
+          <Route path='/'>
+            <Grid item className={classes.sidebar} xs={3}>
+              <Box className={classes.header}></Box>
+              <Box className={classes.sideinfo} flexGrow={1}>
+                <SideInfo
+                  Records={Records}
+                  RemoveCurrentRecord={RemoveCurrentRecord}
+                  Step={Step}
+                  StepConfig={StepConfig} />
+              </Box>
+              <Box className={classes.sidefooter}></Box>
+            </Grid>
+            <Grid item container className={classes.mainpanel} xs={9}>
               <Box className={classes.mainpanelBox}>
                 {Step === 0
                 ? <Fragment>
@@ -192,10 +228,10 @@ function InnerApp(props) {
                 </Fragment>
                 }
               </Box>
-            </Route>
-          </Switch>
-        </Router>
-      </Grid>
+            </Grid>
+          </Route>
+        </Switch>
+      </Router>
     </Grid>
   )
 }
