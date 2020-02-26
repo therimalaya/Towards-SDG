@@ -4,8 +4,9 @@ import { FacultyConfig } from '../config/app-config';
 import { RecordSummary, RecordPlotPanel } from './Summary';
 import { flatMap } from 'lodash';
 import { Grid, Box, Typography } from '@material-ui/core';
-import {makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 var unsubscribe;
+var csvData;
 
 const useStyle = makeStyles(theme => ({
   wrapper: {
@@ -29,7 +30,7 @@ const AllRecords = (props) =>  {
         let records = [];
         snapshot.forEach(doc => records.push({ ...doc.data() }))
         setRecords(records)
-        console.log(records)
+        /* console.log(records) */
       });
     return () => unsubscribe();
   }, [])

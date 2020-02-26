@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import { firestore, apps, initializeApp } from 'firebase';
@@ -16,6 +16,11 @@ import Network from './components/Network';
 
 import { StepConfig } from './config/app-config';
 import { FirebaseConfig } from './config/firebase-config.js';
+
+import { CSVLink, CSVDownload } from 'react-csv';
+
+// Define variable;
+var unsubscribe;
 
 const theme = createMuiTheme({
   palette: {
@@ -77,6 +82,10 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'flex-end',
     padding: 10,
+    backgroundColor: theme.palette.background.default,
+    borderTopWidth: '5px',
+    borderTopStyle: 'solid',
+    borderTopColor: theme.palette.primary.main,
   },
   mainpanel: {
     display: 'flex',
@@ -96,6 +105,10 @@ const useStyles = makeStyles(theme => ({
     padding: '12px',
     flexGrow: 1,
     overflowY: 'auto',
+  },
+  csvDownload: {
+    textDecoration: 'none',
+    color: theme.palette.primary.contrastText,
   }
 }));
 
@@ -107,6 +120,54 @@ const validateURL  = (str) => {
     '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
     '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
   return !!pattern.test(str);
+}
+
+const DownloadCSV = (props) => {
+  const [records, setRecords] = useState([])
+  const classes = useStyles()
+  useEffect(() => {
+    const db = firestore();
+    unsubscribe = db.collection("records")
+      .orderBy('created', 'desc')
+      .onSnapshot(snapshot => {
+        let records = [];
+        snapshot.forEach(doc => records.push(
+          doc.data().SDGRecords.flatMap(item => ({
+            id: item.Targets.join("-"),
+            Goal1: item.Goals[0],
+            Goal2: item.Goals[1],
+            Target1: item.Targets[0],
+            Target2: item.Targets[1],
+            Interaction: item.Interaction.value,
+            Direction: item.Interaction.direction,
+            Type: item.Interaction.type
+          }))
+        ))
+        setRecords(records.flatMap(x => x))
+      });
+    return () => unsubscribe();
+  }, [])
+
+  console.log(records)
+  return(
+    <Fragment>
+      {
+        records.length > 0
+                       ? <CSVLink
+                           data={records}
+                           filename={"SDG-Records.csv"}
+                           target="_blank"
+                           className={classes.csvDownload}
+                           onClick={event => {
+                             console.log(records);
+                           }}
+                         >
+                         Download CSV
+                       </CSVLink>
+                       : null
+      }
+    </Fragment>
+  )
 }
 
 function InnerApp(props) {
@@ -140,7 +201,7 @@ function InnerApp(props) {
                   size="large"
                   className={classes.button}
                   startIcon={<SaveIcon />}>
-                  Download CSV
+                  <DownloadCSV />
                 </Button>
               </Box>
             </Grid>
