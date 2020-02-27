@@ -7,6 +7,7 @@ import { flatMap } from 'lodash';
 import { Button, Grid, Box, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { nodes, edges } from '../data/records.js';
+import miserables from '../data/miserables.json';
 import { Records } from '../data/records.js';
 var unsubscribe;
 
@@ -22,27 +23,49 @@ const useStyle = makeStyles(theme => ({
 const redrawAll = () => {
   var container = document.getElementById("network");
   var data = {
-    nodes: nodes,
-    edges: edges
+    nodes: miserables.nodes.map((item, key) => ({
+      id: key,
+      label: item.name,
+      group: item.group
+    })),
+    edges: miserables.links.map(item => ({
+      from: item.source,
+      to: item.target,
+    }))
   };
+  console.log(data)
   var options = {
-    nodes: {
-      shape: "dot",
-      size: 100
-    },
     layout: {
-      randomSeed: 2020
+      randomSeed: 123,
     },
-  };
-  var network = new vis.Network(container, data, options);
-  network.on("selectNode", function(params) {
-    if (params.nodes.length == 1) {
-      if (network.isCluster(params.nodes[0]) == true) {
-        network.openCluster(params.nodes[0]);
+    nodes: {
+      shape: 'dot',
+      size: 16
+    },
+    physics: {
+      forceAtlas2Based: {
+        gravitationalConstant: -50,
+        centralGravity: 0.05,
+        springLength: 50,
+        springConstant: 0.18
+      },
+      maxVelocity: 10,
+      solver: 'forceAtlas2Based',
+      timestep: 0.2,
+      stabilization: {
+        iterations: 50
       }
     }
-  });
-  clusterByColor(network, data);
+  };
+  var network = new vis.Network(container, data, options);
+  /* network.on("selectNode", function(params) {
+   *   if (params.nodes.length == 1) {
+   *     if (network.isCluster(params.nodes[0]) == true) {
+   *       network.openCluster(params.nodes[0]);
+   *     }
+   *   }
+   * }); */
+  /* clusterByColor(network, data); */
 }
 
 function clusterByColor(network, data) {

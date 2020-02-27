@@ -13,6 +13,7 @@ import MainForm from './components/MainForm';
 import SideInfo from './components/SideInfo';
 import AllRecords from './components/Records';
 import Network from './components/Network';
+import Heatmap from './components/Heatmap';
 
 import { StepConfig } from './config/app-config';
 import { FirebaseConfig } from './config/firebase-config.js';
@@ -190,9 +191,7 @@ function InnerApp(props) {
             <Grid item className={classes.sidebar} xs={3}>
               <Box className={classes.header}></Box>
               <Box className={classes.sideinfo} flexGrow={1}>
-                <Box height="100%">
-
-                </Box>
+                <Box height="100%"></Box>
               </Box>
               <Box className={classes.sidefooterRecords}>
                 <Button
@@ -221,6 +220,19 @@ function InnerApp(props) {
             <Grid item container className={classes.mainpanel} xs={9}>
               <Box className={classes.mainpanelBox}>
                 <Network/>
+              </Box>
+            </Grid>
+          </Route>
+          <Route path='/heatmap'>
+            <Grid item className={classes.sidebar} xs={3}>
+              <Box className={classes.header}></Box>
+              <Box className={classes.sideinfo} flexGrow={1}>
+              </Box>
+              <Box className={classes.sidefooter}></Box>
+            </Grid>
+            <Grid item container className={classes.mainpanel} xs={9}>
+              <Box className={classes.mainpanelBox}>
+                <Heatmap/>
               </Box>
             </Grid>
           </Route>
