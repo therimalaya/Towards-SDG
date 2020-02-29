@@ -1,14 +1,14 @@
 import * as d3 from 'd3';
 
-var node = document.createElement("div");
+var node = document.createElement('div');
 
 var margin = {top: 80, right: 0, bottom: 10, left: 80},
     width = 720,
     height = 720;
 
-var x = d3.scaleOrdinal().range([0, width]),
+var x = d3.scaleBand().range([0, width]),
     z = d3.scaleLinear().domain([0, 4]).clamp(true),
-    c = d3.schemeCategory10;
+    c = d3.scaleOrdinal(d3.schemeCategory10);
 
 var svg = d3.select(node).append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -17,7 +17,7 @@ var svg = d3.select(node).append("svg")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.json('../data/miserables.json').then(function(miserables){
+d3.json("miserables.json").then(function(miserables) {
     var matrix = [],
         nodes = miserables.nodes,
         n = nodes.length;
@@ -66,7 +66,7 @@ d3.json('../data/miserables.json').then(function(miserables){
 
     row.append("text")
         .attr("x", -6)
-        .attr("y", x.rangeBand() / 2)
+        .attr("y", x.bandwidth() / 2)
         .attr("dy", ".32em")
         .attr("text-anchor", "end")
         .text(function(d, i) { return nodes[i].name; });
@@ -82,7 +82,7 @@ d3.json('../data/miserables.json').then(function(miserables){
 
     column.append("text")
         .attr("x", 6)
-        .attr("y", x.rangeBand() / 2)
+        .attr("y", x.bandwidth() / 2)
         .attr("dy", ".32em")
         .attr("text-anchor", "start")
         .text(function(d, i) { return nodes[i].name; });
@@ -93,8 +93,8 @@ d3.json('../data/miserables.json').then(function(miserables){
             .enter().append("rect")
             .attr("class", "cell")
             .attr("x", function(d) { return x(d.x); })
-            .attr("width", x.rangeBand())
-            .attr("height", x.rangeBand())
+            .attr("width", x.bandwidth())
+            .attr("height", x.bandwidth())
             .style("fill-opacity", function(d) { return z(d.z); })
             .style("fill", function(d) { return nodes[d.x].group == nodes[d.y].group ? c(nodes[d.x].group) : null; })
             .on("mouseover", mouseover)

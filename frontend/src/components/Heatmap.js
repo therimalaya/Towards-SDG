@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import rd3 from 'react-d3-library';
-import node from './d3-heatmap.js'
+import node from './D3/d3-heatmap.js'
 import { firestore } from 'firebase';
 import { FacultyConfig } from '../config/app-config';
 import { RecordSummary, RecordPlotPanel } from './Summary';
