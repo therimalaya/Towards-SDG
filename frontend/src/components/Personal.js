@@ -67,7 +67,7 @@ function Personal(props) {
           label="Research URL"
           helperText={Errors.Research.URL!=="" ?
                       Errors.Research.URL :
-                      "DOI or Other URL reference for the research"}
+                      "DOI or Other URL reference for the research. For DOI use doi.org/<<number>>."}
           variant="outlined"
           fullWidth={true}
         />
@@ -78,10 +78,10 @@ function Personal(props) {
             multiple: true
           }}
           value={FormData.Coauthors.Faculty}
-          error={Errors.Faculty!==""}
-          id="faculty"
-          label="Faculty"
-          helperText={Errors.Faculty!=="" ? Errors.Faculty : "Main Author's Faculty"}
+          error={Errors.Coauthors.Faculty!==""}
+          id="coauthors-faculty"
+          label="Coauthor's Faculty"
+          helperText={Errors.Coauthors.Faculty!=="" ? Errors.Coauthors.Faculty : "Coauthor's Faculty"}
           variant="outlined"
           fullWidth={true}>
           {FacultyConfig.map(option => (
@@ -117,8 +117,8 @@ function Personal(props) {
           id="research-outreach"
           value={FormData.Research.Outreach}
           label="Researh Outreach"
-          helperText={Errors.Research.Type!=="" ?
-                      Errors.Research.Type :
+          helperText={Errors.Research.Outreach!=="" ?
+                      Errors.Research.Outreach :
                       "Communicated with decision maker about the research?"}
           variant="outlined"
           fullWidth={true}>

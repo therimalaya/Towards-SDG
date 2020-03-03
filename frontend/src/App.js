@@ -347,7 +347,7 @@ export default function App() {
       Type: "",
       Outreach: ""
     },
-    CoauthorFaculty: ""
+    Coauthors: { Faculty: "" }
   })
 
   // METHODS -> FUNCTIONS
@@ -443,7 +443,7 @@ export default function App() {
   }
   const checkValidFields = (event) => {
     let isValid = true;
-    let errors = {}
+    let errors = Errors;
 
     // Update error state based on the
     // fetching values from Form state
@@ -463,10 +463,15 @@ export default function App() {
     }
 
     if (!FormData.Research.Title) {
-      errors.Research = {...errors.Research, Title: "Research title must not be empty."};
+      errors.Research = {...errors.Research, Title: "Name can not be empty"};
       isValid = false;
-    } else if (FormData.Research.Title.length <= 5) {
-      errors.Research = {...errors.Research, Title: "Research title must be at least 5 character long."};
+    } else if (FormData.Research.Title <= 5) {
+      errors.Research = {...errors.Research, Title: "Name must be at least 5 character long."};
+      isValid = false;
+    }
+
+    if (FormData.Coauthors.Faculty.length < 1) {
+      errors.Coauthors = {...errors.Coauthors, Faculty: "Must select a faculty"};
       isValid = false;
     }
 
@@ -474,7 +479,17 @@ export default function App() {
       errors.Research = {...errors.Research, URL: "Research URL must not be empty."};
       isValid = false;
     } else if (!validateURL(FormData.Research.URL)) {
-      errors.Research = {...errors.Research, URL: "Research URL is not valid."};
+      errors.Research = {...errors.Research, URL: "Research URL is not valid. For DOI use doi.org/<<doi-number>>"};
+      isValid = false;
+    }
+
+    if (!FormData.Research.Type) {
+      errors.Research = {...errors.Research, Type: "Research Type must not be empty."};
+      isValid = false;
+    }
+
+    if (!FormData.Research.Outreach) {
+      errors.Research = {...errors.Research, Outreach: "Research Outreach must not be empty."};
       isValid = false;
     }
 
@@ -483,8 +498,15 @@ export default function App() {
     return isValid
   }
   const HandleFormChange = input => event => {
-    let errors = {}
-    errors[input] = "";
+    var errors = Errors;
+    const fields = input.split(".")
+    if (fields.length < 2) {
+      errors[fields[0]] = "";
+    } else {
+      errors[fields[0]] = {...errors[fields[0]], [fields[1]]: ""}
+    }
+
+    /* errors[input] = ""; */
     setNoError("")
     setErrors({...Errors, ...errors})
     if (event.target) {
