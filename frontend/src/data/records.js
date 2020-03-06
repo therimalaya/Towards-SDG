@@ -1318,21 +1318,6 @@ const Records = [
   },
 ]
 
-const parseNodes = (goals, targets) => {
-  return (
-    targets
-      .filter(item => item.id.match("[0-9]$"))
-      .map(item => ({
-        id: item.id,
-        label: item.id,
-        title: item.title,
-        group: item.goal,
-        color: goals[item.goal - 1].colorInfo.hex,
-        image: goals[item.goal - 1].icon_url
-      }))
-  )
-}
-
 const parseEdges = record => (
   record.SDGRecords
     .filter(item => item.Targets.length > 1)
@@ -1346,9 +1331,61 @@ const parseEdges = record => (
     }))
 )
 
-export const nodes = parseNodes(Goals, Targets);
-console.log(nodes)
 
-export const edges = Records
-  .filter(record => record.SDGRecords.length>0)
-  .flatMap(parseEdges);
+const parseData = (goals, targets, links) => {
+  const edges = links
+    .filter(record => record.SDGRecords.length>0)
+    .flatMap(parseEdges);
+
+  const possibleNodes = [...new Set(edges.flatMap(item => (
+    [item.from.split(".")[0], item.to.split(".")[0]]
+  )))].map(Number)
+
+  const targetNodes = targets
+    .filter(item => item.id.match("[0-9]$"))
+    .map(item => ({
+      id: item.id,
+      label: item.id,
+      title: item.title,
+      group: item.goal,
+      color: goals[item.goal - 1].colorInfo.hex,
+      image: goals[item.goal - 1].icon_url,
+      level: 2,
+      size: 25,
+      shape: "dot"
+    })).filter(item => possibleNodes.includes(item.group))
+
+  const goalNodes = goals
+    .filter(item => possibleNodes.includes(item.goal))
+    .map(item => ({
+      id: String(item.goal),
+      label: String(item.goal),
+      title: item.short,
+      group: item.goal,
+      color: item.colorInfo.hex,
+      image: item.icon_url,
+      level: 1,
+      size: 60,
+      shape: "image"
+    }))
+
+  const allNodes = [...goalNodes, ...targetNodes]
+
+  const parent2child = targetNodes.map(item => ({
+    dashes: false,
+    direction: "ltr",
+    from: item.group,
+    to: item.id,
+    type: "Direct",
+    value: "p2c",
+    color: "grey",
+  }))
+
+  const allEdges = [...parent2child, ...edges]
+
+  const data = {nodes: allNodes, edges: allEdges}
+  return data
+}
+
+const recordNodes = parseData(Goals, Targets, Records)
+export default recordNodes

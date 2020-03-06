@@ -6,9 +6,8 @@ import { RecordSummary, RecordPlotPanel } from './Summary';
 import { flatMap } from 'lodash';
 import { Button, Grid, Box, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { nodes, edges } from '../data/records.js';
+import recordNodes from '../data/records.js';
 import miserables from '../data/miserables.json';
-import { Records } from '../data/records.js';
 var unsubscribe;
 
 const useStyle = makeStyles(theme => ({
@@ -22,32 +21,28 @@ const useStyle = makeStyles(theme => ({
 
 const redrawAll = () => {
   var container = document.getElementById("network");
+  console.log(recordNodes)
   var data = {
-    nodes: miserables.nodes.map((item, key) => ({
-      id: key,
-      label: item.name,
-      group: item.group
-    })),
-    edges: miserables.links.map(item => ({
-      from: item.source,
-      to: item.target,
-    }))
+    nodes: recordNodes.nodes,
+    edges: recordNodes.edges
   };
-  console.log(data)
   var options = {
     layout: {
       randomSeed: 123,
     },
     nodes: {
-      shape: 'dot',
-      size: 16
+      font: {
+        color: "#fff",
+        size: 18,
+        vadjust: -40,
+      }
     },
     physics: {
       forceAtlas2Based: {
-        gravitationalConstant: -50,
-        centralGravity: 0.05,
-        springLength: 50,
-        springConstant: 0.18
+        /* gravitationalConstant: -50, */
+        centralGravity: 0.03,
+        springLength: 35,
+        springConstant: 0.2
       },
       maxVelocity: 10,
       solver: 'forceAtlas2Based',
@@ -58,14 +53,6 @@ const redrawAll = () => {
     }
   };
   var network = new vis.Network(container, data, options);
-  /* network.on("selectNode", function(params) {
-   *   if (params.nodes.length == 1) {
-   *     if (network.isCluster(params.nodes[0]) == true) {
-   *       network.openCluster(params.nodes[0]);
-   *     }
-   *   }
-   * }); */
-  /* clusterByColor(network, data); */
 }
 
 function clusterByColor(network, data) {
@@ -76,7 +63,8 @@ function clusterByColor(network, data) {
     var color = colors[i];
     clusterOptionsByData = {
       joinCondition: function(childOptions) {
-        return childOptions.color.background == color; // the color is fully defined in the node.
+        return childOptions.color.background == color;
+        // the color is fully defined in the node.
       },
       processProperties: function(clusterOptions, childNodes, childEdges) {
         var totalMass = 0;
