@@ -1,129 +1,142 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import className from 'classname';
-import TargetList from '../data/targets.json';
-import GoalList from '../data/goals.json';
-import { IconButton , Grid, Typography } from '@material-ui/core';
-import { Button, Paper } from '@material-ui/core';
-import { TableContainer, Table, TableRow, TableCell, TableBody, TableHead } from '@material-ui/core';
-import { Box, TextField, MenuItem } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import DeleteIcon from '@material-ui/icons/Delete';
-import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
+import React, { Fragment, useState, useEffect } from "react";
+import className from "classname";
+import TargetList from "../data/targets.json";
+import GoalList from "../data/goals.json";
+import { IconButton, Grid, Typography } from "@material-ui/core";
+import { Button, Paper } from "@material-ui/core";
+import {
+  TableContainer,
+  Table,
+  TableRow,
+  TableCell,
+  TableBody,
+  TableHead
+} from "@material-ui/core";
+import { Box, TextField, MenuItem } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import DeleteIcon from "@material-ui/icons/Delete";
+import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
 
-const numnum = num => num <= 9 ? "0" + num : num;
+const numnum = num => (num <= 9 ? "0" + num : num);
 const useStyles = makeStyles(theme => ({
   targetBtns: {
-    alignContent: 'flex-start',
+    alignContent: "flex-start"
   },
   targetBtn: {
     margin: "4px 0px",
-    textTransform: 'unset',
-    textAlign: 'left',
-    justifyContent: 'start',
-    '& p': {
+    textTransform: "unset",
+    textAlign: "left",
+    justifyContent: "start",
+    "& p": {
       margin: 0,
-      '& span': {
-        fontWeight: 'bold',
-        color: theme.palette.primary.main,
+      "& span": {
+        fontWeight: "bold",
+        color: theme.palette.primary.main
       }
     },
-    '&:hover': {
+    "&:hover": {
       color: theme.palette.primary.main,
-      '& p': {
-        '& span': {
+      "& p": {
+        "& span": {
           backgroundColor: theme.palette.primary.main,
           color: theme.palette.primary.contrastText,
-          display: 'inline-block',
-          paddingRight: '5px',
-          paddingLeft: '3px',
-          borderRadius: '5px',
-          marginRight: '5px'
+          display: "inline-block",
+          paddingRight: "5px",
+          paddingLeft: "3px",
+          borderRadius: "5px",
+          marginRight: "5px"
         }
       }
     }
   },
   clickedTargetBtn: {
     margin: "4px 0px",
-    textTransform: 'unset',
-    textAlign: 'left',
-    justifyContent: 'start',
+    textTransform: "unset",
+    textAlign: "left",
+    justifyContent: "start",
     backgroundColor: theme.palette.background.light,
     color: theme.palette.primary.main,
-    '& p': {
+    "& p": {
       margin: 0,
-      '& span': {
+      "& span": {
         backgroundColor: theme.palette.primary.main,
         color: theme.palette.primary.contrastText,
-        display: 'inline-block',
-        paddingRight: '5px',
-        paddingLeft: '3px',
-        borderRadius: '5px',
-        marginRight: '5px'
+        display: "inline-block",
+        paddingRight: "5px",
+        paddingLeft: "3px",
+        borderRadius: "5px",
+        marginRight: "5px"
       }
     },
-    '&:hover': {
-      backgroundColor: theme.palette.background.light,
-    },
+    "&:hover": {
+      backgroundColor: theme.palette.background.light
+    }
   },
   goalcover: {
-    width: '100%',
-    height: '175px',
+    width: "100%",
+    height: "175px",
     flexShrink: 0,
-    backgroundPosition: "top left",
+    backgroundPosition: "top left"
   },
   tableWrapper: {
-    width: '100%',
+    width: "100%"
   },
   table: {
-    width: '100%',
-    maxHeight: '150px',
-    overflowY: 'scroll',
+    width: "100%",
+    maxHeight: "150px",
+    overflowY: "scroll",
     marginBottom: "15px",
     "& tbody": {
       "& *": {
-        fontSize: 'inherit',
-        padding: "2px 5px",
+        fontSize: "inherit",
+        padding: "2px 5px"
       }
     }
   },
   goalheader: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
     "& p": {
       color: theme.palette.primary.contrastText,
-      fontSize: 'larger',
+      fontSize: "larger"
     },
     "& h3": {
       color: theme.palette.primary.contrastText,
       paddingRight: "10px",
-      paddingLeft: "5px",
+      paddingLeft: "5px"
     }
   }
-}))
+}));
 
 export const InteractionArrow = props => {
-  const {direction} = props;
-  if (direction === 'rtl') {
-    return <DoubleArrowIcon style={{fontSize: 'inherit', transform: 'rotate(180deg)'}}/>;
+  const { direction } = props;
+  if (direction === "rtl") {
+    return (
+      <DoubleArrowIcon
+        style={{ fontSize: "inherit", transform: "rotate(180deg)" }}
+      />
+    );
+  } else if (direction === "ltr") {
+    return <DoubleArrowIcon style={{ fontSize: "inherit" }} />;
   } else {
-    return <DoubleArrowIcon style={{fontSize: 'inherit'}}/>;
+    return null;
   }
-}
+};
 const direction = [
-  {value: '', label: 'None'},
-  {value: 'ltr', label: <InteractionArrow direction="ltr" />},
-  {value: 'rtl', label: <InteractionArrow direction="rtl" />},
-]
+  { value: "", label: "None" },
+  { value: "ltr", label: <InteractionArrow direction="ltr" /> },
+  { value: "rtl", label: <InteractionArrow direction="rtl" /> }
+];
 const interaction = [
-  {value: '', label: 'None'},
-  {value: 'Positive', label: "Positive"},
-  {value: 'Negative', label: "Negative"},
-]
+  { value: "", label: "None" },
+  { value: "Positive", label: "Positive" },
+  { value: "Negative", label: "Negative" }
+];
 const type = [
-  {value: '', label: 'None'},
-  {value: 'Direct', label: "Direct"},
-  {value: 'Indirect', label: "Indirect"},
-]
+  { value: "", label: "None" },
+  { value: "Direct", label: "Direct" },
+  { value: "Indirect", label: "Indirect" }
+];
 
 const SideTable = props => {
   const classes = useStyles();
@@ -145,8 +158,13 @@ const SideTable = props => {
           {Records.map((row, key) => (
             <TableRow key={key}>
               <TableCell>
-                <IconButton aria-label="delete" onClick={removeCurrent} name={String(key)} size="small">
-                  <DeleteIcon fontSize="small"/>
+                <IconButton
+                  aria-label="delete"
+                  onClick={removeCurrent}
+                  name={String(key)}
+                  size="small"
+                >
+                  <DeleteIcon fontSize="small" />
                 </IconButton>
               </TableCell>
               <TableCell>
@@ -215,127 +233,141 @@ const SideTable = props => {
         </TableBody>
       </Table>
     </TableContainer>
-  )
-}
+  );
+};
 function Target(props) {
   const classes = useStyles();
   const { CurrentRecord, Records } = props;
   const { UpdateCurrentRecord, RemoveCurrentRecord } = props;
   const { UpdateCurrent } = props;
 
-  let newTargets = TargetList
-    .filter(target => props.CurrentRecord.Goals.includes(target.goal))
-    .filter(target => target.id.match("[0-9]$"))
+  let newTargets = TargetList.filter(target =>
+    props.CurrentRecord.Goals.includes(target.goal)
+  ).filter(target => target.id.match("[0-9]$"));
   newTargets.forEach(target => {
-    target.goal_img = "images/Goals/Goal-" + numnum(target.goal) + ".png"
-    target.isSelected = props.CurrentRecord.Targets.map(x => x.toString()).includes(target.id)
+    target.goal_img = "images/Goals/Goal-" + numnum(target.goal) + ".png";
+    target.isSelected = props.CurrentRecord.Targets.map(x =>
+      x.toString()
+    ).includes(target.id);
   });
 
   const [PossibleTargets, setPossibleTargets] = useState(newTargets);
-  const NestedTargets = [...new Set(PossibleTargets.map(target => target.goal))]
-    .reduce((acc, curr) => {
-      acc[curr] = PossibleTargets.filter(target => target.goal === curr)
-      return acc;
-    }, {});
-  var SelectedGoals = GoalList
-    .filter(goal => Object.keys(NestedTargets)
-      .includes(goal.goal.toString()))
+  const NestedTargets = [
+    ...new Set(PossibleTargets.map(target => target.goal))
+  ].reduce((acc, curr) => {
+    acc[curr] = PossibleTargets.filter(target => target.goal === curr);
+    return acc;
+  }, {});
+  var SelectedGoals = GoalList.filter(goal =>
+    Object.keys(NestedTargets).includes(goal.goal.toString())
+  );
   SelectedGoals.forEach(goal => {
     goal.targets = NestedTargets[goal.goal];
-    return (goal);
+    return goal;
   });
 
   useEffect(() => {
-    [...document.getElementsByClassName("clicked-target-btn")]
-      .map(btn => btn.scrollIntoView())
-  })
-  const handleClick = (event) => {
-    event.preventDefault()
+    [...document.getElementsByClassName("clicked-target-btn")].map(btn =>
+      btn.scrollIntoView()
+    );
+  });
+  const handleClick = event => {
+    event.preventDefault();
     const newTargets = PossibleTargets;
     newTargets.forEach(target => {
       if (target.id === event.currentTarget.name) {
-        target.isSelected = !target.isSelected
-        event.currentTarget.classList.toggle(classes.clickedTargetBtn)
+        target.isSelected = !target.isSelected;
+        event.currentTarget.classList.toggle(classes.clickedTargetBtn);
       }
-    })
+    });
     UpdateCurrentRecord(
-      'Targets',
+      "Targets",
       newTargets.filter(target => target.isSelected).map(target => target.id)
-    )
-    setPossibleTargets(newTargets)
-  }
-  return(
+    );
+    setPossibleTargets(newTargets);
+  };
+  return (
     <Fragment>
       <Grid container direction="column">
         <Grid container>
           <Grid item className={classes.tableWrapper}>
-            {
-              Records.length > 0 &&
+            {Records.length > 0 && (
               <React.Fragment>
-                <Typography m={0} variant="overline">Selected Records</Typography>
+                <Typography m={0} variant="overline">
+                  Selected Records
+                </Typography>
                 <SideTable
                   Records={Records}
                   removeCurrent={RemoveCurrentRecord}
                   UpdateCurrent={UpdateCurrent}
                 />
               </React.Fragment>
-            }
+            )}
           </Grid>
           <Grid item container spacing={1}>
-            {
-              SelectedGoals.map((goal, idx) =>
-                <Grid item xs={6} key={goal.goal}>
-                  <Box
-                    width="100%"
-                    height="50px"
-                    className={classes.goalheader}
-                    style={{backgroundColor: goal.colorInfo.hex}}>
-                    <Typography variant="h3" component="h3">{goal.goal}</Typography>
-                    <Typography variant="subtitle1" component="p">{goal.short}</Typography>
-                  </Box>
-                </Grid>
-              )
-            }
+            {SelectedGoals.map((goal, idx) => (
+              <Grid item xs={6} key={goal.goal}>
+                <Box
+                  width="100%"
+                  height="50px"
+                  className={classes.goalheader}
+                  style={{ backgroundColor: goal.colorInfo.hex }}
+                >
+                  <Typography variant="h3" component="h3">
+                    {goal.goal}
+                  </Typography>
+                  <Typography variant="subtitle1" component="p">
+                    {goal.short}
+                  </Typography>
+                </Box>
+              </Grid>
+            ))}
           </Grid>
           <Grid item container spacing={1}>
-            {
-              SelectedGoals.map((goal, idx) =>
-                <Grid item xs={6} container className={classes.targetBtns} key={goal.goal}>
-                  {
-                    goal.targets.map((target, idx) => {
-                      return (
-                        <Button
-                          fullWidth={true}
-                          key={target.id}
-                          variant="outlined"
-                          size="small"
-                          color="secondary"
-                          id={"Target-" + target.id}
-                          value={target.id}
-                          name={target.id}
-                          onClick={handleClick}
-                          disabled={CurrentRecord.Targets.length>=2 && !CurrentRecord.Targets.includes(String(target.id))}
-                          className={
-                          className(classes.targetBtn, CurrentRecord.Targets.includes(target.id)
-                                  ? classes.clickedTargetBtn
-                                  : null)
-                          }>
-                          <p className="target-text">
-                            <span className="target-id">{target.id} </span>
-                            {target.title}
-                          </p>
-                        </Button>
-                      )
-                    })
-                  }
-                </Grid>
-              )
-            }
+            {SelectedGoals.map((goal, idx) => (
+              <Grid
+                item
+                xs={6}
+                container
+                className={classes.targetBtns}
+                key={goal.goal}
+              >
+                {goal.targets.map((target, idx) => {
+                  return (
+                    <Button
+                      fullWidth={true}
+                      key={target.id}
+                      variant="outlined"
+                      size="small"
+                      color="secondary"
+                      id={"Target-" + target.id}
+                      value={target.id}
+                      name={target.id}
+                      onClick={handleClick}
+                      disabled={
+                        CurrentRecord.Targets.length >= 2 &&
+                        !CurrentRecord.Targets.includes(String(target.id))
+                      }
+                      className={className(
+                        classes.targetBtn,
+                        CurrentRecord.Targets.includes(target.id)
+                          ? classes.clickedTargetBtn
+                          : null
+                      )}
+                    >
+                      <p className="target-text">
+                        <span className="target-id">{target.id} </span>
+                        {target.title}
+                      </p>
+                    </Button>
+                  );
+                })}
+              </Grid>
+            ))}
           </Grid>
         </Grid>
       </Grid>
     </Fragment>
-  )
+  );
 }
 export default Target;
-
