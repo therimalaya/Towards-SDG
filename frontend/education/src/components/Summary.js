@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import Circos from "react-circos";
-import { Paper, Box, Link, Grid, Divider } from "@material-ui/core";
+import { Paper, Box, Grid, Divider } from "@material-ui/core";
 import {
   TableContainer,
   Table,
@@ -82,23 +82,14 @@ export const RecordSummary = props => {
           <React.Fragment>
             <ExpansionPanel defaultExpanded={expanded ? true : false}>
               <ExpansionPanelSummary className={classes.expansionTitle}>
-                {Record.Research.Title ? (
+                {Record.CourseName ? (
                   <Typography style={{ fontWeight: 800 }}>
-                    {Record.Research.Title}
+                    {Record.CourseName}
                   </Typography>
                 ) : (
                   <Typography style={{ fontWeight: 800 }}>Detail</Typography>
                 )}
-                {Record.Research.URL ? (
-                  <Link
-                    href={Record.Research.URL}
-                    onClick={e => e.preventDefault()}
-                  >
-                    <Typography className={classes.link}>
-                      research link
-                    </Typography>
-                  </Link>
-                ) : null}
+                {Record.CourseCode ? Record.CourseCode : null}
               </ExpansionPanelSummary>
               <ExpansionPanelDetails className={classes.expansionDetail}>
                 <ResearchDetails Record={Record} />
@@ -118,7 +109,9 @@ const ResearchDetails = props => {
   const { Record } = props;
   return (
     <Box width="100%" className={classes.recordsDetails}>
-      <Typography variant="overline">Main Author: {Record.Name}</Typography>
+      <Typography variant="overline">
+        Course Responsible: {Record.CourseResponsible}
+      </Typography>
       <Box>
         <Typography variant="subtitle2">
           {FacultyConfig.filter(
@@ -128,10 +121,10 @@ const ResearchDetails = props => {
       </Box>
       <Divider />
       <Box>
-        <Typography variant="overline">Coauthors:</Typography>
+        <Typography variant="overline">Collaborating Faculties:</Typography>
         <Typography variant="subtitle2">
           {FacultyConfig.filter(fclty =>
-            Record.Coauthors.Faculty.includes(fclty.value)
+            Record.RelatedFaculties.includes(fclty.value)
           )
             .flatMap(fclty => fclty.label)
             .join("; ")}
@@ -139,11 +132,11 @@ const ResearchDetails = props => {
       </Box>
       <Divider />
       <Typography variant="overline">
-        Research Type: {Record.Research.Type}
+        Course Type: {Record.CourseType}
       </Typography>
       <Divider />
       <Typography variant="overline">
-        Research Outreach: {Record.Research.Outreach}
+        Course Outreach: {Record.Outreach}
       </Typography>
     </Box>
   );

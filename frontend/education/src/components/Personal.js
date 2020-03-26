@@ -32,14 +32,63 @@ function Personal(props) {
     <Fragment>
       <form className={classes.root}>
         <TextField
-          onChange={HandleChange("Name")}
-          error={Errors.Name !== ""}
-          id="name"
-          value={FormData.Name}
-          label="Full Name"
+          select
+          onChange={HandleChange("Type")}
+          error={Errors.Faculty !== ""}
+          id="type"
+          value={FormData.Type}
+          label="Type"
+          SelectProps={{
+            MenuProps: {
+              getContentAnchorEl: null,
+              anchorOrigin: {
+                vertical: "bottom",
+                horizontal: "left"
+              }
+            }
+          }}
+          helperText="Registering Author's Faculty"
+          variant="outlined"
+          fullWidth={true}
+        >
+          <MenuItem key="course" value="course" dense>
+            Course
+          </MenuItem>
+          <MenuItem key="thesis" value="thesis" dense>
+            Thesis
+          </MenuItem>
+        </TextField>
+        <TextField
+          onChange={HandleChange("CourseCode")}
+          error={Errors.CourseCode !== ""}
+          id="course-code"
+          value={FormData.CourseCode.toUpperCase()}
+          label="Course Code"
+          helperText="Course Code"
+          variant="outlined"
+          autoFocus={true}
+          fullWidth={true}
+        />
+        <TextField
+          onChange={HandleChange("CourseName")}
+          error={Errors.CourseName !== ""}
+          id="course-name"
+          value={FormData.CourseName}
+          label="Course Name"
           helperText={
-            Errors.Name !== "" ? Errors.Name : "Full Name of Registering Author"
+            Errors.CourseName !== "" ? Errors.CourseName : "Name of the course"
           }
+          variant="outlined"
+          autoFocus={true}
+          fullWidth={true}
+        />
+        <TextField
+          onChange={HandleChange("CourseResponsible")}
+          error={Errors.CourseCode !== ""}
+          id="course-responsible"
+          value={FormData.CourseResponsible}
+          label="Course Responsible"
+          helperText="Person Responsible for the course"
           variant="outlined"
           autoFocus={true}
           fullWidth={true}
@@ -49,7 +98,7 @@ function Personal(props) {
           onChange={HandleChange("Faculty")}
           error={Errors.Faculty !== ""}
           id="faculty"
-          value={FormData.Faculty}
+          value={FormData.Faculty.toUpperCase()}
           label="Faculty"
           SelectProps={{
             MenuProps: {
@@ -60,11 +109,7 @@ function Personal(props) {
               }
             }
           }}
-          helperText={
-            Errors.Faculty !== ""
-              ? Errors.Faculty
-              : "Registering Author's Faculty"
-          }
+          helperText="Faculty responsible for the course"
           variant="outlined"
           fullWidth={true}
         >
@@ -75,34 +120,8 @@ function Personal(props) {
           ))}
         </TextField>
         <TextField
-          error={Errors.Research.Title !== ""}
-          onChange={HandleChange("Research.Title")}
-          id="research-title"
-          value={FormData.Research.Title}
-          label="Research Title"
-          helperText={
-            Errors.Research.Title !== "" ? Errors.Research.Title : null
-          }
-          variant="outlined"
-          fullWidth={true}
-        />
-        <TextField
-          error={Errors.Research.URL !== ""}
-          onChange={HandleChange("Research.URL")}
-          id="research-url"
-          value={FormData.Research.URL}
-          label="Research URL"
-          helperText={
-            Errors.Research.URL !== ""
-              ? Errors.Research.URL
-              : "DOI or Other URL reference for the research. For DOI use doi.org/<<number>>."
-          }
-          variant="outlined"
-          fullWidth={true}
-        />
-        <TextField
           select
-          onChange={HandleChange("Coauthors.Faculty")}
+          onChange={HandleChange("RelatedFaculties")}
           SelectProps={{
             renderValue: selected => (
               <div className={classes.chips}>
@@ -127,15 +146,11 @@ function Personal(props) {
               }
             }
           }}
-          value={FormData.Coauthors.Faculty}
-          error={Errors.Coauthors.Faculty !== ""}
-          id="coauthors-faculty"
-          label="Other Author's Faculty"
-          helperText={
-            Errors.Coauthors.Faculty !== ""
-              ? Errors.Coauthors.Faculty
-              : "Other Author's Faculty"
-          }
+          value={FormData.RelatedFaculties}
+          error={Errors.RelatedFaculties !== ""}
+          id="related-faculties"
+          label="Related Faculties"
+          helperText="Other Faculties related to the course"
           variant="outlined"
           fullWidth={true}
         >
@@ -156,17 +171,13 @@ function Personal(props) {
               }
             }
           }}
-          onChange={HandleChange("Research.Type")}
-          error={Errors.Research.Type !== ""}
-          name="type"
-          id="research-type"
-          value={FormData.Research.Type}
-          label="Researh Type"
-          helperText={
-            Errors.Research.Type !== ""
-              ? Errors.Research.Type
-              : "Type of Research"
-          }
+          onChange={HandleChange("CourseType")}
+          error={Errors.CourseType !== ""}
+          name="course-type"
+          id="course-type"
+          value={FormData.CourseType}
+          label="Course Type"
+          helperText="Type of Research"
           variant="outlined"
           fullWidth={true}
         >
@@ -187,17 +198,13 @@ function Personal(props) {
               }
             }
           }}
-          onChange={HandleChange("Research.Outreach")}
-          error={Errors.Research.Outreach !== ""}
+          onChange={HandleChange("Outreach")}
+          error={Errors.Outreach !== ""}
           name="outreach"
-          id="research-outreach"
-          value={FormData.Research.Outreach}
-          label="Researh Outreach"
-          helperText={
-            Errors.Research.Outreach !== ""
-              ? Errors.Research.Outreach
-              : "Communicated with decision maker about the research?"
-          }
+          id="outreach"
+          value={FormData.Outreach}
+          label="Outreach"
+          helperText="Communicated with decision maker about the course?"
           variant="outlined"
           fullWidth={true}
         >

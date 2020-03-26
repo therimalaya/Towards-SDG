@@ -27,8 +27,8 @@ const theme = createMuiTheme({
   palette: {
     primary: {
       light: "#33ae99",
-      main: "#009a80",
-      dark: "#006b59",
+      dark: "#009a80",
+      main: "#006b59",
       contrastText: "#fff"
     },
     secondary: {
@@ -113,26 +113,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const validateURL = str => {
-  var pattern = new RegExp(
-    "^(https?:\\/\\/)?" + // protocol
-    "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
-    "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
-    "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
-    "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
-      "(\\#[-a-z\\d_]*)?$",
-    "i"
-  ); // fragment locator
-  return !!pattern.test(str);
-};
-
 const DownloadCSV = props => {
   const [records, setRecords] = useState([]);
   const classes = useStyles();
   useEffect(() => {
     const db = firestore();
     unsubscribe = db
-      .collection("records")
+      .collection("education")
       .orderBy("created", "desc")
       .onSnapshot(snapshot => {
         let records = [];
@@ -141,8 +128,8 @@ const DownloadCSV = props => {
           return records.push(
             data.SDGRecords.flatMap(item => ({
               id: item.Targets.join("-"),
-              Name: data.Name,
-              Research: data.Research.Title,
+              CourseName: data.CourseName,
+              CourseCode: data.CourseCode,
               Goal1: item.Goals[0],
               Goal2: item.Goals[1],
               Target1: item.Targets[0],
@@ -341,17 +328,16 @@ export default function App() {
   }
 
   // STATES
-  const [Step, setStep] = useState(0);
+  const [Step, setStep] = useState(1);
   const [FormData, setFormData] = useState({
-    Name: "",
+    Type: "course",
+    CourseCode: "",
+    CourseName: "",
+    CourseResponsible: "",
     Faculty: "",
-    Research: {
-      Title: "",
-      URL: "",
-      Type: "",
-      Outreach: ""
-    },
-    Coauthors: { Faculty: [] }
+    RelatedFaculties: [],
+    CourseType: "",
+    Outreach: ""
   });
   const [CurrentRecord, setCurrentRecord] = useState({
     Goals: [],
@@ -365,15 +351,14 @@ export default function App() {
   const [Records, setRecords] = useState([]);
   const [NoError, setNoError] = useState();
   const [Errors, setErrors] = useState({
-    Name: "",
+    Type: "",
+    CourseName: "",
+    CourseCode: "",
+    CourseResponsible: "",
     Faculty: "",
-    Research: {
-      Title: "",
-      URL: "",
-      Type: "",
-      Outreach: ""
-    },
-    Coauthors: { Faculty: "" }
+    RelatedFaculties: "",
+    CourseType: "",
+    Outreach: ""
   });
 
   // METHODS -> FUNCTIONS
@@ -418,15 +403,10 @@ export default function App() {
     setRecords(newRecord);
   };
   const UpdateFormData = (field, data) => {
-    field = field.split(".");
-    var newState = FormData;
-    if (field.length > 1) {
-      newState[field[0]][field[1]] = data;
-    } else {
-      newState[field[0]] = data;
-    }
-
-    setFormData(newState);
+    setFormData({
+      ...FormData,
+      ...{ [field]: data }
+    });
   };
   const UpdateCurrentRecord = (input, value) => {
     setCurrentRecord({
@@ -436,7 +416,7 @@ export default function App() {
   };
   const WriteData = data => {
     var db = firestore();
-    db.collection("records")
+    db.collection("education")
       .add({ ...data, created: firestore.Timestamp.fromDate(new Date()) })
       .then(function(docRef) {
         console.log("Document written with ID: ", docRef.id);
@@ -450,10 +430,14 @@ export default function App() {
   const Submit = event => {
     event.preventDefault();
     const data = {
-      Name: FormData.Name,
+      Type: FormData.Type,
+      CourseName: FormData.CourseName,
+      CourseCode: FormData.CourseCode,
+      CourseResponsible: FormData.CourseResponsible,
       Faculty: FormData.Faculty,
-      Research: FormData.Research,
-      Coauthors: FormData.Coauthors,
+      RelatedFaculties: FormData.RelatedFaculties,
+      CourseType: FormData.CourseType,
+      Outreach: FormData.Outreach,
       SDGRecords: Records
     };
     WriteData(data);
@@ -480,15 +464,14 @@ export default function App() {
       }
     });
     setFormData({
-      Name: FormData.Name,
+      Type: FormData.Type,
+      CourseName: "",
+      CourseCode: "",
+      CourseResponsible: "",
       Faculty: "",
-      Research: {
-        Title: FormData.Research.Title,
-        URL: "",
-        Type: "",
-        Outreach: ""
-      },
-      Coauthors: { Faculty: [] }
+      RelatedFaculties: "",
+      CourseType: "",
+      Outreach: ""
     });
     setStep(0);
   };
@@ -496,71 +479,10 @@ export default function App() {
     let isValid = true;
     let errors = Errors;
 
-    // Update error state based on the
-    // fetching values from Form state
-    // All the checking goes here
-    // Update the error state
-    if (!FormData.Name) {
-      errors.Name = "Name can not be empty";
-      isValid = false;
-    } else if (FormData.Name.length <= 5) {
-      errors.Name = "Name must be at least 5 character long.";
+    if (!FormData.CourseName) {
+      errors.Name = "Course Name can not be empty";
       isValid = false;
     }
-
-    // if (!FormData.Faculty) {
-    //   errors.Faculty = "Must select a faculty";
-    //   isValid = false;
-    // }
-
-    if (!FormData.Research.Title) {
-      errors.Research = { ...errors.Research, Title: "Name can not be empty" };
-      isValid = false;
-    } else if (FormData.Research.Title <= 5) {
-      errors.Research = {
-        ...errors.Research,
-        Title: "Name must be at least 5 character long."
-      };
-      isValid = false;
-    }
-
-    // if (FormData.Coauthors.Faculty.length < 1) {
-    //   errors.Coauthors = {
-    //     ...errors.Coauthors,
-    //     Faculty: "Must select a faculty"
-    //   };
-    //   isValid = false;
-    // }
-
-    if (!FormData.Research.URL) {
-      // errors.Research = {
-      //   ...errors.Research,
-      //   URL: "Research URL must not be empty."
-      // };
-      // isValid = false;
-    } else if (!validateURL(FormData.Research.URL)) {
-      errors.Research = {
-        ...errors.Research,
-        URL: "Research URL is not valid. For DOI use doi.org/<<doi-number>>"
-      };
-      isValid = false;
-    }
-
-    // if (!FormData.Research.Type) {
-    //   errors.Research = {
-    //     ...errors.Research,
-    //     Type: "Research Type must not be empty."
-    //   };
-    //   isValid = false;
-    // }
-
-    // if (!FormData.Research.Outreach) {
-    //   errors.Research = {
-    //     ...errors.Research,
-    //     Outreach: "Research Outreach must not be empty."
-    //   };
-    //   isValid = false;
-    // }
 
     setNoError(isValid);
     setErrors({ ...Errors, ...errors });
@@ -578,13 +500,18 @@ export default function App() {
     /* errors[input] = ""; */
     setNoError("");
     setErrors({ ...Errors, ...errors });
+    var newValue;
     if (event.target) {
-      UpdateFormData(input, event.target.value);
+      newValue = event.target.value;
     } else if (event.value) {
-      UpdateFormData(input, event.value);
+      newValue = event.value;
     } else {
-      UpdateFormData(input, event);
+      newValue = event;
     }
+    if (input === "CourseCode") {
+      newValue = newValue.toUpperCase();
+    }
+    UpdateFormData(input, newValue);
   };
   const CheckAndProceed = event => {
     event.preventDefault();

@@ -1,6 +1,6 @@
 // Configuration of Different Steps for MySteppter
 export const StepConfig = [
-  { label: "NMBU SDG-mapping portal", key: 0 },
+  { label: "NMBU SDG-mapping portal for education", key: 0 },
   { label: "Personal Details", key: 1 },
   { label: "Goals", key: 2 },
   { label: "Targets", key: 3 },
