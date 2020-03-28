@@ -332,12 +332,13 @@ export default function App() {
   const [FormData, setFormData] = useState({
     Type: "course",
     CourseCode: "",
+    Year: new Date().getFullYear(),
     CourseName: "",
     CourseResponsible: "",
     Faculty: "",
     RelatedFaculties: [],
-    CourseType: "",
-    Outreach: ""
+    Teaching: "",
+    SustainFocus: ""
   });
   const [CurrentRecord, setCurrentRecord] = useState({
     Goals: [],
@@ -354,11 +355,12 @@ export default function App() {
     Type: "",
     CourseName: "",
     CourseCode: "",
+    Year: "",
     CourseResponsible: "",
     Faculty: "",
     RelatedFaculties: "",
-    CourseType: "",
-    Outreach: ""
+    Teaching: "",
+    SustainFocus: ""
   });
 
   // METHODS -> FUNCTIONS
@@ -431,13 +433,14 @@ export default function App() {
     event.preventDefault();
     const data = {
       Type: FormData.Type,
-      CourseName: FormData.CourseName,
       CourseCode: FormData.CourseCode,
+      Year: FormData.Year,
+      CourseName: FormData.CourseName,
       CourseResponsible: FormData.CourseResponsible,
       Faculty: FormData.Faculty,
       RelatedFaculties: FormData.RelatedFaculties,
-      CourseType: FormData.CourseType,
-      Outreach: FormData.Outreach,
+      Teaching: FormData.Teaching,
+      SustainFocus: FormData.SustainFocus,
       SDGRecords: Records
     };
     WriteData(data);
@@ -465,13 +468,14 @@ export default function App() {
     });
     setFormData({
       Type: FormData.Type,
-      CourseName: "",
       CourseCode: "",
+      Year: 2020,
+      CourseName: "",
       CourseResponsible: "",
       Faculty: "",
-      RelatedFaculties: "",
-      CourseType: "",
-      Outreach: ""
+      RelatedFaculties: [],
+      Teaching: "",
+      SustainFocus: ""
     });
     setStep(0);
   };
@@ -480,7 +484,11 @@ export default function App() {
     let errors = Errors;
 
     if (!FormData.CourseName) {
-      errors.Name = "Course Name can not be empty";
+      errors.CourseName = "This field cannot be empty.";
+      isValid = false;
+    }
+    if (!FormData.CourseCode) {
+      errors.CourseCode = "Code cannot be empty. See Studentweb for code.";
       isValid = false;
     }
 

@@ -1,7 +1,7 @@
 // Configuration of Different Steps for MySteppter
 export const StepConfig = [
   { label: "NMBU SDG-mapping portal for education", key: 0 },
-  { label: "Personal Details", key: 1 },
+  { label: "Course Information", key: 1 },
   { label: "Goals", key: 2 },
   { label: "Targets", key: 3 },
   { label: "Summary", key: 4 },
@@ -22,43 +22,40 @@ export const FacultyConfig = [
   { value: "Other", label: "Other institution" }
 ];
 
-export const OutreachOptions = [
-  { value: "Yes", label: "Yes" },
-  { value: "Planned", label: "No, but I do have concrete plans for do so" },
-  { value: "No", label: "No" }
+export const SustainFocusOption = [
+  {
+    value: "Indirect Focus/ Basic Science",
+    label: "Indirect Focus/ Basic Science"
+  },
+  {
+    value: "Learning about sustainability (content focus)",
+    label: "Learning about sustainability (content focus)"
+  },
+  {
+    value: "Learning for sustainablity (generic competences training)",
+    label: "Learning for sustainablity (generic competences training)"
+  },
+  {
+    value: "Learning as sustainability (students as change makers)",
+    label: "Learning as sustainability (students as change makers)"
+  }
 ];
 
-export const ResearchOptions = [
+export const TeachingOption = [
   {
-    value: "Theoretical/ Conceptual work",
-    label: "Theoretical/ Conceptual work"
+    value: "Theoretical with lectures",
+    label: "Theoretical with lectures"
   },
   {
-    value: "Experiments",
-    label: "Experiments"
+    value: "Applied/ case-based with lectures",
+    label: "Applied/ case-based with lectures"
   },
   {
-    value: "Statistical analysis of primary observational data",
-    label: "Statistical analysis of primary observational data"
+    value: "Theoretical with student active teaching",
+    label: "Theoretical with student active teaching"
   },
   {
-    value: "Statistical analysis of secondary data",
-    label: "Statistical analysis of secondary data"
-  },
-  {
-    value: "Simulations",
-    label: "Simulations"
-  },
-  {
-    value: "Case studies (Qualitative analysis)",
-    label: "Case studies (Qualitative analysis)"
-  },
-  {
-    value: "Reviews/ Synthesis",
-    label: "Reviews/ Synthesis"
-  },
-  {
-    value: "Other",
-    label: "Other"
+    value: "Applied/ case-based with student active teaching",
+    label: "Applied/ case-based with student active teaching"
   }
 ];

@@ -1,10 +1,11 @@
 import React, { Fragment } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Chip, TextField, MenuItem } from "@material-ui/core";
+import { Chip, TextField, MenuItem, Box } from "@material-ui/core";
+import { range } from "lodash";
 import {
   FacultyConfig,
-  OutreachOptions,
-  ResearchOptions
+  TeachingOption,
+  SustainFocusOption
 } from "../config/app-config";
 
 const useStyles = makeStyles(theme => ({
@@ -21,12 +22,16 @@ const useStyles = makeStyles(theme => ({
   },
   chip: {
     margin: 2
+  },
+  paper: {
+    maxHeight: "250px"
   }
 }));
 
 function Personal(props) {
   const classes = useStyles();
   const { FormData, HandleChange, Errors } = props;
+  const toProper = string => string.replace(/^\w/, c => c.toUpperCase());
 
   return (
     <Fragment>
@@ -47,8 +52,9 @@ function Personal(props) {
               }
             }
           }}
-          helperText="Registering Author's Faculty"
+          helperText="Select if the record is for a course or thesis."
           variant="outlined"
+          autoFocus={true}
           fullWidth={true}
         >
           <MenuItem key="course" value="course" dense>
@@ -58,39 +64,91 @@ function Personal(props) {
             Thesis
           </MenuItem>
         </TextField>
-        <TextField
-          onChange={HandleChange("CourseCode")}
-          error={Errors.CourseCode !== ""}
-          id="course-code"
-          value={FormData.CourseCode.toUpperCase()}
-          label="Course Code"
-          helperText="Course Code"
-          variant="outlined"
-          autoFocus={true}
-          fullWidth={true}
-        />
+        <Box
+          display="flex"
+          flexDirection="row"
+          width="100%"
+          justifyContent="space-between"
+        >
+          <Box width="48%">
+            <TextField
+              onChange={HandleChange("CourseCode")}
+              error={Errors.CourseCode !== ""}
+              id="course-code"
+              value={FormData.CourseCode.toUpperCase()}
+              label={toProper(FormData.Type) + " Code"}
+              helperText={
+                Errors.CourseCode !== ""
+                  ? Errors.CourseCode
+                  : `See Student web for ${FormData.Type} code`
+              }
+              variant="outlined"
+              fullWidth={true}
+            />
+          </Box>
+          <Box width="48%">
+            <TextField
+              select
+              SelectProps={{
+                MenuProps: {
+                  className: classes.paper,
+                  getContentAnchorEl: null,
+                  anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "left"
+                  }
+                }
+              }}
+              onChange={HandleChange("Year")}
+              error={Errors.Year !== ""}
+              id="course-year"
+              value={FormData.Year}
+              label={toProper(FormData.Type) + " Year"}
+              helperText="Year in which the course is conducted."
+              variant="outlined"
+              fullWidth={true}
+            >
+              {range(2000, 2035, 1).map(yr => (
+                <MenuItem key={yr} value={yr} dense>
+                  {yr}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Box>
+        </Box>
         <TextField
           onChange={HandleChange("CourseName")}
           error={Errors.CourseName !== ""}
           id="course-name"
           value={FormData.CourseName}
-          label="Course Name"
+          label={`${toProper(FormData.Type)} ${
+            FormData.Type === "course" ? "Name" : "Title"
+          }`}
           helperText={
-            Errors.CourseName !== "" ? Errors.CourseName : "Name of the course"
+            Errors.CourseName !== ""
+              ? Errors.CourseName
+              : `${FormData.Type === "course" ? "Name" : "Title"} 
+                of ${FormData.Type}`
           }
           variant="outlined"
-          autoFocus={true}
           fullWidth={true}
         />
         <TextField
           onChange={HandleChange("CourseResponsible")}
-          error={Errors.CourseCode !== ""}
+          error={Errors.CourseResponsible !== ""}
           id="course-responsible"
           value={FormData.CourseResponsible}
-          label="Course Responsible"
-          helperText="Person Responsible for the course"
+          label={`${
+            FormData.Type === "course"
+              ? "Course Responsible"
+              : "Main Supervisor"
+          }`}
+          helperText={`Name of ${
+            FormData.Type === "course"
+              ? "Person Responsible for the course"
+              : "Main Supervisor"
+          }`}
           variant="outlined"
-          autoFocus={true}
           fullWidth={true}
         />
         <TextField
@@ -109,7 +167,7 @@ function Personal(props) {
               }
             }
           }}
-          helperText="Faculty responsible for the course"
+          helperText={`Faculty responsible for the ${FormData.Type}`}
           variant="outlined"
           fullWidth={true}
         >
@@ -149,8 +207,8 @@ function Personal(props) {
           value={FormData.RelatedFaculties}
           error={Errors.RelatedFaculties !== ""}
           id="related-faculties"
-          label="Related Faculties"
-          helperText="Other Faculties related to the course"
+          label="Collaborating Faculties"
+          helperText="Other collaborating faculties"
           variant="outlined"
           fullWidth={true}
         >
@@ -171,17 +229,17 @@ function Personal(props) {
               }
             }
           }}
-          onChange={HandleChange("CourseType")}
-          error={Errors.CourseType !== ""}
-          name="course-type"
-          id="course-type"
-          value={FormData.CourseType}
-          label="Course Type"
-          helperText="Type of Research"
+          onChange={HandleChange("Teaching")}
+          error={Errors.Teaching !== ""}
+          name="teaching"
+          id="teaching"
+          value={FormData.Teaching}
+          label="Teaching (Primarily)"
+          helperText={`Primary teaching type`}
           variant="outlined"
           fullWidth={true}
         >
-          {ResearchOptions.map(option => (
+          {TeachingOption.map(option => (
             <MenuItem key={option.value} value={option.value} dense>
               {option.label}
             </MenuItem>
@@ -198,17 +256,17 @@ function Personal(props) {
               }
             }
           }}
-          onChange={HandleChange("Outreach")}
-          error={Errors.Outreach !== ""}
-          name="outreach"
-          id="outreach"
-          value={FormData.Outreach}
-          label="Outreach"
-          helperText="Communicated with decision maker about the course?"
+          onChange={HandleChange("SustainFocus")}
+          error={Errors.SustainFocus !== ""}
+          name="sustain-focus"
+          id="sustain-focus"
+          value={FormData.SustainFocus}
+          label="Sustainability Focus (primarily)"
+          helperText={`Primary sustainablity focus`}
           variant="outlined"
           fullWidth={true}
         >
-          {OutreachOptions.map(option => (
+          {SustainFocusOption.map(option => (
             <MenuItem key={option.value} value={option.value} dense>
               {option.label}
             </MenuItem>

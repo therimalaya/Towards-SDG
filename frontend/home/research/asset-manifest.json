@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/Towards-SDG/research/static/css/main.adb9027e.chunk.css",
+    "main.js": "/Towards-SDG/research/static/js/main.e43ac533.chunk.js",
+    "main.js.map": "/Towards-SDG/research/static/js/main.e43ac533.chunk.js.map",
+    "runtime-main.js": "/Towards-SDG/research/static/js/runtime-main.265f8d82.js",
+    "runtime-main.js.map": "/Towards-SDG/research/static/js/runtime-main.265f8d82.js.map",
+    "static/css/2.6101a1ac.chunk.css": "/Towards-SDG/research/static/css/2.6101a1ac.chunk.css",
+    "static/js/2.8a0c5b5e.chunk.js": "/Towards-SDG/research/static/js/2.8a0c5b5e.chunk.js",
+    "static/js/2.8a0c5b5e.chunk.js.map": "/Towards-SDG/research/static/js/2.8a0c5b5e.chunk.js.map",
+    "index.html": "/Towards-SDG/research/index.html",
+    "precache-manifest.1c4b1b1d1d2e48e977e0c0825829e697.js": "/Towards-SDG/research/precache-manifest.1c4b1b1d1d2e48e977e0c0825829e697.js",
+    "service-worker.js": "/Towards-SDG/research/service-worker.js",
+    "static/css/2.6101a1ac.chunk.css.map": "/Towards-SDG/research/static/css/2.6101a1ac.chunk.css.map",
+    "static/css/main.adb9027e.chunk.css.map": "/Towards-SDG/research/static/css/main.adb9027e.chunk.css.map",
+    "static/js/2.8a0c5b5e.chunk.js.LICENSE.txt": "/Towards-SDG/research/static/js/2.8a0c5b5e.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.265f8d82.js",
+    "static/css/2.6101a1ac.chunk.css",
+    "static/js/2.8a0c5b5e.chunk.js",
+    "static/css/main.adb9027e.chunk.css",
+    "static/js/main.e43ac533.chunk.js"
+  ]
+}

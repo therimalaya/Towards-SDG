@@ -110,7 +110,8 @@ const ResearchDetails = props => {
   return (
     <Box width="100%" className={classes.recordsDetails}>
       <Typography variant="overline">
-        Course Responsible: {Record.CourseResponsible}
+        {Record.Type === "course" ? "Course Responsible" : "Main Supervisor"}:
+        {Record.CourseResponsible}
       </Typography>
       <Box>
         <Typography variant="subtitle2">
@@ -132,11 +133,11 @@ const ResearchDetails = props => {
       </Box>
       <Divider />
       <Typography variant="overline">
-        Course Type: {Record.CourseType}
+        Primary Teaching: {Record.Teaching}
       </Typography>
       <Divider />
       <Typography variant="overline">
-        Course Outreach: {Record.Outreach}
+        Primary Sustanability Focus: {Record.SustainFocus}
       </Typography>
     </Box>
   );

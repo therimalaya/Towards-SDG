@@ -90,11 +90,11 @@ function SideInfo(props) {
           </Box>
           <Box>
             <Typography>
-              Here you can provide personal information and details about your
-              main author contribution. Co-authors may also register
-              publications in case the lead author is not affiliated at NMBU.
-              Potentially multiple NMBU co-authors must coordinate a single
-              registration in the portal.
+              Here you, as course responsible, can provide course information
+              and details about faculty ownership and faculty collaboration. In
+              case of master thesis, select “Thesis” as course type. Optionally
+              you may also classify the course type (teaching) and regarding
+              sustainability focus.
             </Typography>
           </Box>
         </React.Fragment>
@@ -115,21 +115,21 @@ function SideInfo(props) {
           <Box>
             <Typography paragraph={true} variant="body2">
               The portal focuses on mapping pairwise interactions. Select one or
-              two main SDG goals addressed (directly or indirectly) in your
-              publication. At most two goals can be selected simultaneously. You
-              may to return to this page later to register other goals for the
-              same publication.
+              two main SDG goals addressed (directly or indirectly) in the
+              course, either in content, examples or in other ways. At most two
+              goals can be selected simultaneously. You may return to this page
+              later to register other goals for the same course.
             </Typography>
 
             <Typography paragraph={true} variant="body2">
-              (You must deselect selected goals to choose new ones.)
+              (You must deselect selected goals in order to choose new ones.)
             </Typography>
 
             <Typography paragraph={true} variant="body2">
-              On the next page you will have the opportunity to specify any
-              pair-wise sub-goal interactions addressed in the publication,
-              either between sub-goals within a main goal, or between sub-goals
-              of two main goals.
+              On the next page you will (optionally) have the opportunity to
+              specify any pair-wise sub-goal interactions addressed in the
+              course, either between sub-goals within a main goal, or between
+              sub-goals of two main goals.
             </Typography>
           </Box>
         </React.Fragment>
@@ -147,21 +147,21 @@ function SideInfo(props) {
           </Box>
           <Box>
             <Typography variant="body2">
-              Select two sub-goals which interactions is addressed. You will
-              also be asked to indicate (optionally) whether:
+              (Optionally) select one sub-goal (if one main goal is selected) or
+              two sub-goals (interaction) which is/are addressed. After adding a
+              record you may also indicate whether:
             </Typography>
 
             <ul>
               <li>
                 <Typography variant="body2">
-                  the interaction is positive (synergetic) or negative
-                  (trade-off)
+                  interaction is positive (synergetic) or negative (trade-off)
                 </Typography>
               </li>
               <li>
                 <Typography variant="body2">
-                  the addressed interaction is a direct cause-effect interaction
-                  or a mere correlated effect (non-causal)
+                  addressed interaction is a direct cause-effect interaction or
+                  a mere correlated effect (non-causal)
                 </Typography>
               </li>
               <li>
@@ -172,13 +172,13 @@ function SideInfo(props) {
             </ul>
 
             <Typography variant="body2">
-              You may add multiple pair-wise interactions. Selected interactions
-              are listed here continuously and may be edited (deleted).
+              You may add multiple records. Selected records are listed here
+              continuously and may be edited (and deleted).
             </Typography>
 
             <Typography variant="body2">
-              When you are done, you may return to the previous page to select
-              additional main goals.
+              When you are done, you may also return to the previous page to
+              select additional main goal(s).
             </Typography>
 
             {Records.length > 0 && (
@@ -205,7 +205,7 @@ function SideInfo(props) {
             <Typography variant="body2">
               Review the summary of you added interactions. A simple graphical
               representation is given in addition to a full list of provided
-              information on each interaction.
+              information on each record.
             </Typography>
 
             <Typography variant="body2">

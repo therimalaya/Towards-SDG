@@ -81,7 +81,9 @@ function Personal(props) {
           value={FormData.Research.Title}
           label="Research Title"
           helperText={
-            Errors.Research.Title !== "" ? Errors.Research.Title : null
+            Errors.Research.Title !== ""
+              ? Errors.Research.Title
+              : "Title of the registering research work"
           }
           variant="outlined"
           fullWidth={true}

@@ -22,7 +22,7 @@ const AllRecords = props => {
     const db = firestore();
 
     unsubscribe = db
-      .collection("records")
+      .collection("education")
       .orderBy("created", "desc")
       .limit(8)
       .onSnapshot(snapshot => {

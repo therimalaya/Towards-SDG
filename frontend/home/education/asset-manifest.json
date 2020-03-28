@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/Towards-SDG/education/static/css/main.adb9027e.chunk.css",
+    "main.js": "/Towards-SDG/education/static/js/main.5ff8b99f.chunk.js",
+    "main.js.map": "/Towards-SDG/education/static/js/main.5ff8b99f.chunk.js.map",
+    "runtime-main.js": "/Towards-SDG/education/static/js/runtime-main.f9e17867.js",
+    "runtime-main.js.map": "/Towards-SDG/education/static/js/runtime-main.f9e17867.js.map",
+    "static/js/2.62377ba7.chunk.js": "/Towards-SDG/education/static/js/2.62377ba7.chunk.js",
+    "static/js/2.62377ba7.chunk.js.map": "/Towards-SDG/education/static/js/2.62377ba7.chunk.js.map",
+    "index.html": "/Towards-SDG/education/index.html",
+    "precache-manifest.be2abdf97cf244fb0255173007b845b9.js": "/Towards-SDG/education/precache-manifest.be2abdf97cf244fb0255173007b845b9.js",
+    "service-worker.js": "/Towards-SDG/education/service-worker.js",
+    "static/css/main.adb9027e.chunk.css.map": "/Towards-SDG/education/static/css/main.adb9027e.chunk.css.map",
+    "static/js/2.62377ba7.chunk.js.LICENSE.txt": "/Towards-SDG/education/static/js/2.62377ba7.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.f9e17867.js",
+    "static/js/2.62377ba7.chunk.js",
+    "static/css/main.adb9027e.chunk.css",
+    "static/js/main.5ff8b99f.chunk.js"
+  ]
+}

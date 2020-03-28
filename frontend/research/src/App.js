@@ -12,7 +12,7 @@ import FrontCover from "./components/FrontCover";
 import MainForm from "./components/MainForm";
 import SideInfo from "./components/SideInfo";
 import AllRecords from "./components/Records";
-// import NetworkSDG from "./components/Network";
+import NetworkSDG from "./components/Network";
 import Heatmap from "./components/Heatmap";
 
 import { StepConfig } from "./config/app-config";
@@ -223,8 +223,8 @@ function InnerApp(props) {
             </Grid>
             <Grid item container className={classes.mainpanel} xs={9}>
               <Box className={classes.mainpanelBox}>
-                <h1>We will come back soon!</h1>
-                {/* <NetworkSDG /> */}
+                {/* <h1>We will come back soon!</h1> */}
+                <NetworkSDG />
               </Box>
             </Grid>
           </Route>
