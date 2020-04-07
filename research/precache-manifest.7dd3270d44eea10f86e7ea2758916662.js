@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "21f030a4930442cf0e6d6a21e0c3fcaf",
+    "revision": "9ce308b6e91c829bbd113f5c2ffb7417",
     "url": "/Towards-SDG/research/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Towards-SDG/research/static/css/2.6101a1ac.chunk.css"
   },
   {
-    "revision": "2c7bd03f3b0e258a1989",
+    "revision": "5c5bba0618c380b45c3b",
     "url": "/Towards-SDG/research/static/css/main.adb9027e.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Towards-SDG/research/static/js/2.8a0c5b5e.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "2c7bd03f3b0e258a1989",
-    "url": "/Towards-SDG/research/static/js/main.c505faed.chunk.js"
+    "revision": "5c5bba0618c380b45c3b",
+    "url": "/Towards-SDG/research/static/js/main.0a58af46.chunk.js"
   },
   {
     "revision": "1bfd29455d80fc4664e0",
