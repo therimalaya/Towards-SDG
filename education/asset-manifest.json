@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/Towards-SDG/education/static/css/main.adb9027e.chunk.css",
-    "main.js": "/Towards-SDG/education/static/js/main.645387fe.chunk.js",
-    "main.js.map": "/Towards-SDG/education/static/js/main.645387fe.chunk.js.map",
+    "main.js": "/Towards-SDG/education/static/js/main.9dce6657.chunk.js",
+    "main.js.map": "/Towards-SDG/education/static/js/main.9dce6657.chunk.js.map",
     "runtime-main.js": "/Towards-SDG/education/static/js/runtime-main.f9e17867.js",
     "runtime-main.js.map": "/Towards-SDG/education/static/js/runtime-main.f9e17867.js.map",
     "static/js/2.62377ba7.chunk.js": "/Towards-SDG/education/static/js/2.62377ba7.chunk.js",
     "static/js/2.62377ba7.chunk.js.map": "/Towards-SDG/education/static/js/2.62377ba7.chunk.js.map",
     "index.html": "/Towards-SDG/education/index.html",
-    "precache-manifest.85c56731f9307ff9feab6365b4932f87.js": "/Towards-SDG/education/precache-manifest.85c56731f9307ff9feab6365b4932f87.js",
+    "precache-manifest.e89fb4ae94fec5d29802c698d1cf77ec.js": "/Towards-SDG/education/precache-manifest.e89fb4ae94fec5d29802c698d1cf77ec.js",
     "service-worker.js": "/Towards-SDG/education/service-worker.js",
     "static/css/main.adb9027e.chunk.css.map": "/Towards-SDG/education/static/css/main.adb9027e.chunk.css.map",
     "static/js/2.62377ba7.chunk.js.LICENSE.txt": "/Towards-SDG/education/static/js/2.62377ba7.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.f9e17867.js",
     "static/js/2.62377ba7.chunk.js",
     "static/css/main.adb9027e.chunk.css",
-    "static/js/main.645387fe.chunk.js"
+    "static/js/main.9dce6657.chunk.js"
   ]
 }
