@@ -1,28 +1,28 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Box, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import Graphin, { Utils } from "@antv/graphin";
+import Graphin from "@antv/graphin";
 import "@antv/graphin/dist/index.css";
 
 import recordNodes from "../data/records.js";
 
-const useStyle = makeStyles(theme => ({
+const useStyle = makeStyles((theme) => ({
   app: {
-    height: "100vh"
+    height: "100vh",
   },
   wrapper: {
-    overflowY: "auto"
+    overflowY: "auto",
   },
   recordsWrapper: {
-    width: "100%"
-  }
+    width: "100%",
+  },
 }));
 
-const NetworkSDG = props => {
+const NetworkSDG = (props) => {
   const classes = useStyle();
   const data = {
     edges: [],
-    nodes: recordNodes.nodes
+    nodes: recordNodes.nodes,
   };
 
   return (

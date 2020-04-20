@@ -1,4 +1,13 @@
 import React, { Fragment, useEffect, useState } from "react";
+import {
+  useQuery,
+  useMutation,
+  gql,
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache,
+  HttpLink,
+} from "@apollo/client";
 
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import { firestore, apps, initializeApp } from "firebase";
@@ -20,6 +29,14 @@ import { FirebaseConfig } from "./config/firebase-config.js";
 
 import { CSVLink } from "react-csv";
 
+// Apollo Client Setup
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: new HttpLink({
+    uri: "http://localhost:9000/",
+  }),
+});
+
 // Define variable;
 var unsubscribe;
 
@@ -29,22 +46,22 @@ const theme = createMuiTheme({
       light: "#33ae99",
       main: "#009a80",
       dark: "#006b59",
-      contrastText: "#fff"
+      contrastText: "#fff",
     },
     secondary: {
       main: "#556680",
-      contrastText: "#fff"
+      contrastText: "#fff",
     },
     background: {
       paper: "#fff",
       default: "#fafafa",
-      light: "#F0F8FF"
-    }
-  }
+      light: "#F0F8FF",
+    },
+  },
 });
 // May be create responseive font sizes
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     height: "100vh",
     display: "flex",
@@ -52,32 +69,32 @@ const useStyles = makeStyles(theme => ({
     flexWrap: "nowrap",
     overflow: "hidden",
     margin: "0px",
-    boxSizing: "border-box"
+    boxSizing: "border-box",
   },
   sidebar: {
     display: "flex",
     flexDirection: "column",
     height: "100%",
-    flexShrink: 0
+    flexShrink: 0,
   },
   header: {
     background: 'url("./images/header.jpg")',
     backgroundPosition: "center",
     backgroundSize: "cover",
     minHeight: "150px",
-    borderBottom: `5px solid ${theme.palette.primary.main}`
+    borderBottom: `5px solid ${theme.palette.primary.main}`,
   },
   sideinfo: {
     backgroundColor: "#efefef",
     padding: "1rem",
-    overflowY: "auto"
+    overflowY: "auto",
   },
   sidefooter: {
     backgroundColor: theme.palette.primary.main,
     backgroundImage: `url(./images/NMBUwhite.svg)`,
     backgroundPosition: "center",
     backgroundSize: "cover",
-    height: "50px"
+    height: "50px",
   },
   sidefooterRecords: {
     display: "flex",
@@ -86,7 +103,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.default,
     borderTopWidth: "5px",
     borderTopStyle: "solid",
-    borderTopColor: theme.palette.primary.main
+    borderTopColor: theme.palette.primary.main,
   },
   mainpanel: {
     display: "flex",
@@ -94,26 +111,26 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "center",
     alignContent: "flex-start",
     padding: "20px",
-    paddingBottom: 0
+    paddingBottom: 0,
   },
   mainpanelBox: {
     display: "flex",
     flexDirection: "column",
     height: "100%",
-    width: "100%"
+    width: "100%",
   },
   mainContent: {
     padding: "12px",
     flexGrow: 1,
-    overflowY: "auto"
+    overflowY: "auto",
   },
   csvDownload: {
     textDecoration: "none",
-    color: theme.palette.primary.contrastText
-  }
+    color: theme.palette.primary.contrastText,
+  },
 }));
 
-const validateURL = str => {
+const validateURL = (str) => {
   var pattern = new RegExp(
     "^(https?:\\/\\/)?" + // protocol
     "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
@@ -126,37 +143,101 @@ const validateURL = str => {
   return !!pattern.test(str);
 };
 
-const DownloadCSV = props => {
-  const [records, setRecords] = useState([]);
+const RECORDS_DOWNLOAD = gql`
+  {
+    getAllResearchRecords {
+      Name
+      Research {
+        Title
+      }
+      SDGRecords {
+        Goals
+        Targets
+        Interaction {
+          direction
+          type
+          value
+        }
+      }
+    }
+  }
+`;
+
+const ADD_RECORD = gql`
+  mutation addRecord($data: ResearchRecordInput!) {
+    createResearchRecord(data: $data) {
+      Name
+      Faculty
+      Coauthors {
+        Faculty
+      }
+      Research {
+        Outreach
+        Title
+        Type
+        URL
+      }
+      SDGRecords {
+        Goals
+        Targets
+        Interaction {
+          direction
+          type
+          value
+        }
+      }
+    }
+  }
+`;
+
+const DownloadCSV = (props) => {
   const classes = useStyles();
-  useEffect(() => {
-    const db = firestore();
-    unsubscribe = db
-      .collection("records")
-      .orderBy("created", "desc")
-      .onSnapshot(snapshot => {
-        let records = [];
-        snapshot.forEach(doc => {
-          let data = doc.data();
-          return records.push(
-            data.SDGRecords.flatMap(item => ({
-              id: item.Targets.join("-"),
-              Name: data.Name,
-              Research: data.Research.Title,
-              Goal1: item.Goals[0],
-              Goal2: item.Goals[1],
-              Target1: item.Targets[0],
-              Target2: item.Targets[1],
-              Interaction: item.Interaction.value,
-              Direction: item.Interaction.direction,
-              Type: item.Interaction.type
-            }))
-          );
-        });
-        setRecords(records.flatMap(x => x));
-      });
-    return () => unsubscribe();
-  }, []);
+  const { loading, error, data } = useQuery(RECORDS_DOWNLOAD);
+  if (loading) return <p>Loading ...</p>;
+  if (error) return <p>Error :(</p>;
+  const records = data.getAllResearchRecords.flatMap((dta) => {
+    return dta.SDGRecords.flatMap((item) => ({
+      id: item.Targets.join("-"),
+      Name: dta.Name,
+      Research: dta.Research.Title,
+      Goal1: item.Goals[0],
+      Goal2: item.Goals[1],
+      Target1: item.Targets[0],
+      Target2: item.Targets[1],
+      Interaction: item.Interaction.value,
+      Direction: item.Interaction.direction,
+      Type: item.Interaction.type,
+    }));
+  });
+  // const [records, setRecords] = useState([]);
+  // useEffect(() => {
+  //   const db = firestore();
+  //   unsubscribe = db
+  //     .collection("records")
+  //     .orderBy("created", "desc")
+  //     .onSnapshot((snapshot) => {
+  //       let records = [];
+  //       snapshot.forEach((doc) => {
+  //         let data = doc.data();
+  //         return records.push(
+  //           data.SDGRecords.flatMap((item) => ({
+  //             id: item.Targets.join("-"),
+  //             Name: data.Name,
+  //             Research: data.Research.Title,
+  //             Goal1: item.Goals[0],
+  //             Goal2: item.Goals[1],
+  //             Target1: item.Targets[0],
+  //             Target2: item.Targets[1],
+  //             Interaction: item.Interaction.value,
+  //             Direction: item.Interaction.direction,
+  //             Type: item.Interaction.type,
+  //           }))
+  //         );
+  //       });
+  //       setRecords(records.flatMap((x) => x));
+  //     });
+  //   return () => unsubscribe();
+  // }, []);
 
   return (
     <Fragment>
@@ -166,7 +247,7 @@ const DownloadCSV = props => {
           filename={"SDG-Records.csv"}
           target="_blank"
           className={classes.csvDownload}
-          onClick={event => {
+          onClick={(event) => {
             console.log(records);
           }}
         >
@@ -179,6 +260,7 @@ const DownloadCSV = props => {
 
 function InnerApp(props) {
   const classes = useStyles();
+  const [addRecords] = useMutation(ADD_RECORD);
   const { Step, NextStep, PrevStep, Submit, GoHome } = props;
   const { Records, CurrentRecord, FormData } = props;
   const { UpdateCurrent, RemoveCurrentRecord, UpdateCurrentRecord } = props;
@@ -349,9 +431,9 @@ export default function App() {
       Title: "",
       URL: "",
       Type: "",
-      Outreach: ""
+      Outreach: "",
     },
-    Coauthors: { Faculty: [] }
+    Coauthors: { Faculty: [] },
   });
   const [CurrentRecord, setCurrentRecord] = useState({
     Goals: [],
@@ -359,8 +441,8 @@ export default function App() {
     Interaction: {
       value: "",
       type: "",
-      direction: ""
-    }
+      direction: "",
+    },
   });
   const [Records, setRecords] = useState([]);
   const [NoError, setNoError] = useState();
@@ -371,13 +453,13 @@ export default function App() {
       Title: "",
       URL: "",
       Type: "",
-      Outreach: ""
+      Outreach: "",
     },
-    Coauthors: { Faculty: "" }
+    Coauthors: { Faculty: "" },
   });
 
   // METHODS -> FUNCTIONS
-  const UpdateRecords = event => {
+  const UpdateRecords = (event) => {
     event.preventDefault();
     /* const clicked_targets = [...document.getElementsByClassName("clicked-target-btn")]
      * clicked_targets.map(btn => btn.classList.toggle("clicked-target-btn"))
@@ -386,27 +468,27 @@ export default function App() {
     if (CurrentRecord.Targets.length <= 2) {
       _CurrentRecord = {
         ..._CurrentRecord,
-        Goals: _CurrentRecord.Goals
+        Goals: _CurrentRecord.Goals,
       };
     } else {
       _CurrentRecord = {
         ..._CurrentRecord,
-        Goals: _CurrentRecord.Targets.map(x => parseInt(x.split(".")[0]))
+        Goals: _CurrentRecord.Targets.map((x) => parseInt(x.split(".")[0])),
       };
     }
     setRecords([_CurrentRecord, ...Records]);
     setCurrentRecord({
       ...CurrentRecord,
       Targets: [],
-      Interaction: { value: "", type: "", direction: "" }
+      Interaction: { value: "", type: "", direction: "" },
     });
   };
-  const RemoveCurrentRecord = event => {
+  const RemoveCurrentRecord = (event) => {
     setRecords(
       Records.filter((value, idx) => String(idx) !== event.currentTarget.name)
     );
   };
-  const UpdateCurrent = input => event => {
+  const UpdateCurrent = (input) => (event) => {
     const newRecord = Records.map((record, idx) => {
       if (String(idx) === event.target.name) {
         record.Interaction[input] = event.target.value;
@@ -431,43 +513,43 @@ export default function App() {
   const UpdateCurrentRecord = (input, value) => {
     setCurrentRecord({
       ...CurrentRecord,
-      [input]: value
+      [input]: value,
     });
   };
-  const WriteData = data => {
+  const WriteData = (data) => {
     var db = firestore();
     db.collection("records")
       .add({ ...data, created: firestore.Timestamp.fromDate(new Date()) })
-      .then(function(docRef) {
+      .then(function (docRef) {
         console.log("Document written with ID: ", docRef.id);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.error("Error adding document: ", error);
       });
     /* Firebase.database().ref('/').push(data); */
     /* console.log("Data Saved"); */
   };
-  const Submit = event => {
+  const Submit = (event) => {
     event.preventDefault();
-    const data = {
+    const currentData = {
       Name: FormData.Name,
       Faculty: FormData.Faculty,
       Research: FormData.Research,
       Coauthors: FormData.Coauthors,
-      SDGRecords: Records
+      SDGRecords: Records,
     };
-    WriteData(data);
+    WriteData(currentData);
     NextStep(event);
   };
-  const NextStep = event => {
+  const NextStep = (event) => {
     event.preventDefault();
     setStep(Step + 1);
   };
-  const PrevStep = event => {
+  const PrevStep = (event) => {
     event.preventDefault();
     setStep(Step - 1);
   };
-  const GoHome = event => {
+  const GoHome = (event) => {
     event.preventDefault();
     setRecords([]);
     setCurrentRecord({
@@ -476,8 +558,8 @@ export default function App() {
       Interaction: {
         value: "",
         type: "",
-        direction: ""
-      }
+        direction: "",
+      },
     });
     setFormData({
       Name: FormData.Name,
@@ -486,13 +568,13 @@ export default function App() {
         Title: FormData.Research.Title,
         URL: "",
         Type: "",
-        Outreach: ""
+        Outreach: "",
       },
-      Coauthors: { Faculty: [] }
+      Coauthors: { Faculty: [] },
     });
     setStep(0);
   };
-  const checkValidFields = event => {
+  const checkValidFields = (event) => {
     let isValid = true;
     let errors = Errors;
 
@@ -519,7 +601,7 @@ export default function App() {
     } else if (FormData.Research.Title <= 5) {
       errors.Research = {
         ...errors.Research,
-        Title: "Name must be at least 5 character long."
+        Title: "Name must be at least 5 character long.",
       };
       isValid = false;
     }
@@ -541,7 +623,7 @@ export default function App() {
     } else if (!validateURL(FormData.Research.URL)) {
       errors.Research = {
         ...errors.Research,
-        URL: "Research URL is not valid. For DOI use doi.org/<<doi-number>>"
+        URL: "Research URL is not valid. For DOI use doi.org/<<doi-number>>",
       };
       isValid = false;
     }
@@ -566,7 +648,7 @@ export default function App() {
     setErrors({ ...Errors, ...errors });
     return isValid;
   };
-  const HandleFormChange = input => event => {
+  const HandleFormChange = (input) => (event) => {
     var errors = Errors;
     const fields = input.split(".");
     if (fields.length < 2) {
@@ -586,7 +668,7 @@ export default function App() {
       UpdateFormData(input, event);
     }
   };
-  const CheckAndProceed = event => {
+  const CheckAndProceed = (event) => {
     event.preventDefault();
     const isValid = checkValidFields(event);
     // Call checkValidFields function
@@ -600,30 +682,32 @@ export default function App() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <InnerApp
-        Records={Records}
-        RemoveCurrentRecord={RemoveCurrentRecord}
-        UpdateCurrent={UpdateCurrent}
-        Step={Step}
-        StepConfig={StepConfig}
-        NextStep={NextStep}
-        FormData={FormData}
-        CurrentRecord={CurrentRecord}
-        UpdateFormData={UpdateFormData}
-        UpdateCurrentRecord={UpdateCurrentRecord}
-        UpdateRecords={UpdateRecords}
-        PrevStep={PrevStep}
-        GoHome={GoHome}
-        Submit={Submit}
-        Errors={Errors}
-        setErrors={setErrors}
-        NoError={NoError}
-        setNoError={setNoError}
-        checkValidFields={checkValidFields}
-        HandleChange={HandleFormChange}
-        CheckAndProceed={CheckAndProceed}
-      />
-    </ThemeProvider>
+    <ApolloProvider client={client}>
+      <ThemeProvider theme={theme}>
+        <InnerApp
+          Records={Records}
+          RemoveCurrentRecord={RemoveCurrentRecord}
+          UpdateCurrent={UpdateCurrent}
+          Step={Step}
+          StepConfig={StepConfig}
+          NextStep={NextStep}
+          FormData={FormData}
+          CurrentRecord={CurrentRecord}
+          UpdateFormData={UpdateFormData}
+          UpdateCurrentRecord={UpdateCurrentRecord}
+          UpdateRecords={UpdateRecords}
+          PrevStep={PrevStep}
+          GoHome={GoHome}
+          Submit={Submit}
+          Errors={Errors}
+          setErrors={setErrors}
+          NoError={NoError}
+          setNoError={setNoError}
+          checkValidFields={checkValidFields}
+          HandleChange={HandleFormChange}
+          CheckAndProceed={CheckAndProceed}
+        />
+      </ThemeProvider>
+    </ApolloProvider>
   );
 }
