@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "2228b2e256178162a12fcb38f25b87ab",
+    "revision": "a8b9e38fc5b9ed74920260691d003004",
     "url": "/Towards-SDG/education/index.html"
   },
   {
-    "revision": "5e50712877442b8572c4",
+    "revision": "2f6f4f51b57a2fc8f08f",
     "url": "/Towards-SDG/education/static/css/main.adb9027e.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Towards-SDG/education/static/js/2.62377ba7.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "5e50712877442b8572c4",
-    "url": "/Towards-SDG/education/static/js/main.645387fe.chunk.js"
+    "revision": "2f6f4f51b57a2fc8f08f",
+    "url": "/Towards-SDG/education/static/js/main.12d6d03d.chunk.js"
   },
   {
     "revision": "a6541f603e726e7d76d1",

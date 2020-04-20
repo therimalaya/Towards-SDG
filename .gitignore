@@ -3,3 +3,4 @@
 node
 react-cloned
 node_module*
+.env

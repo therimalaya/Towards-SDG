@@ -29,22 +29,22 @@ const theme = createMuiTheme({
       light: "#33ae99",
       dark: "#009a80",
       main: "#006b59",
-      contrastText: "#fff"
+      contrastText: "#fff",
     },
     secondary: {
       main: "#556680",
-      contrastText: "#fff"
+      contrastText: "#fff",
     },
     background: {
       paper: "#fff",
       default: "#fafafa",
-      light: "#F0F8FF"
-    }
-  }
+      light: "#F0F8FF",
+    },
+  },
 });
 // May be create responseive font sizes
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     height: "100vh",
     display: "flex",
@@ -52,32 +52,32 @@ const useStyles = makeStyles(theme => ({
     flexWrap: "nowrap",
     overflow: "hidden",
     margin: "0px",
-    boxSizing: "border-box"
+    boxSizing: "border-box",
   },
   sidebar: {
     display: "flex",
     flexDirection: "column",
     height: "100%",
-    flexShrink: 0
+    flexShrink: 0,
   },
   header: {
     background: 'url("./images/header.jpg")',
     backgroundPosition: "center",
     backgroundSize: "cover",
     minHeight: "150px",
-    borderBottom: `5px solid ${theme.palette.primary.main}`
+    borderBottom: `5px solid ${theme.palette.primary.main}`,
   },
   sideinfo: {
     backgroundColor: "#efefef",
     padding: "1rem",
-    overflowY: "auto"
+    overflowY: "auto",
   },
   sidefooter: {
     backgroundColor: theme.palette.primary.main,
     backgroundImage: `url(./images/NMBUwhite.svg)`,
     backgroundPosition: "center",
     backgroundSize: "cover",
-    height: "50px"
+    height: "50px",
   },
   sidefooterRecords: {
     display: "flex",
@@ -86,7 +86,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.default,
     borderTopWidth: "5px",
     borderTopStyle: "solid",
-    borderTopColor: theme.palette.primary.main
+    borderTopColor: theme.palette.primary.main,
   },
   mainpanel: {
     display: "flex",
@@ -94,26 +94,26 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "center",
     alignContent: "flex-start",
     padding: "20px",
-    paddingBottom: 0
+    paddingBottom: 0,
   },
   mainpanelBox: {
     display: "flex",
     flexDirection: "column",
     height: "100%",
-    width: "100%"
+    width: "100%",
   },
   mainContent: {
     padding: "12px",
     flexGrow: 1,
-    overflowY: "auto"
+    overflowY: "auto",
   },
   csvDownload: {
     textDecoration: "none",
-    color: theme.palette.primary.contrastText
-  }
+    color: theme.palette.primary.contrastText,
+  },
 }));
 
-const DownloadCSV = props => {
+const DownloadCSV = (props) => {
   const [records, setRecords] = useState([]);
   const classes = useStyles();
   useEffect(() => {
@@ -121,12 +121,12 @@ const DownloadCSV = props => {
     unsubscribe = db
       .collection("education")
       .orderBy("created", "desc")
-      .onSnapshot(snapshot => {
+      .onSnapshot((snapshot) => {
         let records = [];
-        snapshot.forEach(doc => {
+        snapshot.forEach((doc) => {
           let data = doc.data();
           return records.push(
-            data.SDGRecords.flatMap(item => ({
+            data.SDGRecords.flatMap((item) => ({
               id: item.Targets.join("-"),
               CourseName: data.CourseName,
               CourseCode: data.CourseCode,
@@ -136,11 +136,11 @@ const DownloadCSV = props => {
               Target2: item.Targets[1],
               Interaction: item.Interaction.value,
               Direction: item.Interaction.direction,
-              Type: item.Interaction.type
+              Type: item.Interaction.type,
             }))
           );
         });
-        setRecords(records.flatMap(x => x));
+        setRecords(records.flatMap((x) => x));
       });
     return () => unsubscribe();
   }, []);
@@ -153,7 +153,7 @@ const DownloadCSV = props => {
           filename={"SDG-Records.csv"}
           target="_blank"
           className={classes.csvDownload}
-          onClick={event => {
+          onClick={(event) => {
             console.log(records);
           }}
         >
@@ -328,7 +328,7 @@ export default function App() {
   }
 
   // STATES
-  const [Step, setStep] = useState(1);
+  const [Step, setStep] = useState(0);
   const [FormData, setFormData] = useState({
     Type: "course",
     CourseCode: "",
@@ -338,7 +338,7 @@ export default function App() {
     Faculty: "",
     RelatedFaculties: [],
     Teaching: "",
-    SustainFocus: ""
+    SustainFocus: "",
   });
   const [CurrentRecord, setCurrentRecord] = useState({
     Goals: [],
@@ -346,8 +346,8 @@ export default function App() {
     Interaction: {
       value: "",
       type: "",
-      direction: ""
-    }
+      direction: "",
+    },
   });
   const [Records, setRecords] = useState([]);
   const [NoError, setNoError] = useState();
@@ -360,11 +360,11 @@ export default function App() {
     Faculty: "",
     RelatedFaculties: "",
     Teaching: "",
-    SustainFocus: ""
+    SustainFocus: "",
   });
 
   // METHODS -> FUNCTIONS
-  const UpdateRecords = event => {
+  const UpdateRecords = (event) => {
     event.preventDefault();
     /* const clicked_targets = [...document.getElementsByClassName("clicked-target-btn")]
      * clicked_targets.map(btn => btn.classList.toggle("clicked-target-btn"))
@@ -373,27 +373,27 @@ export default function App() {
     if (CurrentRecord.Targets.length <= 2) {
       _CurrentRecord = {
         ..._CurrentRecord,
-        Goals: _CurrentRecord.Goals
+        Goals: _CurrentRecord.Goals,
       };
     } else {
       _CurrentRecord = {
         ..._CurrentRecord,
-        Goals: _CurrentRecord.Targets.map(x => parseInt(x.split(".")[0]))
+        Goals: _CurrentRecord.Targets.map((x) => parseInt(x.split(".")[0])),
       };
     }
     setRecords([_CurrentRecord, ...Records]);
     setCurrentRecord({
       ...CurrentRecord,
       Targets: [],
-      Interaction: { value: "", type: "", direction: "" }
+      Interaction: { value: "", type: "", direction: "" },
     });
   };
-  const RemoveCurrentRecord = event => {
+  const RemoveCurrentRecord = (event) => {
     setRecords(
       Records.filter((value, idx) => String(idx) !== event.currentTarget.name)
     );
   };
-  const UpdateCurrent = input => event => {
+  const UpdateCurrent = (input) => (event) => {
     const newRecord = Records.map((record, idx) => {
       if (String(idx) === event.target.name) {
         record.Interaction[input] = event.target.value;
@@ -407,29 +407,29 @@ export default function App() {
   const UpdateFormData = (field, data) => {
     setFormData({
       ...FormData,
-      ...{ [field]: data }
+      ...{ [field]: data },
     });
   };
   const UpdateCurrentRecord = (input, value) => {
     setCurrentRecord({
       ...CurrentRecord,
-      [input]: value
+      [input]: value,
     });
   };
-  const WriteData = data => {
+  const WriteData = (data) => {
     var db = firestore();
     db.collection("education")
       .add({ ...data, created: firestore.Timestamp.fromDate(new Date()) })
-      .then(function(docRef) {
+      .then(function (docRef) {
         console.log("Document written with ID: ", docRef.id);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.error("Error adding document: ", error);
       });
     /* Firebase.database().ref('/').push(data); */
     /* console.log("Data Saved"); */
   };
-  const Submit = event => {
+  const Submit = (event) => {
     event.preventDefault();
     const data = {
       Type: FormData.Type,
@@ -441,20 +441,20 @@ export default function App() {
       RelatedFaculties: FormData.RelatedFaculties,
       Teaching: FormData.Teaching,
       SustainFocus: FormData.SustainFocus,
-      SDGRecords: Records
+      SDGRecords: Records,
     };
     WriteData(data);
     NextStep(event);
   };
-  const NextStep = event => {
+  const NextStep = (event) => {
     event.preventDefault();
     setStep(Step + 1);
   };
-  const PrevStep = event => {
+  const PrevStep = (event) => {
     event.preventDefault();
     setStep(Step - 1);
   };
-  const GoHome = event => {
+  const GoHome = (event) => {
     event.preventDefault();
     setRecords([]);
     setCurrentRecord({
@@ -463,8 +463,8 @@ export default function App() {
       Interaction: {
         value: "",
         type: "",
-        direction: ""
-      }
+        direction: "",
+      },
     });
     setFormData({
       Type: FormData.Type,
@@ -475,11 +475,11 @@ export default function App() {
       Faculty: "",
       RelatedFaculties: [],
       Teaching: "",
-      SustainFocus: ""
+      SustainFocus: "",
     });
     setStep(0);
   };
-  const checkValidFields = event => {
+  const checkValidFields = (event) => {
     let isValid = true;
     let errors = Errors;
 
@@ -496,7 +496,7 @@ export default function App() {
     setErrors({ ...Errors, ...errors });
     return isValid;
   };
-  const HandleFormChange = input => event => {
+  const HandleFormChange = (input) => (event) => {
     var errors = Errors;
     const fields = input.split(".");
     if (fields.length < 2) {
@@ -521,7 +521,7 @@ export default function App() {
     }
     UpdateFormData(input, newValue);
   };
-  const CheckAndProceed = event => {
+  const CheckAndProceed = (event) => {
     event.preventDefault();
     const isValid = checkValidFields(event);
     // Call checkValidFields function
