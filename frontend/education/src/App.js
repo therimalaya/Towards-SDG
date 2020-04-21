@@ -1,4 +1,12 @@
 import React, { Fragment, useEffect, useState } from "react";
+import {
+  useQuery,
+  gql,
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache,
+  HttpLink,
+} from "@apollo/client";
 
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import { firestore, apps, initializeApp } from "firebase";
@@ -20,7 +28,16 @@ import { FirebaseConfig } from "./config/firebase-config.js";
 
 import { CSVLink } from "react-csv";
 
-// Define variable;
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: new HttpLink({
+    uri: "http://localhost:9000/",
+    fetchOptions: {
+      mode: "no-cors",
+    },
+  }),
+});
+
 var unsubscribe;
 
 const theme = createMuiTheme({
@@ -116,34 +133,34 @@ const useStyles = makeStyles((theme) => ({
 const DownloadCSV = (props) => {
   const [records, setRecords] = useState([]);
   const classes = useStyles();
-  useEffect(() => {
-    const db = firestore();
-    unsubscribe = db
-      .collection("education")
-      .orderBy("created", "desc")
-      .onSnapshot((snapshot) => {
-        let records = [];
-        snapshot.forEach((doc) => {
-          let data = doc.data();
-          return records.push(
-            data.SDGRecords.flatMap((item) => ({
-              id: item.Targets.join("-"),
-              CourseName: data.CourseName,
-              CourseCode: data.CourseCode,
-              Goal1: item.Goals[0],
-              Goal2: item.Goals[1],
-              Target1: item.Targets[0],
-              Target2: item.Targets[1],
-              Interaction: item.Interaction.value,
-              Direction: item.Interaction.direction,
-              Type: item.Interaction.type,
-            }))
-          );
-        });
-        setRecords(records.flatMap((x) => x));
-      });
-    return () => unsubscribe();
-  }, []);
+  // useEffect(() => {
+  //   const db = firestore();
+  //   unsubscribe = db
+  //     .collection("education")
+  //     .orderBy("created", "desc")
+  //     .onSnapshot((snapshot) => {
+  //       let records = [];
+  //       snapshot.forEach((doc) => {
+  //         let data = doc.data();
+  //         return records.push(
+  //           data.SDGRecords.flatMap((item) => ({
+  //             id: item.Targets.join("-"),
+  //             CourseName: data.CourseName,
+  //             CourseCode: data.CourseCode,
+  //             Goal1: item.Goals[0],
+  //             Goal2: item.Goals[1],
+  //             Target1: item.Targets[0],
+  //             Target2: item.Targets[1],
+  //             Interaction: item.Interaction.value,
+  //             Direction: item.Interaction.direction,
+  //             Type: item.Interaction.type,
+  //           }))
+  //         );
+  //       });
+  //       setRecords(records.flatMap((x) => x));
+  //     });
+  //   return () => unsubscribe();
+  // }, []);
 
   return (
     <Fragment>
@@ -175,150 +192,152 @@ function InnerApp(props) {
   const { StepConfig } = props;
 
   return (
-    <Grid container className={classes.root}>
-      <Router basename="/">
-        <Switch>
-          <Route path="/records">
-            <Grid item className={classes.sidebar} xs={3}>
-              <Box className={classes.header}></Box>
-              <Box className={classes.sideinfo} flexGrow={1}>
-                <Box height="100%"></Box>
-              </Box>
-              <Box className={classes.sidefooterRecords}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="large"
-                  className={classes.button}
-                  startIcon={<SaveIcon />}
-                >
-                  <DownloadCSV />
-                </Button>
-              </Box>
-            </Grid>
-            <Grid item container className={classes.mainpanel} xs={9}>
-              <Box className={classes.mainpanelBox}>
-                <AllRecords />
-              </Box>
-            </Grid>
-          </Route>
-          <Route path="/network">
-            <Grid item className={classes.sidebar} xs={3}>
-              <Box className={classes.header}></Box>
-              <Box className={classes.sideinfo} flexGrow={1}></Box>
-              <Box className={classes.sidefooter}></Box>
-            </Grid>
-            <Grid item container className={classes.mainpanel} xs={9}>
-              <Box className={classes.mainpanelBox}>
-                <h1>We will come back soon!</h1>
-                {/* <NetworkSDG /> */}
-              </Box>
-            </Grid>
-          </Route>
-          <Route path="/heatmap">
-            <Grid item className={classes.sidebar} xs={3}>
-              <Box className={classes.header}></Box>
-              <Box className={classes.sideinfo} flexGrow={1}></Box>
-              <Box className={classes.sidefooter}></Box>
-            </Grid>
-            <Grid item container className={classes.mainpanel} xs={9}>
-              <Box className={classes.mainpanelBox}>
-                <Heatmap />
-              </Box>
-            </Grid>
-          </Route>
-          <Route path="/">
-            <Grid item className={classes.sidebar} xs={3}>
-              <Box className={classes.header}></Box>
-              <Box className={classes.sideinfo} flexGrow={1}>
-                <SideInfo
-                  Records={Records}
-                  RemoveCurrentRecord={RemoveCurrentRecord}
-                  Step={Step}
-                  StepConfig={StepConfig}
-                />
-              </Box>
-              <Box className={classes.sidefooter}></Box>
-            </Grid>
-            <Grid item container className={classes.mainpanel} xs={9}>
-              <Box className={classes.mainpanelBox}>
-                {Step === 0 ? (
-                  <Fragment>
-                    <Box className={classes.mainContent}>
-                      <FrontCover NextStep={NextStep} />
-                    </Box>
-                    <Box py="15px">
-                      <ButtonGroup variant="contained" color="primary">
-                        <Button onClick={NextStep}>Get Started</Button>
-                      </ButtonGroup>
-                    </Box>
-                  </Fragment>
-                ) : (
-                  <Fragment>
-                    <Box className={classes.mainContent}>
-                      <MainForm
-                        Step={Step}
-                        FormData={FormData}
-                        CurrentRecord={CurrentRecord}
-                        Records={Records}
-                        UpdateFormData={UpdateFormData}
-                        UpdateCurrentRecord={UpdateCurrentRecord}
-                        UpdateRecords={UpdateRecords}
-                        UpdateCurrent={UpdateCurrent}
-                        RemoveCurrentRecord={RemoveCurrentRecord}
-                        NextStep={NextStep}
-                        PrevStep={PrevStep}
-                        GoHome={GoHome}
-                        Submit={Submit}
-                        Errors={Errors}
-                        setErrors={setErrors}
-                        NoError={NoError}
-                        setNoError={setNoError}
-                        checkValidFields={checkValidFields}
-                        HandleChange={HandleChange}
-                        CheckAndProceed={CheckAndProceed}
-                      />
-                    </Box>
-                    <Box py="15px">
-                      <ButtonGroup variant="contained" color="primary">
-                        {[2, 3, 4].includes(Step) ? (
-                          <Button onClick={PrevStep}>Previous</Button>
-                        ) : null}
-                        {Step === 4 ? (
-                          <Button onClick={Submit}>Submit</Button>
-                        ) : null}
-                        {Step === 3 ? (
-                          <Button onClick={NextStep}>Next</Button>
-                        ) : null}
-                        {Step === 2 ? (
-                          <Button
-                            onClick={NextStep}
-                            disabled={!CurrentRecord.Goals.length}
-                          >
-                            Next
-                          </Button>
-                        ) : null}
-                        {Step === 1 ? (
-                          <Button onClick={CheckAndProceed}>Next</Button>
-                        ) : null}
-                        {Step === 5 ? (
-                          <Button onClick={GoHome}>Start</Button>
-                        ) : null}
-                        {Step === 3 ? (
-                          <Button onClick={UpdateRecords}>
-                            Add Selected Record
-                          </Button>
-                        ) : null}
-                      </ButtonGroup>
-                    </Box>
-                  </Fragment>
-                )}
-              </Box>
-            </Grid>
-          </Route>
-        </Switch>
-      </Router>
-    </Grid>
+    <ApolloProvider client={client}>
+      <Grid container className={classes.root}>
+        <Router basename="/">
+          <Switch>
+            <Route path="/records">
+              <Grid item className={classes.sidebar} xs={3}>
+                <Box className={classes.header}></Box>
+                <Box className={classes.sideinfo} flexGrow={1}>
+                  <Box height="100%"></Box>
+                </Box>
+                <Box className={classes.sidefooterRecords}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    className={classes.button}
+                    startIcon={<SaveIcon />}
+                  >
+                    <DownloadCSV />
+                  </Button>
+                </Box>
+              </Grid>
+              <Grid item container className={classes.mainpanel} xs={9}>
+                <Box className={classes.mainpanelBox}>
+                  <AllRecords />
+                </Box>
+              </Grid>
+            </Route>
+            <Route path="/network">
+              <Grid item className={classes.sidebar} xs={3}>
+                <Box className={classes.header}></Box>
+                <Box className={classes.sideinfo} flexGrow={1}></Box>
+                <Box className={classes.sidefooter}></Box>
+              </Grid>
+              <Grid item container className={classes.mainpanel} xs={9}>
+                <Box className={classes.mainpanelBox}>
+                  <h1>We will come back soon!</h1>
+                  {/* <NetworkSDG /> */}
+                </Box>
+              </Grid>
+            </Route>
+            <Route path="/heatmap">
+              <Grid item className={classes.sidebar} xs={3}>
+                <Box className={classes.header}></Box>
+                <Box className={classes.sideinfo} flexGrow={1}></Box>
+                <Box className={classes.sidefooter}></Box>
+              </Grid>
+              <Grid item container className={classes.mainpanel} xs={9}>
+                <Box className={classes.mainpanelBox}>
+                  <Heatmap />
+                </Box>
+              </Grid>
+            </Route>
+            <Route path="/">
+              <Grid item className={classes.sidebar} xs={3}>
+                <Box className={classes.header}></Box>
+                <Box className={classes.sideinfo} flexGrow={1}>
+                  <SideInfo
+                    Records={Records}
+                    RemoveCurrentRecord={RemoveCurrentRecord}
+                    Step={Step}
+                    StepConfig={StepConfig}
+                  />
+                </Box>
+                <Box className={classes.sidefooter}></Box>
+              </Grid>
+              <Grid item container className={classes.mainpanel} xs={9}>
+                <Box className={classes.mainpanelBox}>
+                  {Step === 0 ? (
+                    <Fragment>
+                      <Box className={classes.mainContent}>
+                        <FrontCover NextStep={NextStep} />
+                      </Box>
+                      <Box py="15px">
+                        <ButtonGroup variant="contained" color="primary">
+                          <Button onClick={NextStep}>Get Started</Button>
+                        </ButtonGroup>
+                      </Box>
+                    </Fragment>
+                  ) : (
+                    <Fragment>
+                      <Box className={classes.mainContent}>
+                        <MainForm
+                          Step={Step}
+                          FormData={FormData}
+                          CurrentRecord={CurrentRecord}
+                          Records={Records}
+                          UpdateFormData={UpdateFormData}
+                          UpdateCurrentRecord={UpdateCurrentRecord}
+                          UpdateRecords={UpdateRecords}
+                          UpdateCurrent={UpdateCurrent}
+                          RemoveCurrentRecord={RemoveCurrentRecord}
+                          NextStep={NextStep}
+                          PrevStep={PrevStep}
+                          GoHome={GoHome}
+                          Submit={Submit}
+                          Errors={Errors}
+                          setErrors={setErrors}
+                          NoError={NoError}
+                          setNoError={setNoError}
+                          checkValidFields={checkValidFields}
+                          HandleChange={HandleChange}
+                          CheckAndProceed={CheckAndProceed}
+                        />
+                      </Box>
+                      <Box py="15px">
+                        <ButtonGroup variant="contained" color="primary">
+                          {[2, 3, 4].includes(Step) ? (
+                            <Button onClick={PrevStep}>Previous</Button>
+                          ) : null}
+                          {Step === 4 ? (
+                            <Button onClick={Submit}>Submit</Button>
+                          ) : null}
+                          {Step === 3 ? (
+                            <Button onClick={NextStep}>Next</Button>
+                          ) : null}
+                          {Step === 2 ? (
+                            <Button
+                              onClick={NextStep}
+                              disabled={!CurrentRecord.Goals.length}
+                            >
+                              Next
+                            </Button>
+                          ) : null}
+                          {Step === 1 ? (
+                            <Button onClick={CheckAndProceed}>Next</Button>
+                          ) : null}
+                          {Step === 5 ? (
+                            <Button onClick={GoHome}>Start</Button>
+                          ) : null}
+                          {Step === 3 ? (
+                            <Button onClick={UpdateRecords}>
+                              Add Selected Record
+                            </Button>
+                          ) : null}
+                        </ButtonGroup>
+                      </Box>
+                    </Fragment>
+                  )}
+                </Box>
+              </Grid>
+            </Route>
+          </Switch>
+        </Router>
+      </Grid>
+    </ApolloProvider>
   );
 }
 

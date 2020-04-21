@@ -1,4 +1,4 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 import timestamps from "mongoose-timestamp";
 
 const AllowedFaculties = {
@@ -13,20 +13,22 @@ const AllowedFaculties = {
 };
 
 const ResearchSchema = new mongoose.Schema({
-  name: String,
-  faculty: String,
-  coauthorsFaculty: [String],
-  research: new mongoose.Schema({
-    outreach: String,
-    title: String,
-    type: String,
-    url: String,
+  Name: String,
+  Faculty: String,
+  Coauthors: new mongoose.Schema({
+    Faculty: [String],
   }),
-  sdgrecord: [
+  Research: new mongoose.Schema({
+    Outreach: String,
+    Title: String,
+    Type: String,
+    URL: String,
+  }),
+  SDGRecords: [
     new mongoose.Schema({
-      goals: [Number],
-      targets: [String],
-      interaction: new mongoose.Schema({
+      Goals: [Number],
+      Targets: [String],
+      Interaction: new mongoose.Schema({
         direction: String,
         type: String,
         value: String,

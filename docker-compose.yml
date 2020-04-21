@@ -2,18 +2,20 @@ version: "3"
 
 services:
   app:
-    container_name: sdg-app
+    container_name: app
     build: ./frontend
     volumes:
-      - ./frontend:/app
-      - /app/node_modules
+      - ./frontend/research:/app/research
+      - ./frontend/education:/app/education
+      - ./frontend/home:/app/home
+      - ./nginx.conf:/nginx/nginx.conf
     ports:
       - "80:80"
     depends_on:
       - api
 
   api:
-    container_name: sdg-api
+    container_name: api
     build: ./api
     env_file:
       - .env
@@ -28,13 +30,13 @@ services:
       - mongo
 
   mongo:
+    container_name: mongo
     image: mongo:latest
     restart: always
     ports:
       - "27017:27017"
     volumes:
       - mongodata:/data/db
-    container_name: mongo
     hostname: mongo
     env_file:
       - .env

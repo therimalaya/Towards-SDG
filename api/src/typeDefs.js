@@ -13,24 +13,27 @@ export const typeDefs = gql`
   # }
   type ResearchRecord {
     _id: ID!
-    name: String
-    faculty: String
-    coauthorsFaculty: [String]
-    research: Research
-    sdgrecord: [SDGResearchRecord]
+    Name: String
+    Faculty: String
+    Coauthors: Coauthor
+    Research: Research
+    SDGRecords: [SDGResearchRecord]
     createdAt: String
     updatedAt: String
   }
+  type Coauthor {
+    Faculty: [String]
+  }
   type Research {
-    outreach: String
-    title: String
-    type: String
-    url: String
+    Outreach: String
+    Title: String
+    Type: String
+    URL: String
   }
   type SDGResearchRecord {
-    goals: [Int]
-    interaction: Interaction
-    targets: [String]
+    Goals: [Int]
+    Interaction: Interaction
+    Targets: [String]
   }
   type Interaction {
     direction: String
@@ -46,15 +49,18 @@ export const typeDefs = gql`
     createResearchRecord(data: ResearchRecordInput): ResearchRecord!
   }
   input ResearchInput {
-    outreach: String
-    title: String
-    type: String
-    url: String
+    Outreach: String
+    Title: String
+    Type: String
+    URL: String
+  }
+  input CoauthorsInput {
+    Faculty: [String]
   }
   input SDGResearchRecordInput {
-    goals: [Int]
-    interaction: InteractionInput
-    targets: [String]
+    Goals: [Int]
+    Interaction: InteractionInput
+    Targets: [String]
   }
   input InteractionInput {
     direction: String
@@ -62,10 +68,10 @@ export const typeDefs = gql`
     value: String
   }
   input ResearchRecordInput {
-    name: String
-    faculty: String
-    coauthorsFaculty: [String]
-    research: ResearchInput
-    sdgrecord: [SDGResearchRecordInput]
+    Name: String
+    Faculty: String
+    Coauthors: CoauthorsInput
+    Research: ResearchInput
+    SDGRecords: [SDGResearchRecordInput]
   }
 `;

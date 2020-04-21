@@ -1,38 +1,28 @@
 {
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://therimalaya.github.io/Towards-SDG/research",
+  "homepage": ".",
   "dependencies": {
     "@antv/graphin": "^1.0.5",
-    "@antv/graphin-components": "^1.0.4",
     "@apollo/client": "^3.0.0-beta.43",
     "@material-ui/core": "^4.9.0",
     "@material-ui/icons": "^4.9.1",
-    "@material-ui/lab": "^4.0.0-alpha.40",
     "classname": "0.0.0",
-    "color": "^3.1.2",
     "d3": "^5.15.0",
-    "firebase": "^7.5.0",
     "lodash": "^4.17.15",
-    "node-pre-gyp": "^0.14.0",
     "node-sass": "^4.13.1",
     "react": "^16.12.0",
     "react-circos": "^1.0.0",
     "react-csv": "^2.0.1",
     "react-dom": "^16.12.0",
-    "react-modal": "^3.11.1",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.0",
-    "react-select": "^3.0.8",
-    "styled-components": "^4.4.1"
+    "react-scripts": "3.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "predeploy": "rm -r ../home/research && npm run build && mv build ../home/research",
-    "deploy": "gh-pages -d ../home"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"

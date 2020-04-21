@@ -20,14 +20,14 @@ const startServer = async () => {
     typeDefs,
     resolvers,
     introspection: true,
-    playground: {
-      settings: {
-        "request.credentials": "same-origin",
-      },
-    },
-    subscriptions: {
-      path: "/api",
-    },
+    // playground: {
+    //   settings: {
+    //     "request.credentials": "same-origin",
+    //   },
+    // },
+    // subscriptions: {
+    //   path: "/api",
+    // },
   });
 
   server.applyMiddleware({ app, path: "/" });

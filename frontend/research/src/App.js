@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import {
   useQuery,
   useMutation,
@@ -10,7 +10,6 @@ import {
 } from "@apollo/client";
 
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
-import { firestore, apps, initializeApp } from "firebase";
 
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider, makeStyles } from "@material-ui/core/styles";
@@ -25,7 +24,6 @@ import NetworkSDG from "./components/Network";
 import Heatmap from "./components/Heatmap";
 
 import { StepConfig } from "./config/app-config";
-import { FirebaseConfig } from "./config/firebase-config.js";
 
 import { CSVLink } from "react-csv";
 
@@ -33,12 +31,10 @@ import { CSVLink } from "react-csv";
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({
-    uri: "http://localhost:9000/",
+    uri: "http://api:9000/graphql",
+    credentials: "same-origin",
   }),
 });
-
-// Define variable;
-var unsubscribe;
 
 const theme = createMuiTheme({
   palette: {
@@ -143,7 +139,7 @@ const validateURL = (str) => {
   return !!pattern.test(str);
 };
 
-const RECORDS_DOWNLOAD = gql`
+const CSV_DOWNLOAD = gql`
   {
     getAllResearchRecords {
       Name
@@ -192,7 +188,7 @@ const ADD_RECORD = gql`
 
 const DownloadCSV = (props) => {
   const classes = useStyles();
-  const { loading, error, data } = useQuery(RECORDS_DOWNLOAD);
+  const { loading, error, data } = useQuery(CSV_DOWNLOAD);
   if (loading) return <p>Loading ...</p>;
   if (error) return <p>Error :(</p>;
   const records = data.getAllResearchRecords.flatMap((dta) => {
@@ -209,36 +205,6 @@ const DownloadCSV = (props) => {
       Type: item.Interaction.type,
     }));
   });
-  // const [records, setRecords] = useState([]);
-  // useEffect(() => {
-  //   const db = firestore();
-  //   unsubscribe = db
-  //     .collection("records")
-  //     .orderBy("created", "desc")
-  //     .onSnapshot((snapshot) => {
-  //       let records = [];
-  //       snapshot.forEach((doc) => {
-  //         let data = doc.data();
-  //         return records.push(
-  //           data.SDGRecords.flatMap((item) => ({
-  //             id: item.Targets.join("-"),
-  //             Name: data.Name,
-  //             Research: data.Research.Title,
-  //             Goal1: item.Goals[0],
-  //             Goal2: item.Goals[1],
-  //             Target1: item.Targets[0],
-  //             Target2: item.Targets[1],
-  //             Interaction: item.Interaction.value,
-  //             Direction: item.Interaction.direction,
-  //             Type: item.Interaction.type,
-  //           }))
-  //         );
-  //       });
-  //       setRecords(records.flatMap((x) => x));
-  //     });
-  //   return () => unsubscribe();
-  // }, []);
-
   return (
     <Fragment>
       {records.length > 0 ? (
@@ -260,14 +226,22 @@ const DownloadCSV = (props) => {
 
 function InnerApp(props) {
   const classes = useStyles();
-  const [addRecords] = useMutation(ADD_RECORD);
-  const { Step, NextStep, PrevStep, Submit, GoHome } = props;
+  const [addRecords] = useMutation(ADD_RECORD, {
+    onError: () => console.log("Error!"),
+    onCompleted: () => GoHome(),
+  });
+  const { Step, NextStep, PrevStep, GoHome } = props;
   const { Records, CurrentRecord, FormData } = props;
   const { UpdateCurrent, RemoveCurrentRecord, UpdateCurrentRecord } = props;
   const { UpdateFormData, UpdateRecords } = props;
   const { Errors, setErrors, NoError, setNoError } = props;
   const { checkValidFields, HandleChange, CheckAndProceed } = props;
   const { StepConfig } = props;
+  const SubmitData = (event) => {
+    event.preventDefault();
+    addRecords({ variables: { data: { ...FormData, SDGRecords: Records } } });
+    // NextStep(event);
+  };
 
   return (
     <Grid container className={classes.root}>
@@ -361,10 +335,6 @@ function InnerApp(props) {
                         UpdateRecords={UpdateRecords}
                         UpdateCurrent={UpdateCurrent}
                         RemoveCurrentRecord={RemoveCurrentRecord}
-                        NextStep={NextStep}
-                        PrevStep={PrevStep}
-                        GoHome={GoHome}
-                        Submit={Submit}
                         Errors={Errors}
                         setErrors={setErrors}
                         NoError={NoError}
@@ -380,7 +350,7 @@ function InnerApp(props) {
                           <Button onClick={PrevStep}>Previous</Button>
                         ) : null}
                         {Step === 4 ? (
-                          <Button onClick={Submit}>Submit</Button>
+                          <Button onClick={SubmitData}>Submit</Button>
                         ) : null}
                         {Step === 3 ? (
                           <Button onClick={NextStep}>Next</Button>
@@ -418,10 +388,6 @@ function InnerApp(props) {
 }
 
 export default function App() {
-  if (!apps.length) {
-    initializeApp(FirebaseConfig);
-  }
-
   // STATES
   const [Step, setStep] = useState(0);
   const [FormData, setFormData] = useState({
@@ -515,31 +481,6 @@ export default function App() {
       ...CurrentRecord,
       [input]: value,
     });
-  };
-  const WriteData = (data) => {
-    var db = firestore();
-    db.collection("records")
-      .add({ ...data, created: firestore.Timestamp.fromDate(new Date()) })
-      .then(function (docRef) {
-        console.log("Document written with ID: ", docRef.id);
-      })
-      .catch(function (error) {
-        console.error("Error adding document: ", error);
-      });
-    /* Firebase.database().ref('/').push(data); */
-    /* console.log("Data Saved"); */
-  };
-  const Submit = (event) => {
-    event.preventDefault();
-    const currentData = {
-      Name: FormData.Name,
-      Faculty: FormData.Faculty,
-      Research: FormData.Research,
-      Coauthors: FormData.Coauthors,
-      SDGRecords: Records,
-    };
-    WriteData(currentData);
-    NextStep(event);
   };
   const NextStep = (event) => {
     event.preventDefault();
@@ -698,7 +639,6 @@ export default function App() {
           UpdateRecords={UpdateRecords}
           PrevStep={PrevStep}
           GoHome={GoHome}
-          Submit={Submit}
           Errors={Errors}
           setErrors={setErrors}
           NoError={NoError}
