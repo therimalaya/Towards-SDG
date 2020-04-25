@@ -40,4 +40,4 @@ const ResearchSchema = new mongoose.Schema({
 ResearchSchema.plugin(timestamps);
 ResearchSchema.index({ createdAt: 1, updatedAt: 1 });
 
-export const Research = mongoose.model("records", ResearchSchema, "research");
+export const Research = mongoose.model("Research", ResearchSchema, "research");

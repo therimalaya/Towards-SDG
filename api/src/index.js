@@ -5,13 +5,12 @@ import { typeDefs } from "./typeDefs";
 import { resolvers } from "./resolvers";
 
 const startServer = async () => {
-  const { APP_PORT = 9000, NODE_ENV = "development" } = process.env;
+  const { API_PORT = 9000, NODE_ENV = "development" } = process.env;
   const {
     MONGO_INITDB_ROOT_USERNAME: username,
     MONGO_INITDB_ROOT_PASSWORD: password,
     MONGO_INITDB_DATABASE: dbname,
   } = process.env;
-  const IN_PROD = NODE_ENV === "production";
 
   const app = express();
   app.disable("x-powered-by");
@@ -20,29 +19,25 @@ const startServer = async () => {
     typeDefs,
     resolvers,
     introspection: true,
-    // playground: {
-    //   settings: {
-    //     "request.credentials": "same-origin",
-    //   },
-    // },
-    // subscriptions: {
-    //   path: "/api",
-    // },
+    playground: true,
   });
 
   server.applyMiddleware({ app, path: "/" });
 
-  await mongoose.connect(
-    `mongodb://${username}:${password}@mongo:27017/${dbname}?authSource=admin`,
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  );
+  await mongoose
+    .connect(
+      `mongodb://${username}:${password}@mongo:27017/${dbname}?authSource=admin`,
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      }
+    )
+    .then(() => console.log("Database Connected"))
+    .catch((err) => console.log(err));
 
-  app.listen({ port: APP_PORT }, () => {
+  app.listen({ port: API_PORT }, () => {
     console.log(
-      `Server is ready at http://localhost:${APP_PORT}/${server.graphqlPath}`
+      `Server is ready at http://localhost:${API_PORT}/${server.graphqlPath}`
     );
   });
 };

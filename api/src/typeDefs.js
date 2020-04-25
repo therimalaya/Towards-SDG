@@ -17,7 +17,22 @@ export const typeDefs = gql`
     Faculty: String
     Coauthors: Coauthor
     Research: Research
-    SDGRecords: [SDGResearchRecord]
+    SDGRecords: [SDGRecord]
+    createdAt: String
+    updatedAt: String
+  }
+  type CourseRecord {
+    _id: ID!
+    Type: String
+    CourseCode: String
+    Year: Int
+    CourseName: String
+    CourseResponsible: String
+    Faculty: String
+    RelatedFaculties: [String]
+    Teaching: String
+    SustainFocus: String
+    SDGRecords: [SDGRecord]
     createdAt: String
     updatedAt: String
   }
@@ -30,7 +45,7 @@ export const typeDefs = gql`
     Type: String
     URL: String
   }
-  type SDGResearchRecord {
+  type SDGRecord {
     Goals: [Int]
     Interaction: Interaction
     Targets: [String]
@@ -41,10 +56,14 @@ export const typeDefs = gql`
     value: String
   }
   type Query {
+    getCourseRecord(_id: ID!): CourseRecord
+    getAllCourseRecords: [CourseRecord]
     getResearchRecord(_id: ID!): ResearchRecord
     getAllResearchRecords: [ResearchRecord]
   }
   type Mutation {
+    deleteCourseRecord(_id: ID!): CourseRecord!
+    createCourseRecord(data: CourseRecordInput): CourseRecord!
     deleteResearchRecord(_id: ID!): ResearchRecord!
     createResearchRecord(data: ResearchRecordInput): ResearchRecord!
   }
@@ -57,7 +76,7 @@ export const typeDefs = gql`
   input CoauthorsInput {
     Faculty: [String]
   }
-  input SDGResearchRecordInput {
+  input SDGRecordInput {
     Goals: [Int]
     Interaction: InteractionInput
     Targets: [String]
@@ -72,6 +91,18 @@ export const typeDefs = gql`
     Faculty: String
     Coauthors: CoauthorsInput
     Research: ResearchInput
-    SDGRecords: [SDGResearchRecordInput]
+    SDGRecords: [SDGRecordInput]
+  }
+  input CourseRecordInput {
+    Type: String
+    CourseCode: String
+    Year: Int
+    CourseName: String
+    CourseResponsible: String
+    Faculty: String
+    RelatedFaculties: [String]
+    Teaching: String
+    SustainFocus: String
+    SDGRecords: [SDGRecordInput]
   }
 `;

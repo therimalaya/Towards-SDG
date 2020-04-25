@@ -1,9 +1,10 @@
+ARG API_PORT=4000
+ARG NODE_ENV="production"
+
 FROM node:12-alpine
 WORKDIR /app
 COPY ./package.json .
 RUN yarn install
-ENV APP_PORT=9000
-ENV NODE_ENV="production"
 COPY . .
-EXPOSE ${APP_PORT}
+EXPOSE ${API_PORT}
 ENTRYPOINT [ "yarn", "start"]

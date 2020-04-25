@@ -1,1 +1,0 @@
-# NMBU towards SDG
