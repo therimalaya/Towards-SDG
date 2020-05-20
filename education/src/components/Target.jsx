@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from "react";
 import className from "classname";
-import TargetList from "../data/targets.json";
-import GoalList from "../data/goals.json";
+import { TargetList } from "../data/AllTargets.js";
+import {GoalList, numnum} from "../data/AllGoals.js";
 import { IconButton, Grid, Typography } from "@material-ui/core";
 import { Button, Paper } from "@material-ui/core";
 import {
@@ -17,7 +17,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
 import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
 
-const numnum = num => (num <= 9 ? "0" + num : num);
 const useStyles = makeStyles(theme => ({
   targetBtns: {
     alignContent: "flex-start"

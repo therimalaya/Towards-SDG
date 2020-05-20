@@ -17,10 +17,12 @@ import FrontCover from "./components/FrontCover";
 import MainForm from "./components/MainForm";
 import SideInfo from "./components/SideInfo";
 import AllRecords from "./components/Records";
+
 // import NetworkSDG from "./components/Network";
 import Heatmap from "./components/Heatmap";
 
 import { StepConfig } from "./config/app-config";
+import NMBUwhite from './images/NMBUwhite.svg';
 
 import { CSVLink } from "react-csv";
 
@@ -89,10 +91,11 @@ const useStyles = makeStyles((theme) => ({
   },
   sidefooter: {
     backgroundColor: theme.palette.primary.main,
-    backgroundImage: `url(./images/NMBUwhite.svg)`,
-    backgroundPosition: "center",
-    backgroundSize: "cover",
-    height: "50px",
+    backgroundImage: `url(${NMBUwhite})`,
+    backgroundPosition: "left",
+    backgroundSize: "auto 100%",
+    backgroundRepeat: "no-repeat",
+    height: "60px",
   },
   sidefooterRecords: {
     display: "flex",

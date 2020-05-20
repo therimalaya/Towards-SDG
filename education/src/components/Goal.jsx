@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import GoalList from "../data/goals.json";
+import { GoalList, numnum } from "../data/AllGoals.js";
 import {
   Box,
   Grid,
@@ -16,8 +16,6 @@ import {
   TableContainer,
   TableRow
 } from "@material-ui/core";
-
-const numnum = num => (num <= 9 ? "0" + num : num);
 
 const useStyles = makeStyles(theme => ({
   selected: {
@@ -44,11 +42,6 @@ const useStyles = makeStyles(theme => ({
     filter: "saturate(0.3)"
   }
 }));
-
-GoalList.forEach(goal => {
-  goal.image_src = "images/Goals/Goal-" + numnum(goal.goal) + ".png";
-  goal.isSelected = false;
-});
 
 const Goal = props => {
   const classes = useStyles();

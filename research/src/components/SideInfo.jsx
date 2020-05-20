@@ -8,7 +8,7 @@ import {
   TableCell,
   TableBody
 } from "@material-ui/core";
-import { InteractionArrow } from "./Target.js";
+import { InteractionArrow } from "./Target";
 
 const useStyles = makeStyles(theme => ({
   table: {

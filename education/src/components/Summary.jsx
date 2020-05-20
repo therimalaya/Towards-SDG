@@ -16,8 +16,8 @@ import Typography from "@material-ui/core/Typography";
 import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
-import TargetList from "../data/targets.json";
-import GoalList from "../data/goals.json";
+import {TargetList} from "../data/AllTargets.js";
+import { GoalList } from "../data/AllGoals.js";
 import { FacultyConfig } from "../config/app-config.js";
 
 import _ from "lodash";

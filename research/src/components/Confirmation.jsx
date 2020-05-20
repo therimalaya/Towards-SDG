@@ -1,5 +1,5 @@
 import React from 'react';
-import Summary from './Summary.js';
+import Summary from './Summary';
 
 import { Typography, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
