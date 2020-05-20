@@ -1,4 +1,4 @@
-[
+const TargetList = [
   {
     "id": "1.1",
     "title": "By 2030, eradicate extreme poverty for all people everywhere, currently measured as people living on less than $1.25 a day.",
@@ -845,3 +845,5 @@
     "goal": 17
   }
 ]
+
+export { TargetList };
