@@ -1,21 +1,23 @@
-import React from 'react';
-import Personal from './Personal';
-import Goal from './Goal';
-import Target from './Target';
-import Summary from './Summary';
-import Confirmation from './Confirmation';
+import React from "react";
+import Personal from "./Personal";
+import Goal from "./Goal";
+import Target from "./Target";
+import Summary from "./Summary";
+import Confirmation from "./Confirmation";
+import { GoalList } from "../data/AllGoals.js";
 
 function MainForm(props) {
-  const {Step, FormData, CurrentRecord, Records} = props;
-  const {UpdateFormData, UpdateCurrentRecord, UpdateRecords } = props;
-  const {RemoveCurrentRecord, UpdateCurrent} = props;
-  const {NextStep, PrevStep, GoHome, Submit} = props;
-  const {Errors, setErrors, NoError, setNoError} = props;
-  const {checkValidFields, HandleChange, CheckAndProceed} = props;
+  const { Step, FormData, CurrentRecord, Records } = props;
+  const { UpdateFormData, UpdateCurrentRecord, UpdateRecords } = props;
+  const { RemoveCurrentRecord, UpdateCurrent } = props;
+  const { NextStep, PrevStep, GoHome, Submit } = props;
+  const { Errors, setErrors, NoError, setNoError } = props;
+  const { checkValidFields, HandleChange, CheckAndProceed } = props;
+  const { PossibleGoals, SetPossibleGoals } = props;
 
-  switch(Step) {
+  switch (Step) {
     case 1:
-      return(
+      return (
         <Personal
           FormData={FormData}
           UpdateFormData={UpdateFormData}
@@ -30,15 +32,19 @@ function MainForm(props) {
         />
       );
     case 2:
-      return(
+      return (
         <Goal
+          GoalList={GoalList}
           CurrentRecord={CurrentRecord}
           UpdateCurrentRecord={UpdateCurrentRecord}
           NextStep={NextStep}
-          PrevStep={PrevStep}/>
+          PrevStep={PrevStep}
+          PossibleGoals={PossibleGoals}
+          SetPossibleGoals={SetPossibleGoals}
+        />
       );
     case 3:
-      return(
+      return (
         <Target
           CurrentRecord={CurrentRecord}
           UpdateCurrentRecord={UpdateCurrentRecord}
@@ -48,29 +54,28 @@ function MainForm(props) {
           RemoveCurrentRecord={RemoveCurrentRecord}
           UpdateCurrent={UpdateCurrent}
           NextStep={NextStep}
-          PrevStep={PrevStep} />
+          PrevStep={PrevStep}
+        />
       );
     case 4:
-      return(
+      return (
         <React.Fragment>
           <Summary
             FormData={FormData}
             Records={Records}
             Submit={Submit}
-            PrevStep={PrevStep} />
+            PrevStep={PrevStep}
+          />
         </React.Fragment>
       );
     case 5:
-      return(
+      return (
         <React.Fragment>
-          <Confirmation 
-            Records={Records}
-            FormData={FormData}
-            GoHome={GoHome}/>
+          <Confirmation Records={Records} FormData={FormData} GoHome={GoHome} />
         </React.Fragment>
       );
     default:
-      throw new Error('Opss!');
+      throw new Error("Opss!");
   }
 }
 

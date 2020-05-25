@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Box, Paper } from "@material-ui/core";
 import {
@@ -8,7 +8,9 @@ import {
   TableCell,
   TableBody
 } from "@material-ui/core";
+import { GoalList } from "../data/AllGoals.js";
 import { InteractionArrow } from "./Target";
+import GoalGrid from "./GoalGrid";
 
 const useStyles = makeStyles(theme => ({
   table: {
@@ -68,8 +70,34 @@ export const SideTable = props => {
 };
 function SideInfo(props) {
   const classes = useStyles();
+  const [AllGoals, setAllGoals] = useState(GoalList);
+
   const { Step, StepConfig, Records } = props;
+  const { CurrentRecord, UpdateCurrentRecord } = props;
   const Label = StepConfig.filter(x => x.key === Step)[0].label;
+  const disableFilter = goal => goal.length >= 2;
+  const SelectedGoals = GoalList.filter(goal =>
+    CurrentRecord.Goals.includes(goal.goal)
+  );
+  SelectedGoals.forEach(goal => (goal.isSelected = false));
+  const handleClick = Goals => event => {
+    const newGoals = Goals;
+    const fn = event => {
+      newGoals.forEach(goal => {
+        if (goal.goal === Number(event.target.name)) {
+          goal.isSelected = !goal.isSelected;
+        }
+      });
+      event.target.classList.toggle("selected");
+      UpdateCurrentRecord(
+        "Goals",
+        newGoals.filter(goal => goal.isSelected).map(goal => goal.goal)
+      );
+      setAllGoals(newGoals);
+    };
+    return fn;
+  };
+
   switch (Step) {
     case 0:
       return (
@@ -180,7 +208,16 @@ function SideInfo(props) {
               When you are done, you may also return to the previous page to
               select additional main goal(s).
             </Typography>
-
+          </Box>
+          <Box>
+            <GoalGrid
+              disableFilter={disableFilter}
+              AllGoals={AllGoals}
+              handleClick={handleClick(AllGoals)}
+              CurrentGoals={CurrentRecord.Goals}
+            />
+          </Box>
+          <Box>
             {Records.length > 0 && (
               <React.Fragment>
                 <h4 className="sidebar-info-h4">Selected Records</h4>
