@@ -338,6 +338,7 @@ const GoalList = [
 GoalList.forEach(goal => {
     goal.image_src = `images/Goals/Goal-${numnum(goal.goal)}.png`;
     goal.isSelected = false;
+    goal.isPossible = false;
 });
 
 export { numnum, GoalList };

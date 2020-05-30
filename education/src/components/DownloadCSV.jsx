@@ -1,9 +1,9 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 
 import gql from "graphql-tag";
-import { useQuery, useMutation, ApolloProvider } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/react-hooks";
 
-import { ThemeProvider, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { CSVLink } from "react-csv";
 
 const useStyles = makeStyles((theme) => ({

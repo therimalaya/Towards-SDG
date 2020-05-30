@@ -1,19 +1,17 @@
 import React from "react";
 import Personal from "./Personal";
-import Goal from "./Goal";
+import PossibleGoals from "./PossibleGoals";
 import Target from "./Target";
 import Summary from "./Summary";
 import Confirmation from "./Confirmation";
-import { GoalList } from "../data/AllGoals.js";
 
 function MainForm(props) {
-  const { Step, FormData, CurrentRecord, Records } = props;
-  const { UpdateFormData, UpdateCurrentRecord, UpdateRecords } = props;
-  const { RemoveCurrentRecord, UpdateCurrent } = props;
-  const { NextStep, PrevStep, GoHome, Submit } = props;
+  const { Step, FormData, CurrentSDG, Records } = props;
+  const { UpdateFormData, UpdateCurrentSDG, UpdateRecords } = props;
+  const { RemoveCurrentSDG, UpdateCurrent } = props;
   const { Errors, setErrors, NoError, setNoError } = props;
   const { checkValidFields, HandleChange, CheckAndProceed } = props;
-  const { PossibleGoals, SetPossibleGoals } = props;
+  const { PossibleGoalList, UpdatePossibleGoalList } = props;
 
   switch (Step) {
     case 1:
@@ -21,7 +19,6 @@ function MainForm(props) {
         <Personal
           FormData={FormData}
           UpdateFormData={UpdateFormData}
-          NextStep={NextStep}
           Errors={Errors}
           setErrors={setErrors}
           NoError={NoError}
@@ -33,46 +30,29 @@ function MainForm(props) {
       );
     case 2:
       return (
-        <Goal
-          GoalList={GoalList}
-          CurrentRecord={CurrentRecord}
-          UpdateCurrentRecord={UpdateCurrentRecord}
-          NextStep={NextStep}
-          PrevStep={PrevStep}
-          PossibleGoals={PossibleGoals}
-          SetPossibleGoals={SetPossibleGoals}
+        <PossibleGoals
+          PossibleGoalList={PossibleGoalList}
+          UpdatePossibleGoalList={UpdatePossibleGoalList}
         />
       );
     case 3:
       return (
         <Target
-          CurrentRecord={CurrentRecord}
-          UpdateCurrentRecord={UpdateCurrentRecord}
+          PossibleGoalList={PossibleGoalList}
+          CurrentSDG={CurrentSDG}
+          UpdateCurrentSDG={UpdateCurrentSDG}
           UpdateFormData={UpdateFormData}
           UpdateRecords={UpdateRecords}
           Records={Records}
-          RemoveCurrentRecord={RemoveCurrentRecord}
+          RemoveCurrentSDG={RemoveCurrentSDG}
           UpdateCurrent={UpdateCurrent}
-          NextStep={NextStep}
-          PrevStep={PrevStep}
         />
       );
     case 4:
-      return (
-        <React.Fragment>
-          <Summary
-            FormData={FormData}
-            Records={Records}
-            Submit={Submit}
-            PrevStep={PrevStep}
-          />
-        </React.Fragment>
-      );
+      return <Summary FormData={FormData} Records={Records} />;
     case 5:
       return (
-        <React.Fragment>
-          <Confirmation Records={Records} FormData={FormData} GoHome={GoHome} />
-        </React.Fragment>
+        <Confirmation Records={Records} FormData={FormData} />
       );
     default:
       throw new Error("Opss!");

@@ -1,20 +1,21 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 
 // Apollo GraphQL Related Imports
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { HttpLink } from "apollo-link-http";
-import { useQuery, useMutation, ApolloProvider } from "@apollo/react-hooks";
+import { ApolloProvider } from "@apollo/react-hooks";
 import { ApolloClient } from "apollo-client";
 
 // Style Related Imports
 import { createMuiTheme } from "@material-ui/core/styles";
-import { ThemeProvider, makeStyles } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/core/styles";
 
 // Import Other Components
 import InnerApp from './components/InnerApp.jsx'
 
 // Data, Images and realted stuffs
 import { StepConfig } from "./config/app-config";
+import { GoalList } from "./data/AllGoals.js"
 
 // Apollo Client Setup
 const cache = new InMemoryCache();
@@ -54,7 +55,7 @@ const theme = createMuiTheme({
 
 export default function App() {
   // STATES
-  const [Step, setStep] = useState(3);
+  const [Step, setStep] = useState(0);
   const [FormData, setFormData] = useState({
     Type: "course",
     CourseCode: "",
@@ -66,8 +67,8 @@ export default function App() {
     Teaching: "",
     SustainFocus: "",
   });
-  const [PossibleGoals, SetPossibleGoals] = useState([]);
-  const [CurrentRecord, setCurrentRecord] = useState({
+  const [PossibleGoalList, UpdatePossibleGoalList] = useState(GoalList);
+  const [CurrentSDG, setCurrentSDG] = useState({
     Goals: [],
     Targets: [],
     Interaction: {
@@ -96,26 +97,26 @@ export default function App() {
     /* const clicked_targets = [...document.getElementsByClassName("clicked-target-btn")]
      * clicked_targets.map(btn => btn.classList.toggle("clicked-target-btn"))
      * clicked_targets.map(btn => btn.classList.toggle("target-btn")) */
-    var _CurrentRecord = CurrentRecord;
-    if (CurrentRecord.Targets.length <= 2) {
-      _CurrentRecord = {
-        ..._CurrentRecord,
-        Goals: _CurrentRecord.Goals,
+    var _CurrentSDG = CurrentSDG;
+    if (CurrentSDG.Targets.length <= 2) {
+      _CurrentSDG = {
+        ..._CurrentSDG,
+        Goals: _CurrentSDG.Goals,
       };
     } else {
-      _CurrentRecord = {
-        ..._CurrentRecord,
-        Goals: _CurrentRecord.Targets.map((x) => parseInt(x.split(".")[0])),
+      _CurrentSDG = {
+        ..._CurrentSDG,
+        Goals: _CurrentSDG.Targets.map((x) => parseInt(x.split(".")[0])),
       };
     }
-    setRecords([_CurrentRecord, ...Records]);
-    setCurrentRecord({
-      ...CurrentRecord,
+    setRecords([_CurrentSDG, ...Records]);
+    setCurrentSDG({
+      ...CurrentSDG,
       Targets: [],
       Interaction: { value: "", type: "", direction: "" },
     });
   };
-  const RemoveCurrentRecord = (event) => {
+  const RemoveCurrentSDG = (event) => {
     setRecords(
       Records.filter((value, idx) => String(idx) !== event.currentTarget.name)
     );
@@ -137,9 +138,9 @@ export default function App() {
       ...{ [field]: data },
     });
   };
-  const UpdateCurrentRecord = (input, value) => {
-    setCurrentRecord({
-      ...CurrentRecord,
+  const UpdateCurrentSDG = (input, value) => {
+    setCurrentSDG({
+      ...CurrentSDG,
       [input]: value,
     });
   };
@@ -154,7 +155,7 @@ export default function App() {
   const GoHome = (event) => {
     event.preventDefault();
     setRecords([]);
-    setCurrentRecord({
+    setCurrentSDG({
       Goals: [],
       Targets: [],
       Interaction: {
@@ -166,10 +167,10 @@ export default function App() {
     setFormData({
       Type: FormData.Type,
       CourseCode: "",
-      Year: 2020,
+      Year: FormData.Year,
       CourseName: "",
-      CourseResponsible: "",
-      Faculty: "",
+      CourseResponsible: FormData.CourseResponsible,
+      Faculty: FormData.Faculty,
       RelatedFaculties: [],
       Teaching: "",
       SustainFocus: "",
@@ -236,15 +237,15 @@ export default function App() {
       <ThemeProvider theme={theme}>
         <InnerApp
           Records={Records}
-          RemoveCurrentRecord={RemoveCurrentRecord}
+          RemoveCurrentSDG={RemoveCurrentSDG}
           UpdateCurrent={UpdateCurrent}
           Step={Step}
           StepConfig={StepConfig}
           NextStep={NextStep}
           FormData={FormData}
-          CurrentRecord={CurrentRecord}
+          CurrentSDG={CurrentSDG}
           UpdateFormData={UpdateFormData}
-          UpdateCurrentRecord={UpdateCurrentRecord}
+          UpdateCurrentSDG={UpdateCurrentSDG}
           UpdateRecords={UpdateRecords}
           PrevStep={PrevStep}
           GoHome={GoHome}
@@ -255,8 +256,8 @@ export default function App() {
           checkValidFields={checkValidFields}
           HandleChange={HandleFormChange}
           CheckAndProceed={CheckAndProceed}
-          PossibleGoals={PossibleGoals}
-          SetPossibleGoals={SetPossibleGoals}
+          PossibleGoalList={PossibleGoalList}
+          UpdatePossibleGoalList={UpdatePossibleGoalList}
         />
       </ThemeProvider>
     </ApolloProvider>

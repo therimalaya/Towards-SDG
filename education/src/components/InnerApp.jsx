@@ -1,12 +1,12 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
 
 // Apollo GraphQL Related Imports
 import gql from "graphql-tag";
-import { useQuery, useMutation, ApolloProvider } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/react-hooks";
 
 // Style Related Imports
-import { ThemeProvider, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Box, Button, ButtonGroup } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
 
@@ -22,7 +22,6 @@ import Heatmap from "./Heatmap";
 
 // Data, Images and realted stuffs
 import NMBUwhite from "../images/NMBUwhite.svg";
-import { GoalList } from "../data/AllGoals.js";
 
 // Create classes for styling
 const useStyles = makeStyles(theme => ({
@@ -122,12 +121,12 @@ function InnerApp(props) {
   const classes = useStyles();
   const [addRecords, { error: mutationError }] = useMutation(ADD_RECORD);
   const { Step, NextStep, PrevStep, GoHome } = props;
-  const { Records, CurrentRecord, FormData } = props;
-  const { UpdateCurrent, RemoveCurrentRecord, UpdateCurrentRecord } = props;
+  const { Records, CurrentSDG, FormData } = props;
+  const { UpdateCurrent, RemoveCurrentSDG, UpdateCurrentSDG } = props;
   const { UpdateFormData, UpdateRecords } = props;
   const { Errors, setErrors, NoError, setNoError } = props;
   const { checkValidFields, HandleChange, CheckAndProceed } = props;
-  const { PossibleGoals, SetPossibleGoals } = props;
+  const { PossibleGoalList, UpdatePossibleGoalList } = props;
   const { StepConfig } = props;
   const SubmitData = event => {
     event.preventDefault();
@@ -172,7 +171,6 @@ function InnerApp(props) {
             <Grid item container className={classes.mainpanel} xs={9}>
               <Box className={classes.mainpanelBox}>
                 <h1>We will come back soon!</h1>
-                {/* <NetworkSDG /> */}
               </Box>
             </Grid>
           </Route>
@@ -193,12 +191,13 @@ function InnerApp(props) {
               <Box className={classes.header}></Box>
               <Box className={classes.sideinfo} flexGrow={1}>
                 <SideInfo
-                  CurrentRecord={CurrentRecord}
-                  UpdateCurrentRecord={UpdateCurrentRecord}
+                  UpdatePossibleGoalList={UpdatePossibleGoalList}
+                  PossibleGoalList={PossibleGoalList}
                   Records={Records}
-                  RemoveCurrentRecord={RemoveCurrentRecord}
+                  RemoveCurrentSDG={RemoveCurrentSDG}
                   Step={Step}
                   StepConfig={StepConfig}
+                  UpdateCurrentSDG={UpdateCurrentSDG}
                 />
               </Box>
               <Box className={classes.sidefooter}></Box>
@@ -220,24 +219,24 @@ function InnerApp(props) {
                   <Fragment>
                     <Box className={classes.mainContent}>
                       <MainForm
-                        Step={Step}
-                        FormData={FormData}
-                        CurrentRecord={CurrentRecord}
-                        Records={Records}
-                        UpdateFormData={UpdateFormData}
-                        UpdateCurrentRecord={UpdateCurrentRecord}
-                        UpdateRecords={UpdateRecords}
-                        UpdateCurrent={UpdateCurrent}
-                        RemoveCurrentRecord={RemoveCurrentRecord}
-                        Errors={Errors}
-                        setErrors={setErrors}
-                        NoError={NoError}
-                        setNoError={setNoError}
-                        checkValidFields={checkValidFields}
-                        HandleChange={HandleChange}
                         CheckAndProceed={CheckAndProceed}
-                        PossibleGoals={PossibleGoals}
-                        SetPossibleGoals={SetPossibleGoals}
+                        CurrentSDG={CurrentSDG}
+                        Errors={Errors}
+                        FormData={FormData}
+                        HandleChange={HandleChange}
+                        NoError={NoError}
+                        PossibleGoalList={PossibleGoalList}
+                        Records={Records}
+                        RemoveCurrentSDG={RemoveCurrentSDG}
+                        UpdatePossibleGoalList={UpdatePossibleGoalList}
+                        Step={Step}
+                        UpdateCurrent={UpdateCurrent}
+                        UpdateCurrentSDG={UpdateCurrentSDG}
+                        UpdateFormData={UpdateFormData}
+                        UpdateRecords={UpdateRecords}
+                        checkValidFields={checkValidFields}
+                        setErrors={setErrors}
+                        setNoError={setNoError}
                       />
                     </Box>
                     <Box py="15px">
@@ -245,30 +244,30 @@ function InnerApp(props) {
                         {[2, 3, 4].includes(Step) ? (
                           <Button onClick={PrevStep}>Previous</Button>
                         ) : null}
-                        {Step === 4 ? (
-                          <Button onClick={SubmitData}>Submit</Button>
-                        ) : null}
-                        {Step === 3 ? (
-                          <Button onClick={NextStep}>Next</Button>
+                        {Step === 1 ? (
+                          <Button onClick={CheckAndProceed}>Next</Button>
                         ) : null}
                         {Step === 2 ? (
                           <Button
                             onClick={NextStep}
-                            disabled={!CurrentRecord.Goals.length}
+                            disabled={!PossibleGoalList.length}
                           >
                             Next
                           </Button>
                         ) : null}
-                        {Step === 1 ? (
-                          <Button onClick={CheckAndProceed}>Next</Button>
-                        ) : null}
-                        {Step === 5 ? (
-                          <Button onClick={GoHome}>Start</Button>
+                        {Step === 3 ? (
+                          <Button onClick={NextStep}>Next</Button>
                         ) : null}
                         {Step === 3 ? (
                           <Button onClick={UpdateRecords}>
                             Add Selected Record
                           </Button>
+                        ) : null}
+                        {Step === 4 ? (
+                          <Button onClick={SubmitData}>Submit</Button>
+                        ) : null}
+                        {Step === 5 ? (
+                          <Button onClick={GoHome}>Start</Button>
                         ) : null}
                       </ButtonGroup>
                     </Box>

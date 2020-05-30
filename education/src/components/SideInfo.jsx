@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Box, Paper } from "@material-ui/core";
 import {
@@ -8,9 +8,8 @@ import {
   TableCell,
   TableBody
 } from "@material-ui/core";
-import { GoalList } from "../data/AllGoals.js";
-import { InteractionArrow } from "./Target";
-import GoalGrid from "./GoalGrid";
+import { InteractionArrow } from "./Interaction";
+import Goal from "./Goal";
 
 const useStyles = makeStyles(theme => ({
   table: {
@@ -70,33 +69,15 @@ export const SideTable = props => {
 };
 function SideInfo(props) {
   const classes = useStyles();
-  const [AllGoals, setAllGoals] = useState(GoalList);
-
-  const { Step, StepConfig, Records } = props;
-  const { CurrentRecord, UpdateCurrentRecord } = props;
+  const {
+    Step,
+    StepConfig,
+    Records,
+    UpdateCurrentSDG,
+    PossibleGoalList,
+    UpdatePossibleGoalList
+  } = props;
   const Label = StepConfig.filter(x => x.key === Step)[0].label;
-  const disableFilter = goal => goal.length >= 2;
-  const SelectedGoals = GoalList.filter(goal =>
-    CurrentRecord.Goals.includes(goal.goal)
-  );
-  SelectedGoals.forEach(goal => (goal.isSelected = false));
-  const handleClick = Goals => event => {
-    const newGoals = Goals;
-    const fn = event => {
-      newGoals.forEach(goal => {
-        if (goal.goal === Number(event.target.name)) {
-          goal.isSelected = !goal.isSelected;
-        }
-      });
-      event.target.classList.toggle("selected");
-      UpdateCurrentRecord(
-        "Goals",
-        newGoals.filter(goal => goal.isSelected).map(goal => goal.goal)
-      );
-      setAllGoals(newGoals);
-    };
-    return fn;
-  };
 
   switch (Step) {
     case 0:
@@ -210,11 +191,10 @@ function SideInfo(props) {
             </Typography>
           </Box>
           <Box>
-            <GoalGrid
-              disableFilter={disableFilter}
-              AllGoals={AllGoals}
-              handleClick={handleClick(AllGoals)}
-              CurrentGoals={CurrentRecord.Goals}
+            <Goal
+              UpdateCurrentSDG={UpdateCurrentSDG}
+              PossibleGoalList={PossibleGoalList}
+              UpdatePossibleGoalList={UpdatePossibleGoalList}
             />
           </Box>
           <Box>
