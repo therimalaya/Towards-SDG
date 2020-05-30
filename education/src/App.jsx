@@ -20,7 +20,7 @@ import { GoalList } from "./data/AllGoals.js"
 // Apollo Client Setup
 const cache = new InMemoryCache();
 const link = new HttpLink({
-  uri: "http://localhost:4000/graphql/",
+  uri: "http://api:4000/graphql/",
 });
 const client = new ApolloClient({
   cache,
