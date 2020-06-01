@@ -103,7 +103,7 @@ function TargetDrawer(props) {
               name={target.id}
               onClick={handleClick}
               disabled={
-                CurrentSDG.Targets.length > 2 &&
+                CurrentSDG.Targets.length >= 2 &&
                 !CurrentSDG.Targets.includes(String(target.id))
               }
               className={className(
