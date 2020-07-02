@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 // Apollo GraphQL Related Imports
 import { InMemoryCache } from "apollo-cache-inmemory";
@@ -11,11 +11,15 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/core/styles";
 
 // Import Other Components
-import InnerApp from './components/InnerApp.jsx'
+import InnerApp from "./components/InnerApp.jsx";
 
-// Data, Images and realted stuffs
-import { StepConfig } from "./config/app-config";
-import { GoalList } from "./data/AllGoals.js"
+// Import Contexts
+import { StepContextProvider } from "./context/StepContext";
+import { FormContextProvider } from "./context/FormContext";
+import { RecordsContextProvider } from "./context/RecordsContext";
+import { GoalContextProvider } from "./context/GoalContext";
+import { SelectTargetContextProvider } from "./context/SelectTarget";
+import { SDGContextProvider } from "./context/SDGContext";
 
 // Apollo Client Setup
 const cache = new InMemoryCache();
@@ -31,7 +35,7 @@ const client = new ApolloClient({
   },
 });
 
-// App-Theme: Used when creating classes to keep consistant colors and other aspects
+// App-Theme: Used when creating classes to keep consistent colors and other aspects
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -51,216 +55,26 @@ const theme = createMuiTheme({
     },
   },
 });
-// May be create responseive font sizes
+// May be create responsive font sizes
 
 export default function App() {
-  // STATES
-  const [Step, setStep] = useState(0);
-  const [FormData, setFormData] = useState({
-    Type: "course",
-    CourseCode: "",
-    Year: new Date().getFullYear(),
-    CourseName: "",
-    CourseResponsible: "",
-    Faculty: "",
-    RelatedFaculties: [],
-    Teaching: "",
-    SustainFocus: "",
-  });
-  const [PossibleGoalList, UpdatePossibleGoalList] = useState(GoalList);
-  const [CurrentSDG, setCurrentSDG] = useState({
-    Goals: [],
-    Targets: [],
-    Interaction: {
-      value: "",
-      type: "",
-      direction: "",
-    },
-  });
-  const [Records, setRecords] = useState([]);
-  const [NoError, setNoError] = useState();
-  const [Errors, setErrors] = useState({
-    Type: "",
-    CourseName: "",
-    CourseCode: "",
-    Year: "",
-    CourseResponsible: "",
-    Faculty: "",
-    RelatedFaculties: "",
-    Teaching: "",
-    SustainFocus: "",
-  });
-
-  // METHODS -> FUNCTIONS
-  const UpdateRecords = (event) => {
-    event.preventDefault();
-    /* const clicked_targets = [...document.getElementsByClassName("clicked-target-btn")]
-     * clicked_targets.map(btn => btn.classList.toggle("clicked-target-btn"))
-     * clicked_targets.map(btn => btn.classList.toggle("target-btn")) */
-    var _CurrentSDG = CurrentSDG;
-    if (CurrentSDG.Targets.length <= 2) {
-      _CurrentSDG = {
-        ..._CurrentSDG,
-        Goals: _CurrentSDG.Goals,
-      };
-    } else {
-      _CurrentSDG = {
-        ..._CurrentSDG,
-        Goals: _CurrentSDG.Targets.map((x) => parseInt(x.split(".")[0])),
-      };
-    }
-    setRecords([_CurrentSDG, ...Records]);
-    setCurrentSDG({
-      ...CurrentSDG,
-      Targets: [],
-      Interaction: { value: "", type: "", direction: "" },
-    });
-  };
-  const RemoveCurrentSDG = (event) => {
-    setRecords(
-      Records.filter((value, idx) => String(idx) !== event.currentTarget.name)
-    );
-  };
-  const UpdateCurrent = (input) => (event) => {
-    const newRecord = Records.map((record, idx) => {
-      if (String(idx) === event.target.name) {
-        record.Interaction[input] = event.target.value;
-        return record;
-      } else {
-        return record;
-      }
-    });
-    setRecords(newRecord);
-  };
-  const UpdateFormData = (field, data) => {
-    setFormData({
-      ...FormData,
-      ...{ [field]: data },
-    });
-  };
-  const UpdateCurrentSDG = (input, value) => {
-    setCurrentSDG({
-      ...CurrentSDG,
-      [input]: value,
-    });
-  };
-  const NextStep = (event) => {
-    event.preventDefault();
-    setStep(Step + 1);
-  };
-  const PrevStep = (event) => {
-    event.preventDefault();
-    setStep(Step - 1);
-  };
-  const GoHome = (event) => {
-    event.preventDefault();
-    setRecords([]);
-    setCurrentSDG({
-      Goals: [],
-      Targets: [],
-      Interaction: {
-        value: "",
-        type: "",
-        direction: "",
-      },
-    });
-    setFormData({
-      Type: FormData.Type,
-      CourseCode: "",
-      Year: FormData.Year,
-      CourseName: "",
-      CourseResponsible: FormData.CourseResponsible,
-      Faculty: FormData.Faculty,
-      RelatedFaculties: [],
-      Teaching: "",
-      SustainFocus: "",
-    });
-    setStep(0);
-  };
-  const checkValidFields = (event) => {
-    let isValid = true;
-    let errors = Errors;
-
-    if (!FormData.CourseName) {
-      errors.CourseName = "This field cannot be empty.";
-      isValid = false;
-    }
-    if (!FormData.CourseCode) {
-      errors.CourseCode = "Code cannot be empty. See Studentweb for code.";
-      isValid = false;
-    }
-
-    setNoError(isValid);
-    setErrors({ ...Errors, ...errors });
-    return isValid;
-  };
-  const HandleFormChange = (input) => (event) => {
-    var errors = Errors;
-    const fields = input.split(".");
-    if (fields.length < 2) {
-      errors[fields[0]] = "";
-    } else {
-      errors[fields[0]] = { ...errors[fields[0]], [fields[1]]: "" };
-    }
-
-    /* errors[input] = ""; */
-    setNoError("");
-    setErrors({ ...Errors, ...errors });
-    var newValue;
-    if (event.target) {
-      newValue = event.target.value;
-    } else if (event.value) {
-      newValue = event.value;
-    } else {
-      newValue = event;
-    }
-    if (input === "CourseCode") {
-      newValue = newValue.toUpperCase();
-    }
-    UpdateFormData(input, newValue);
-  };
-  const CheckAndProceed = (event) => {
-    event.preventDefault();
-    const isValid = checkValidFields(event);
-    // Call checkValidFields function
-    // This will update all the state
-    // If noError is false, Error should automatically displayed
-    // If noError is true, proceed to next step
-    /* NextStep(event) */
-    if (isValid) {
-      NextStep(event);
-    }
-  };
-
   return (
     <ApolloProvider client={client}>
       <ThemeProvider theme={theme}>
-        <InnerApp
-          Records={Records}
-          RemoveCurrentSDG={RemoveCurrentSDG}
-          UpdateCurrent={UpdateCurrent}
-          Step={Step}
-          StepConfig={StepConfig}
-          NextStep={NextStep}
-          FormData={FormData}
-          CurrentSDG={CurrentSDG}
-          UpdateFormData={UpdateFormData}
-          UpdateCurrentSDG={UpdateCurrentSDG}
-          UpdateRecords={UpdateRecords}
-          PrevStep={PrevStep}
-          GoHome={GoHome}
-          Errors={Errors}
-          setErrors={setErrors}
-          NoError={NoError}
-          setNoError={setNoError}
-          checkValidFields={checkValidFields}
-          HandleChange={HandleFormChange}
-          CheckAndProceed={CheckAndProceed}
-          PossibleGoalList={PossibleGoalList}
-          UpdatePossibleGoalList={UpdatePossibleGoalList}
-        />
+        <StepContextProvider>
+          <FormContextProvider>
+            <SelectTargetContextProvider>
+              <SDGContextProvider>
+                <RecordsContextProvider>
+                  <GoalContextProvider>
+                    <InnerApp />
+                  </GoalContextProvider>
+                </RecordsContextProvider>
+              </SDGContextProvider>
+            </SelectTargetContextProvider>
+          </FormContextProvider>
+        </StepContextProvider>
       </ThemeProvider>
     </ApolloProvider>
   );
 }
-

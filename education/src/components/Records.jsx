@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
-import { RecordSummary, RecordPlotPanel } from "./Summary";
+import { RecordSummary } from "./Summary";
+import RecordPlot from "./RecordPlot";
 import { flatMap } from "lodash";
 import { Grid, Box, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -63,7 +64,7 @@ const AllRecords = (props) => {
               </Grid>
               <Grid item>
                 {records.length ? (
-                  <RecordPlotPanel Records={flatMap(records, "SDGRecords")} />
+                  <RecordPlot Records={flatMap(records, "SDGRecords")} />
                 ) : null}
               </Grid>
             </Fragment>

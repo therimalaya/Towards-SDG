@@ -5,7 +5,7 @@ export const StepConfig = [
   { label: "Goals", key: 2 },
   { label: "Targets", key: 3 },
   { label: "Summary", key: 4 },
-  { label: "Confirmation", key: 5 }
+  { label: "Confirmation", key: 5 },
 ];
 
 export const FacultyConfig = [
@@ -13,49 +13,33 @@ export const FacultyConfig = [
   { value: "KBM", label: "Chemistry, Biotechnology and Food Science" },
   {
     value: "MINA",
-    label: "Environmental Sciences and Natural Resource Management"
+    label: "Environmental Sciences and Natural Resource Management",
   },
   { value: "Landsam", label: "Landscape and Society" },
   { value: "HH", label: "School of Economics and Business" },
   { value: "Realtek", label: "Science and Technology" },
   { value: "Vet", label: "Veterinary Medicine" },
-  { value: "Other", label: "Other institution" }
+  { value: "Other", label: "Other institution" },
 ];
 
 export const SustainFocusOption = [
   {
-    value: "Indirect Focus/ Basic Science",
-    label: "Indirect Focus/ Basic Science"
+    value: "Yes, perhaps",
+    label: "Yes, perhaps",
   },
   {
-    value: "Learning about sustainability (content focus)",
-    label: "Learning about sustainability (content focus)"
+    value: "No, probably not",
+    label: "No, probably not",
   },
-  {
-    value: "Learning for sustainablity (generic competences training)",
-    label: "Learning for sustainablity (generic competences training)"
-  },
-  {
-    value: "Learning as sustainability (students as change makers)",
-    label: "Learning as sustainability (students as change makers)"
-  }
 ];
 
 export const TeachingOption = [
   {
-    value: "Theoretical with lectures",
-    label: "Theoretical with lectures"
+    value: "Yes, it is satisfactory",
+    label: "Yes, it is satisfactory",
   },
   {
-    value: "Applied/ case-based with lectures",
-    label: "Applied/ case-based with lectures"
+    value: "No, it could be elaborated more",
+    label: "No, it could be elaborated more",
   },
-  {
-    value: "Theoretical with student active teaching",
-    label: "Theoretical with student active teaching"
-  },
-  {
-    value: "Applied/ case-based with student active teaching",
-    label: "Applied/ case-based with student active teaching"
-  }
 ];

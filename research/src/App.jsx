@@ -386,7 +386,7 @@ function InnerApp(props) {
 
 export default function App() {
   // STATES
-  const [Step, setStep] = useState(0);
+  const [Step, setStep] = useState(1);
   const [FormData, setFormData] = useState({
     Name: "",
     Faculty: "",
@@ -510,7 +510,7 @@ export default function App() {
       },
       Coauthors: { Faculty: [] },
     });
-    setStep(0);
+    setStep(1);
   };
   const checkValidFields = (event) => {
     let isValid = true;

@@ -1,30 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Typography, Box, Paper } from "@material-ui/core";
-import {
-  TableContainer,
-  Table,
-  TableRow,
-  TableCell,
-  TableBody
-} from "@material-ui/core";
-import { InteractionArrow } from "./Interaction";
+import { Typography, Box } from "@material-ui/core";
 import Goal from "./Goal";
+import { StepConfig } from "../config/app-config";
+import { StepContext } from "../context/StepContext";
+import { RecordsContext } from "../context/RecordsContext";
+import StaticSideTable from "./StaticSideTable";
 
-const useStyles = makeStyles(theme => ({
-  table: {
-    width: "100%",
-    maxHeight: "150px",
-    overflowY: "auto",
-    marginBottom: "15px",
-    "& tbody": {
-      "& *": {
-        fontFamily: "monospace",
-        padding: "2px 5px"
-      }
-    }
-  },
-  sideinfoHeader: {
+const useStyles = makeStyles((theme) => ({
+  sideHeader: {
     display: "flex",
     alignItems: "center",
     paddingBottom: "10px",
@@ -33,65 +17,26 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.primary.contrastText,
       paddingRight: "10px",
       paddingLeft: "4px",
-      marginRight: "4px"
+      marginRight: "4px",
     },
     "& > span:nth-child(2)": {
-      fontSize: "1.2em"
-    }
-  }
+      fontSize: "1.2em",
+    },
+  },
 }));
-export const SideTable = props => {
-  const classes = useStyles();
-  const { Records } = props;
-  return (
-    <TableContainer component={Paper} className={classes.table}>
-      <Table size="small" aria-label="Selected Records Table">
-        <TableBody>
-          {Records.map((row, key) => (
-            <TableRow key={key}>
-              <TableCell>
-                {row.Targets[0] ? row.Targets[0] : row.Goals[0]}
-              </TableCell>
-              <TableCell>
-                <InteractionArrow direction={row.Interaction.direction} />
-              </TableCell>
-              <TableCell>
-                {row.Targets[1] ? row.Targets[1] : row.Goals[1]}
-              </TableCell>
-              <TableCell>{row.Interaction.value}</TableCell>
-              <TableCell>{row.Interaction.type}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
-};
+
 function SideInfo(props) {
   const classes = useStyles();
-  const {
-    Step,
-    StepConfig,
-    Records,
-    UpdateCurrentSDG,
-    PossibleGoalList,
-    UpdatePossibleGoalList
-  } = props;
-  const Label = StepConfig.filter(x => x.key === Step)[0].label;
-
-  switch (Step) {
-    case 0:
-      return (
-        <React.Fragment>
-          <Typography variant="subtitle2">{Label}</Typography>
-        </React.Fragment>
-      );
+  const { step } = useContext(StepContext);
+  const Label = StepConfig.find((x) => x.key === step).label;
+  const { Records } = useContext(RecordsContext);
+  switch (step) {
     case 1:
       return (
         <React.Fragment>
-          <Box className={classes.sideinfoHeader}>
+          <Box className={classes.sideHeader}>
             <Typography component="span" variant="subtitle1" color="primary">
-              Step {props.Step}
+              Step {step}
             </Typography>
             <Typography component="span" variant="subtitle1" color="primary">
               {Label}
@@ -100,10 +45,11 @@ function SideInfo(props) {
           <Box>
             <Typography>
               Here you, as course responsible, can provide course information
-              and details about faculty ownership and faculty collaboration. In
-              case of master thesis, select “Thesis” as course type. Optionally
-              you may also classify the course type (teaching) and regarding
-              sustainability focus.
+              and details about faculty ownership and faculty collaboration.
+            </Typography>
+            <Typography>
+              Master graduates may also register their thesis (choose Type
+              “thesis”, and write course code “MSc”, and course name “MSc”).
             </Typography>
           </Box>
         </React.Fragment>
@@ -111,34 +57,34 @@ function SideInfo(props) {
     case 2:
       return (
         <React.Fragment>
-          <Box className={classes.sideinfoHeader}>
+          <Box className={classes.sideHeader}>
             <Typography component="span" variant="subtitle1" color="primary">
-              {" "}
-              Step {props.Step}
+              Step {step}
             </Typography>
             <Typography component="span" variant="subtitle1" color="primary">
-              {" "}
               {Label}
             </Typography>
           </Box>
           <Box>
             <Typography paragraph={true} variant="body2">
-              The portal focuses on mapping pairwise interactions. Select one or
-              two main SDG goals addressed (directly or indirectly) in the
-              course, either in content, examples or in other ways. At most two
-              goals can be selected simultaneously. You may return to this page
-              later to register other goals for the same course.
+              This page allows you to provide information about the main goals
+              that are addressed in the course/thesis, either solely or in
+              interaction with others.
             </Typography>
 
             <Typography paragraph={true} variant="body2">
-              (You must deselect selected goals in order to choose new ones.)
+              Select a set of goals by clicking on the icons to the right. You
+              may select as many as appropriate, and selected goals may be
+              unselected by clicking the icon again. All goals may be selected
+              simultaneously by clicking on the button on the bottom right.
             </Typography>
 
             <Typography paragraph={true} variant="body2">
-              On the next page you will (optionally) have the opportunity to
-              specify any pair-wise sub-goal interactions addressed in the
-              course, either between sub-goals within a main goal, or between
-              sub-goals of two main goals.
+              This portal also allows mapping of pairwise interactions between
+              selected goals and sub-goals. If you would like to register any
+              interactions, select the option “Yes”. If not, select the option
+              “No” to skip to the last page in order to submit your list of main
+              goals.
             </Typography>
           </Box>
         </React.Fragment>
@@ -146,9 +92,9 @@ function SideInfo(props) {
     case 3:
       return (
         <React.Fragment>
-          <Box className={classes.sideinfoHeader}>
+          <Box className={classes.sideHeader}>
             <Typography variant="subtitle1" component="span" color="primary">
-              Step {props.Step}
+              Step {step}
             </Typography>
             <Typography variant="subtitle2" component="span" color="primary">
               {Label}
@@ -156,9 +102,12 @@ function SideInfo(props) {
           </Box>
           <Box>
             <Typography variant="body2">
-              (Optionally) select one sub-goal (if one main goal is selected) or
-              two sub-goals (interaction) which is/are addressed. After adding a
-              record you may also indicate whether:
+              Select a pair of goals (two at a time) from your goals list below
+              to register one or more interactions which is addressed between
+              these goals in the course. By clicking on the goals that appear on
+              the right, lists of sub-goals are populated, and, hence, you may
+              also register interactions at a sub-goal level if desired. For
+              each added interaction you may also indicate whether:
             </Typography>
 
             <ul>
@@ -169,50 +118,43 @@ function SideInfo(props) {
               </li>
               <li>
                 <Typography variant="body2">
-                  addressed interaction is a direct cause-effect interaction or
-                  a mere correlated effect (non-causal)
-                </Typography>
-              </li>
-              <li>
-                <Typography variant="body2">
-                  the direction of a potential direct causal effect
+                  there is a direct cause-effect between the goals (or
+                  sub-goals), or an undirected correlation
                 </Typography>
               </li>
             </ul>
 
             <Typography variant="body2">
-              You may add multiple records. Selected records are listed here
-              continuously and may be edited (and deleted).
+              You may register multiple pairwise interactions, just click “Add
+              selected record” after each selected pair. Selected records are
+              listed continuously and may be edited and deleted.
             </Typography>
 
             <Typography variant="body2">
-              When you are done, you may also return to the previous page to
-              select additional main goal(s).
+              When you are finished, press “Ready to submit” to go to the next
+              page in order to submit your list of main goals and your selected
+              interactions.
             </Typography>
           </Box>
           <Box>
-            <Goal
-              UpdateCurrentSDG={UpdateCurrentSDG}
-              PossibleGoalList={PossibleGoalList}
-              UpdatePossibleGoalList={UpdatePossibleGoalList}
-            />
+            <Goal />
           </Box>
           <Box>
-            {Records.length > 0 && (
+            {Records.length ? (
               <React.Fragment>
                 <h4 className="sidebar-info-h4">Selected Records</h4>
-                <SideTable Records={Records} />
+                <StaticSideTable />
               </React.Fragment>
-            )}
+            ) : null}
           </Box>
         </React.Fragment>
       );
     case 4:
       return (
         <React.Fragment>
-          <Box className={classes.sideinfoHeader}>
+          <Box className={classes.sideHeader}>
             <Typography variant="subtitle1" component="span" color="primary">
-              Step {props.Step}
+              Step {step}
             </Typography>
             <Typography variant="subtitle2" component="span" color="primary">
               {Label}
@@ -220,14 +162,14 @@ function SideInfo(props) {
           </Box>
           <Box>
             <Typography variant="body2">
-              Review the summary of you added interactions. A simple graphical
-              representation is given in addition to a full list of provided
-              information on each record.
+              Review the summary of you registered records. To delete or add new
+              records, please return to the previous pages by pressing the
+              “Previous” button. Please also consider to answer the two
+              additional questions regarding your course.
             </Typography>
-
             <Typography variant="body2">
-              To delete or add new, please return to the previous page. When the
-              information is completed, press “SUBMIT”
+              When you are done, and the information is complete, press
+              “Submit”. Thank you for your registration!
             </Typography>
           </Box>
         </React.Fragment>
@@ -235,9 +177,9 @@ function SideInfo(props) {
     case 5:
       return (
         <React.Fragment>
-          <Box className={classes.sideinfoHeader}>
+          <Box className={classes.sideHeader}>
             <Typography variant="body2" component="span" color="primary">
-              Step {props.Step}
+              Step {step}
             </Typography>
             <Typography variant="body2" component="span" color="primary">
               {Label}
@@ -254,7 +196,7 @@ function SideInfo(props) {
         </React.Fragment>
       );
     default:
-      throw new Error("Opss!");
+      throw new Error("Ops!");
   }
 }
 export default SideInfo;
