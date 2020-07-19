@@ -12,7 +12,7 @@ services:
       - ./home:/usr/share/nginx/html
       - ./nginx.conf:/nginx/nginx.conf
     ports:
-      - "80:80"
+      - "8089:80"
     links:
       - api
     depends_on:

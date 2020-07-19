@@ -28,7 +28,7 @@ import { CSVLink } from "react-csv";
 // Apollo Client Setup
 const cache = new InMemoryCache();
 const link = new HttpLink({
-  uri: "http://api:4000/graphql/",
+  uri: "http://localhost:4000/graphql/",
 });
 const client = new ApolloClient({
   cache,
