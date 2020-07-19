@@ -20,6 +20,8 @@ import { RecordsContextProvider } from "./context/RecordsContext";
 import { GoalContextProvider } from "./context/GoalContext";
 import { SelectTargetContextProvider } from "./context/SelectTarget";
 import { SDGContextProvider } from "./context/SDGContext";
+import { DataContextProvider } from "./context/DataContext";
+import { GroupContextProvider } from "./context/GroupContext";
 
 // Apollo Client Setup
 const cache = new InMemoryCache();
@@ -67,7 +69,11 @@ export default function App() {
               <SDGContextProvider>
                 <RecordsContextProvider>
                   <GoalContextProvider>
-                    <InnerApp />
+                    <DataContextProvider>
+                      <GroupContextProvider>
+                        <InnerApp />
+                      </GroupContextProvider>
+                    </DataContextProvider>
                   </GoalContextProvider>
                 </RecordsContextProvider>
               </SDGContextProvider>

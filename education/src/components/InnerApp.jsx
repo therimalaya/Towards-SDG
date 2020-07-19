@@ -7,16 +7,16 @@ import { useMutation } from "@apollo/react-hooks";
 
 // Style Related Imports
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Button } from "@material-ui/core";
-import SaveIcon from "@material-ui/icons/Save";
+import { Box } from "@material-ui/core";
 
 // Import Other Components
 import MainForm from "./MainForm";
 import SideInfo from "./SideInfo";
 import AllRecords from "./Records";
-import DownloadCSV from "./DownloadCSV";
+import DownloadButtons from "./DownloadButtons";
 import NavPanel from "./NavPanel";
 import SideBarPanel from "./SideBarPanel";
+import GroupPanel from "./GroupPanel";
 import MainPanel from "./MainPanel";
 
 // Importing Visualization
@@ -87,15 +87,11 @@ function InnerApp(props) {
         <Switch>
           <Route path="/records">
             <SideBarPanel>
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                className={classes.button}
-                startIcon={<SaveIcon />}
-              >
-                <DownloadCSV />
-              </Button>
+              <DownloadButtons />
+              <GroupPanel />
+              {/* <FilterContextProvider>
+                <FilterPanel />
+              </FilterContextProvider> */}
             </SideBarPanel>
             <MainPanel>
               <AllRecords />
