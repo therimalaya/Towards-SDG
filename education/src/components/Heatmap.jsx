@@ -1,3 +1,4 @@
+// This component is not in use now but can be used later
 import React, { useState, useEffect, useRef } from "react";
 import * as d3 from "d3";
 import miserables from "./D3/miserables.json";

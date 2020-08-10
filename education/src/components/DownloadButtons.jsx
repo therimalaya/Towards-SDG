@@ -1,25 +1,33 @@
+// Import Javascript Modules
 import React, { useContext } from "react";
-
 import { CSVLink } from "react-csv";
+
+// Import Material UI Components
 import { Button, Grid, Box, Typography, Divider } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
 import { makeStyles } from "@material-ui/core/styles";
+
+// Import Contexts
 import { DataContext } from "../context/DataContext";
 
-const useStyles = makeStyles((theme) => ({
+// Create Styles 
+const useStyles = makeStyles(theme => ({
   csvDownload: {
     textDecoration: "none",
-    color: theme.palette.primary.contrastText,
+    color: theme.palette.primary.contrastText
   },
   downloadTitle: {
-    display: "inline-flex",
+    display: "inline-flex"
   },
   downloadSeparator: {
-    marginBottom: "1vh",
-  },
+    marginBottom: "1vh"
+  }
 }));
 
-const DownloadButton = (props) => {
+// Single Download Button which uses CSVLink to create CSV file
+// ready for download. It takes data and prop which need to be 
+// convertable to CSV format as mentioned in CSVLink documentation
+const DownloadButton = props => {
   const classes = useStyles();
   const { data, filename, onClick, btnLabel } = props;
   return (
@@ -43,7 +51,11 @@ const DownloadButton = (props) => {
   );
 };
 
-const DownloadButtons = (props) => {
+// DownloadButtons Components uses DownloadButton to create
+// two buttons one for Target related data and another
+// for Goals related data. In addition, it also create JSON
+// object for all data without changing the structure
+const DownloadButtons = props => {
   const classes = useStyles();
   const { loading, error, Data, GoalData, TargetData } = useContext(
     DataContext
@@ -52,6 +64,7 @@ const DownloadButtons = (props) => {
   if (loading) return <p>Loading ...</p>;
   if (error) return <p>Error :(</p>;
   const jsonDownload = async (data, fileName) => {
+    // Create JSON Blob from stringifying JSON.
     const json = JSON.stringify(data, null, 2);
     const blob = new Blob([json], { type: "application/json" });
     const href = await URL.createObjectURL(blob);

@@ -1,7 +1,10 @@
+// Import Javascript Modules
 import React from "react";
 
+// Extra function used in the components
 const numnum = num => num <= 9 ? "0"+num : String(num);
 
+// Single Image button used to create Goal image grid clickable
 const ImageLink = props => {
   // This components requires following options:
   // a. goal: goal, short, image_src, isSelected

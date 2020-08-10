@@ -2,6 +2,8 @@ import React, { useState, createContext, useEffect } from "react";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 
+// Query to get data to show in Records components and can be used
+// in other components as well.   
 const AllRecords = gql`
   {
     getAllCourseRecords {
@@ -28,6 +30,9 @@ const AllRecords = gql`
   }
 `;
 
+// Restructure the records: This grabs all the goals related data
+// and related records information. This is used to create csv 
+// file and to show the records components.
 const GoalDataParser = (Data) => {
   const GoalData = Data.map((record, idx) => ({
     CourseType: record.Type,
@@ -44,6 +49,10 @@ const GoalDataParser = (Data) => {
   return GoalData;
 };
 
+// Restructure the records: This grabs all the goals, targets and 
+// related interactions related data
+// and related records information. This is used to create csv 
+// file and to show the records components.
 const TargetDataParser = (Data, group = false) => {
   const shouldFilter = Data.map((item) => {
     item.hasTarget = item.SDGRecords.flatMap((sdg) => sdg.Targets.length).every(

@@ -1,9 +1,15 @@
+// Import Javascript Modules
 import React, { useContext } from "react";
-import { GroupContext } from "../context/GroupContext";
+
+// Import Material UI Components
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 
+// Import Contexts
+import { GroupContext } from "../context/GroupContext";
+
+// Create Styles 
 const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
@@ -12,6 +18,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// Group panel uses group context to grouping the records
+// This can be extended to add the count of records and 
+// other various statiscs and plots per group
+// This component is used by Records components
 const GroupPanel = (props) => {
   const classes = useStyles();
   const { Group, setGroup } = useContext(GroupContext);

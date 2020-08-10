@@ -1,10 +1,18 @@
+// Import Javascript Modules
 import React, { useState, useContext } from "react";
+
+// Import Material UI Components
 import { Box, Grid, GridList, GridListTile } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+
+// Import Material UI Components
 import ImageLink from "./ImageLink";
+
+// Import Contexts
 import { GoalContext } from "../context/GoalContext";
 import { SDGContext } from "../context/SDGContext";
 
+// Create Styles 
 const useStyles = makeStyles((theme) => ({
   selected: {
     marginTop: "10px",
@@ -32,6 +40,10 @@ const useStyles = makeStyles((theme) => ({
   root: {},
 }));
 
+// Goal Components uses GoalContext extensive to make the grid of 
+// Goal images from the possible Goals. These possible goals are
+// further selected by the users and update the selected goal records
+// These selected goal records are also used to create target components
 const Goal = (props) => {
   const classes = useStyles();
   const { PossibleGoals, UpdatePossibleGoals } = useContext(GoalContext);

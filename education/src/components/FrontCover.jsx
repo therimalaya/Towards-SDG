@@ -1,7 +1,13 @@
+// Import Javascript Modules
 import React from "react";
 import { Link } from "react-router-dom";
+
+// Import Material UI Components
 import { Box, Typography } from "@material-ui/core";
 
+// Front Cover components contains the information about the app
+// Also includes some general instruction and purpose
+// DEPRICATED now
 const FrontCover = (props) => {
   return (
     <React.Fragment>

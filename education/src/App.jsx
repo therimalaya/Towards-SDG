@@ -24,6 +24,8 @@ import { DataContextProvider } from "./context/DataContext";
 import { GroupContextProvider } from "./context/GroupContext";
 
 // Apollo Client Setup
+// Apollo Client uses apollo server to connect GraphQL API
+// using localhost:4000
 const cache = new InMemoryCache();
 const link = new HttpLink({
   uri: "http://localhost:4000/graphql/",
@@ -59,6 +61,10 @@ const theme = createMuiTheme({
 });
 // May be create responsive font sizes
 
+// Various context Providers wraps the App.
+// They are not in specific order but sometimes
+// the order matters if the context 
+// itself uses another context
 export default function App() {
   return (
     <ApolloProvider client={client}>

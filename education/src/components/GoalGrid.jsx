@@ -1,8 +1,14 @@
+// Import Javascript Modules
 import React, { Fragment } from "react";
+
+// Import Other Local Components
 import { numnum } from "../data/AllGoals.js";
+
+// Import Material UI Components
 import { GridList, GridListTile } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
+// Create Styles 
 const useStyles = makeStyles((theme) => ({
   selected: {
     marginTop: "10px",
@@ -29,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+// Using Goals object from props, this component
+// renders a grid of goal object which also acts as button
 const GoalGrid = (props) => {
   const { AllGoals, handleClick, disableFilter } = props;
 
@@ -53,26 +62,3 @@ const GoalGrid = (props) => {
 
 export default GoalGrid;
 
-// const ImageLink = props => {
-//   const classes = useStyles();
-//   const { goal, handleClick, disabled } = props;
-//   return (
-//     <input
-//       width="100%"
-//       id={"Goal-" + numnum(goal.goal)}
-//       type="image"
-//       src={goal.image_src}
-//       name={goal.goal}
-//       alt={goal.short}
-//       onClick={handleClick}
-//       className={
-//         goal.isSelected
-//           ? classes.selectedTiles
-//           : props.makeDim
-//           ? classes.dimTiles
-//           : classes.regularTiles
-//       }
-//       disabled={disabled}
-//     />
-//   );
-// };
