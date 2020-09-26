@@ -1,160 +1,88 @@
-import React, { Fragment, useState, useEffect } from "react";
-import {GoalList, numnum} from "../data/AllGoals.js";
-import {
-  Box,
-  Grid,
-  GridList,
-  GridListTile,
-  Paper,
-  Typography
-} from "@material-ui/core";
+import React, { useState, useContext } from "react";
+import { Box, Grid, GridList, GridListTile } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow
-} from "@material-ui/core";
+import ImageLink from "./ImageLink";
+import { GoalContext } from "../context/GoalContext";
+import { SDGContext } from "../context/SDGContext";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   selected: {
-    marginTop: "10px"
+    marginTop: "10px",
   },
   selectedTiles: {
     boxShadow: `0 0 8px 0px red`,
-    transform: "scale(0.85)",
+    transform: "scale(0.80)",
     borderColor: "whitesmoke",
     borderWidth: "2px",
     borderStyle: "solid",
     borderRadius: "3px",
     "&:focus": {
-      outline: "none"
+      outline: "none",
     },
-    filter: "saturate(1.3)"
+    filter: "saturate(1.3)",
   },
   regularTiles: {
     "&:focus": {
-      outline: "none"
-    }
+      outline: "none",
+    },
   },
   dimTiles: {
-    filter: "saturate(0.3)"
-  }
+    filter: "saturate(0.3)",
+  },
+  root: {},
 }));
 
-const Goal = props => {
+const Goal = (props) => {
   const classes = useStyles();
-  const [AllGoals, setAllGoals] = useState(GoalList);
-  const { Goals } = props.CurrentRecord;
-  const { UpdateCurrentRecord } = props;
-
-  useEffect(() => {
-    if (props.CurrentRecord.Targets.length) {
-      props.UpdateCurrentRecord("Targets", []);
-    }
-  });
-
-  GoalList.forEach(
-    goal => (goal.isSelected = props.CurrentRecord.Goals.includes(goal.goal))
+  const { PossibleGoals, UpdatePossibleGoals } = useContext(GoalContext);
+  const { UpdateCurrentSDG } = useContext(SDGContext);
+  const [CandidateGoals, setCandidateGoals] = useState(
+    PossibleGoals.filter((goal) => goal.isPossible)
   );
-
-  const handleClick = event => {
-    const newGoals = AllGoals;
-    newGoals.forEach(goal => {
+  const disableFilter = (GoalList) =>
+    GoalList.filter((goal) => goal.isSelected).length >= 2;
+  const handleTileClick = (event) => {
+    const newGoals = [...PossibleGoals];
+    newGoals.forEach((goal) => {
       if (goal.goal === Number(event.target.name)) {
         goal.isSelected = !goal.isSelected;
       }
     });
-    event.target.classList.toggle("selected");
-    UpdateCurrentRecord(
+    UpdateCurrentSDG(
       "Goals",
-      newGoals.filter(goal => goal.isSelected).map(goal => goal.goal)
+      newGoals.filter((goal) => goal.isSelected).map((goal) => goal.goal)
     );
-    setAllGoals(newGoals);
+    setCandidateGoals(newGoals.filter((goal) => goal.isPossible));
+    UpdatePossibleGoals(newGoals);
   };
 
   return (
-    <Fragment>
-      <Grid container direction="column">
-        {/* <Typography variant="h4" component="h2">Select Goals</Typography> */}
-        <Box className={classes.root}>
+    <Grid container direction="column">
+      <Box className={classes.root}>
+        {CandidateGoals.length ? (
           <GridList cols={6} component="div" cellHeight="auto">
-            {AllGoals.map(goal => (
+            {CandidateGoals.map((goal) => (
               <GridListTile key={goal.goal} component="div">
                 <ImageLink
-                  makeDim={AllGoals.filter(item => item.isSelected).length >= 2}
                   goal={goal}
-                  handleClick={handleClick}
+                  onClick={handleTileClick}
+                  disabled={disableFilter(CandidateGoals) & !goal.isSelected}
+                  className={
+                    disableFilter(CandidateGoals) & !goal.isSelected
+                      ? classes.dimTiles
+                      : goal.isSelected
+                      ? classes.selectedTiles
+                      : classes.regularTiles
+                  }
                   key={goal.goal}
-                  disabled={(Goals.length >= 2) & !goal.isSelected}
                 />
               </GridListTile>
             ))}
           </GridList>
-          {AllGoals.filter(goal => Goals.includes(goal.goal)).length ? (
-            <Typography variant="overline">Selected Goals</Typography>
-          ) : (
-            <Fragment>
-              <Typography variant="overline">No goals are selected</Typography>
-              <Typography variant="body2">
-                Please select at least one goal.
-              </Typography>
-            </Fragment>
-          )}
-          <TableContainer component={Paper} className={classes.selected}>
-            <Table className={classes.table} size="small">
-              <TableBody>
-                {AllGoals.filter(goal => Goals.includes(goal.goal)).map(
-                  (goal, idx) => (
-                    <Fragment key={idx}>
-                      <TableRow key={goal.goal}>
-                        <TableCell
-                          variant="head"
-                          align="right"
-                          style={{
-                            color: goal.colorInfo.hex,
-                            fontWeight: "bolder"
-                          }}
-                        >
-                          Goal {goal.goal}
-                        </TableCell>
-                        <TableCell align="left">{goal.title}</TableCell>
-                      </TableRow>
-                    </Fragment>
-                  )
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
-      </Grid>
-    </Fragment>
+        ) : null}
+      </Box>
+    </Grid>
   );
 };
 
 export default Goal;
-
-const ImageLink = props => {
-  const classes = useStyles();
-  const { goal, handleClick, disabled } = props;
-  return (
-    <input
-      width="100%"
-      id={"Goal-" + numnum(goal.goal)}
-      type="image"
-      src={goal.image_src}
-      name={goal.goal}
-      alt={goal.short}
-      onClick={handleClick}
-      className={
-        goal.isSelected
-          ? classes.selectedTiles
-          : props.makeDim
-          ? classes.dimTiles
-          : classes.regularTiles
-      }
-      disabled={disabled}
-    />
-  );
-};

@@ -10,7 +10,7 @@ import {
   GridList,
   GridListTile,
   TextField,
-  MenuItem,
+  MenuItem
 } from "@material-ui/core";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
@@ -30,13 +30,13 @@ import { StepContext } from "../context/StepContext";
 import {
   FacultyConfig,
   SustainFocusOption,
-  TeachingOption,
+  TeachingOption
 } from "../config/app-config.js";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   recordsDetails: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column"
   },
   expansionTitle: {
     "& > div": {
@@ -45,62 +45,76 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: "space-between",
       "& > div:first-child": {
         "& p": {
-          fontWeight: 800,
-        },
-      },
-    },
+          fontWeight: 800
+        }
+      }
+    }
   },
   expansionDetail: {
-    flexDirection: "column",
+    flexDirection: "column"
   },
   gridRow: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "center"
   },
   table: {
-    maxWidth: "100%",
+    maxWidth: "100%"
   },
   rtlIcon: {
-    transform: "rotate(180deg)",
+    transform: "rotate(180deg)"
   },
   ltrIcon: {},
   link: {
     textTransform: "uppercase",
-    fontSize: "small",
-  },
+    fontSize: "small"
+  }
 }));
 
-const ResearchDetails = (props) => {
+const ResearchDetails = props => {
   const classes = useStyles();
   const { Record } = props;
   return (
     <Box width="100%" className={classes.recordsDetails}>
-      <Typography variant="overline">
-        {Record.Type === "course" ? "Course Responsible" : "Main Supervisor"}:
-        {Record.CourseResponsible}
-      </Typography>
-      <Box>
-        <Typography variant="subtitle2">
-          {FacultyConfig.filter(
-            (fclty) => fclty.value === Record.Faculty
-          ).flatMap((fclty) => fclty.label)}
-        </Typography>
-      </Box>
-      <Divider />
-      <Box>
-        <Typography variant="overline">Collaborating Faculties:</Typography>
-        <Typography variant="subtitle2">
-          {FacultyConfig.filter((fclty) =>
-            Record.RelatedFaculties.includes(fclty.value)
-          )
-            .flatMap((fclty) => fclty.label)
-            .join("; ")}
-        </Typography>
-      </Box>
+      {Record.CourseResponsible ? (
+        <Box>
+          <Typography variant="overline">
+            {Record.Type === "course"
+              ? "Course Responsible"
+              : "Main Supervisor"}
+            :
+          </Typography>
+          <Typography variant="subtitle2">
+            {Record.CourseResponsible}
+          </Typography>
+        </Box>
+      ) : null}
+      {Record.Faculty ? (
+        <Box>
+          <Typography variant="overline">Faculty:</Typography>
+          <Typography variant="subtitle2">
+            {FacultyConfig.filter(
+              fclty => fclty.value === Record.Faculty
+            ).flatMap(fclty => fclty.label)}
+          </Typography>
+          <Divider />
+        </Box>
+      ) : null}
+      {Record.RelatedFaculties.length ? (
+        <Box>
+          <Typography variant="overline">Collaborating Faculties:</Typography>
+          <Typography variant="subtitle2">
+            {FacultyConfig.filter(fclty =>
+              Record.RelatedFaculties.includes(fclty.value)
+            )
+              .flatMap(fclty => fclty.label)
+              .join("; ")}
+          </Typography>
+        </Box>
+      ) : null}
     </Box>
   );
 };
-export const SDGTable = (props) => {
+export const SDGTable = props => {
   const classes = useStyles();
   const { Record } = props;
   return (
@@ -117,7 +131,7 @@ export const SDGTable = (props) => {
         </TableHead>
         <TableBody>
           {Record.SDGRecords.length > 0
-            ? Record.SDGRecords.filter((sdg) => sdg.Targets).map((sdg, key) => (
+            ? Record.SDGRecords.filter(sdg => sdg.Targets).map((sdg, key) => (
                 <TableRow key={key}>
                   <TableCell>
                     {sdg.Targets[0] ? sdg.Targets[0] : sdg.Goals[0]}
@@ -145,16 +159,16 @@ export const SDGTable = (props) => {
   );
 };
 
-export const RecordGoalGrid = (props) => {
+export const RecordGoalGrid = props => {
   const classes = useStyles();
   const { PossibleGoals } = useContext(GoalContext);
   return (
     <Box>
-      {PossibleGoals.filter((goal) => goal.isPossible).length ? (
-        <Typography>Selected Goals:</Typography>
+      {PossibleGoals.filter(goal => goal.isPossible).length ? (
+        <Typography variant="overline">Selected Goals:</Typography>
       ) : null}
       <GridList cols={17} component="div" cellHeight="auto">
-        {PossibleGoals.filter((goal) => goal.isPossible).map((goal) => (
+        {PossibleGoals.filter(goal => goal.isPossible).map(goal => (
           <GridListTile key={goal.goal} component="div">
             <ImageLink
               goal={goal}
@@ -168,7 +182,7 @@ export const RecordGoalGrid = (props) => {
     </Box>
   );
 };
-export const RecordSummary = (props) => {
+export const RecordSummary = props => {
   const classes = useStyles();
   const { Record, expanded } = props;
   const { selectTarget } = useContext(SelectTargetContext);
@@ -189,7 +203,9 @@ export const RecordSummary = (props) => {
                 {Record.CourseCode ? Record.CourseCode : null}
               </ExpansionPanelSummary>
               <ExpansionPanelDetails className={classes.expansionDetail}>
-                <ResearchDetails Record={Record} />
+                <Box pb={2}>
+                  <ResearchDetails Record={Record} />
+                </Box>
                 {Record.SDGRecords.length > 0 ? (
                   selectTarget === "yes" ? (
                     <SDGTable Record={Record} />
@@ -206,7 +222,7 @@ export const RecordSummary = (props) => {
   );
 };
 
-export const AdditionalQuestions = (props) => {
+export const AdditionalQuestions = props => {
   const { FormData, HandleChange, Errors } = useContext(FormContext);
   return (
     <>
@@ -226,9 +242,9 @@ export const AdditionalQuestions = (props) => {
                 getContentAnchorEl: null,
                 anchorOrigin: {
                   vertical: "bottom",
-                  horizontal: "left",
-                },
-              },
+                  horizontal: "left"
+                }
+              }
             }}
             onChange={HandleChange("Teaching")}
             error={Errors.Teaching !== ""}
@@ -239,7 +255,7 @@ export const AdditionalQuestions = (props) => {
             variant="outlined"
             fullWidth={true}
           >
-            {TeachingOption.map((option) => (
+            {TeachingOption.map(option => (
               <MenuItem key={option.value} value={option.value} dense>
                 {option.label}
               </MenuItem>
@@ -259,9 +275,9 @@ export const AdditionalQuestions = (props) => {
                 getContentAnchorEl: null,
                 anchorOrigin: {
                   vertical: "bottom",
-                  horizontal: "left",
-                },
-              },
+                  horizontal: "left"
+                }
+              }
             }}
             onChange={HandleChange("SustainFocus")}
             error={Errors.SustainFocus !== ""}
@@ -272,7 +288,7 @@ export const AdditionalQuestions = (props) => {
             variant="outlined"
             fullWidth={true}
           >
-            {SustainFocusOption.map((option) => (
+            {SustainFocusOption.map(option => (
               <MenuItem key={option.value} value={option.value} dense>
                 {option.label}
               </MenuItem>

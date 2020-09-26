@@ -1,66 +1,38 @@
 import React from "react";
 import Personal from "./Personal";
-import Goal from "./Goal";
+import PossibleGoals from "./PossibleGoals";
 import Target from "./Target";
 import Summary from "./Summary";
 import Confirmation from "./Confirmation";
+import { StepContext } from "../context/StepContext";
+import { GoalContextProvider } from "../context/GoalContext";
 
 function MainForm(props) {
-  const { Step, FormData, CurrentRecord, Records } = props;
-  const { UpdateFormData, UpdateCurrentRecord, UpdateRecords } = props;
-  const { RemoveCurrentRecord, UpdateCurrent } = props;
-  const { Errors, setErrors, NoError, setNoError } = props;
-  const { checkValidFields, HandleChange, CheckAndProceed } = props;
-
-  switch (Step) {
-    case 1:
-      return (
-        <Personal
-          FormData={FormData}
-          UpdateFormData={UpdateFormData}
-          Errors={Errors}
-          setErrors={setErrors}
-          NoError={NoError}
-          setNoError={setNoError}
-          checkValidFields={checkValidFields}
-          HandleChange={HandleChange}
-          CheckAndProceed={CheckAndProceed}
-        />
-      );
-    case 2:
-      return (
-        <Goal
-          CurrentRecord={CurrentRecord}
-          UpdateCurrentRecord={UpdateCurrentRecord}
-        />
-      );
-    case 3:
-      return (
-        <Target
-          CurrentRecord={CurrentRecord}
-          UpdateCurrentRecord={UpdateCurrentRecord}
-          UpdateFormData={UpdateFormData}
-          UpdateRecords={UpdateRecords}
-          Records={Records}
-          RemoveCurrentRecord={RemoveCurrentRecord}
-          UpdateCurrent={UpdateCurrent}
-        />
-      );
-    case 4:
-      return (
-        <React.Fragment>
-          <Summary FormData={FormData} Records={Records} />
-        </React.Fragment>
-      );
-    case 5:
-      return (
-        <React.Fragment>
-          <Confirmation Records={Records} FormData={FormData} />
-        </React.Fragment>
-      );
-    default:
-      throw new Error("Opss!");
-  }
+  return (
+    <StepContext.Consumer>
+      {(stepContext) => {
+        const { step } = stepContext;
+        switch (step) {
+          case 1:
+            return <Personal />;
+          case 2:
+            return (
+              <GoalContextProvider>
+                <PossibleGoals />
+              </GoalContextProvider>
+            );
+          case 3:
+            return <Target />;
+          case 4:
+            return <Summary />;
+          case 5:
+            return <Confirmation />;
+          default:
+            throw new Error("Ops!");
+        }
+      }}
+    </StepContext.Consumer>
+  );
 }
 
 export default MainForm;

@@ -1,5 +1,5 @@
-import {GoalList} from "../data/AllGoals.js";
-import {TargetList} from "../data/AllTargets.js";
+import Goals from "../data/goals.json";
+import Targets from "../data/targets.json";
 
 const Records = [
   {
@@ -1066,5 +1066,5 @@ const parseData = (goals, targets, links) => {
   return data;
 };
 
-const recordNodes = parseData(GoalList, TargetList, Records);
+const recordNodes = parseData(Goals, Targets, Records);
 export default recordNodes;

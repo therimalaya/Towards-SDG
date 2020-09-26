@@ -91,7 +91,11 @@ function TargetDrawer(props) {
     event.preventDefault();
     const cSDG = CurrentSDG;
     //cSDG.Targets[idx] = event.currentTarget.name;
-    cSDG.Targets.push(event.currentTarget.name);
+    if (cSDG.Targets.includes(event.currentTarget.name)) {
+      cSDG.Targets = cSDG.Targets.filter((x) => x !== event.currentTarget.name);
+    } else {
+      cSDG.Targets.push(event.currentTarget.name);
+    }
     UpdateCurrentSDG("Targets", cSDG.Targets);
   };
   const disableCondition = (length, id) => {
