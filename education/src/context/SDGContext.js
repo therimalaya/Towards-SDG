@@ -13,7 +13,15 @@ const initSDG = {
 export const SDGContext = createContext();
 
 export const SDGContextProvider = (props) => {
-  const [CurrentSDG, setCurrentSDG] = useState(initSDG);
+  const [CurrentSDG, setCurrentSDG] = useState({
+    Goals: [],
+    Targets: [],
+    Interaction: {
+      value: "",
+      type: "",
+      direction: "",
+    },
+  });
   const UpdateCurrentSDG = (input, value) => {
     setCurrentSDG({ ...CurrentSDG, [input]: value });
   };

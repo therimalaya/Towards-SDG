@@ -22,7 +22,14 @@ const NavPanel = (props) => {
     const summaryKey = StepConfig.find((x) => x.label === "Summary").key;
     // UpdateCurrentSDG("Goals", PossibleGoals);
     // UpdateRecords(event);
-    setRecords([...Records, { Goals: PossibleGoals.map((goal) => goal.goal) }]);
+    setRecords([
+      ...Records,
+      {
+        Goals: PossibleGoals.filter((goal) => goal.isPossible).map(
+          (goal) => goal.goal
+        ),
+      },
+    ]);
     setStep(summaryKey);
   };
   const GoToGoals = (event) => {
