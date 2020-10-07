@@ -44,12 +44,11 @@ function SideInfo(props) {
           </Box>
           <Box>
             <Typography>
-              Here you, as course responsible, can provide course information
-              and details about faculty ownership and faculty collaboration.
-            </Typography>
-            <Typography>
-              Master graduates may also register their thesis (choose Type
-              “thesis”, and write course code “MSc”, and course name “MSc”).
+              Here you can provide personal information and details about your
+              main author contribution. Co-authors may also register
+              publications in case the lead author is not affiliated at NMBU.
+              Potentially multiple NMBU co-authors must coordinate a single
+              registration in the portal.
             </Typography>
           </Box>
         </React.Fragment>
@@ -68,7 +67,7 @@ function SideInfo(props) {
           <Box>
             <Typography paragraph={true} variant="body2">
               This page allows you to provide information about the main goals
-              that are addressed in the course/thesis, either solely or in
+              that are addressed in the research, either solely or in
               interaction with others.
             </Typography>
 

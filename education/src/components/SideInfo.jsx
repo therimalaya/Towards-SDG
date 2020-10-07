@@ -190,7 +190,7 @@ function SideInfo(props) {
               Thank you for your contribution!
             </Typography>
             <Typography variant="body2">
-              To add more publications, simply press the START button.
+              To add more course/thesis, simply press the START button.
             </Typography>
           </Box>
         </React.Fragment>
