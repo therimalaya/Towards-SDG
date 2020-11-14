@@ -6,6 +6,7 @@ services:
     hostname: api
     image: sdg-app:latest
     build: .
+    restart: always
     env_file:
       - .env
     volumes:
@@ -24,6 +25,7 @@ services:
     container_name: api
     hostname: api
     image: sdg-api:latest
+    restart: always
     build:
       context: ./api
       args:

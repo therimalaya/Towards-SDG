@@ -6,11 +6,13 @@ WORKDIR /app
 COPY research ./research
 RUN cd research \
     && yarn install \
+    && npm rebuild node-sass \
     && yarn build \
     && cd ..
 COPY education ./education
 RUN cd education \
     && yarn install \
+    && npm rebuild node-sass \
     && yarn build \
     && cd ..
 COPY home ./home
