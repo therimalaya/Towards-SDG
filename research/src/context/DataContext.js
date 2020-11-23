@@ -100,6 +100,7 @@ export const DataContextProvider = (props) => {
       setData(Data);
       setGoalData(GoalDataParser(Data));
       setTargetData(TargetDataParser(Data));
+      console.log(Data)
     }
   }, [data]);
 
