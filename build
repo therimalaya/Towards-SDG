@@ -1,0 +1,13 @@
+#! /bin/bash
+
+echo "Starting the build."
+cd ./research
+yarn build
+cd ..
+cd ./education
+yarn build
+cd ..
+rm -rf home/{research,education}
+mv research/build home/research
+mv education/build home/education
+echo "Build Completed."
